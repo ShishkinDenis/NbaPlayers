@@ -1,4 +1,3 @@
 package com.shishkin.itransition.db
 
-abstract class NbaPlayersDataBase {
-}
+abstract class NbaPlayersDataBase

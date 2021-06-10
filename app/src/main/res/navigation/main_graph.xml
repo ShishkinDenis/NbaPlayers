@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/nbaFragment">
+
+    <fragment
+        android:id="@+id/nbaFragment"
+        android:name="com.shishkin.itransition.gui.nba.fragments.NbaFragment"
+        android:label="fragment_nba"
+        tools:layout="@layout/fragment_nba" >
+        <action
+            android:id="@+id/action_nbaFragment_to_nbaDetailsFragment"
+            app:destination="@id/nbaDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nbaDetailsFragment"
+        android:name="com.shishkin.itransition.gui.nbadetails.fragments.NbaDetailsFragment"
+        android:label="fragment_nba_details"
+        tools:layout="@layout/fragment_nba_details" />
+</navigation>

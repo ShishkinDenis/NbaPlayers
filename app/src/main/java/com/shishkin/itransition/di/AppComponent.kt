@@ -1,4 +1,3 @@
 package com.shishkin.itransition.di
 
-interface AppComponent {
-}
+interface AppComponent

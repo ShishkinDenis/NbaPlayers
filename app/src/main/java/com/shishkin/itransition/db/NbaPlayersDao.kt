@@ -1,4 +1,3 @@
 package com.shishkin.itransition.db
 
-interface NbaPlayersDao {
-}
+interface NbaPlayersDao

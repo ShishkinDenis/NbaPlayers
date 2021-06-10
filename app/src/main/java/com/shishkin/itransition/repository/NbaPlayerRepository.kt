@@ -1,4 +1,3 @@
 package com.shishkin.itransition.repository
 
-class NbaPlayerRepository {
-}
+class NbaPlayerRepository
