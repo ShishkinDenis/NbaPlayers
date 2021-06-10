@@ -1,4 +1,4 @@
-package com.shishkin.itransition.gui.fragments
+package com.shishkin.itransition.gui.nbadetails.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [NbaFragment.newInstance] factory method to
+ * Use the [NbaDetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NbaFragment : Fragment() {
+class NbaDetailsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +35,7 @@ class NbaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nba, container, false)
+        return inflater.inflate(R.layout.fragment_nba_details, container, false)
     }
 
     companion object {
@@ -45,12 +45,13 @@ class NbaFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment NbaFragment.
+         * @return A new instance of fragment NbaDetailsFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            NbaFragment().apply {
+            NbaDetailsFragment()
+                .apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
