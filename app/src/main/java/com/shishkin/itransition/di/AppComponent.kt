@@ -1,3 +1,16 @@
 package com.shishkin.itransition.di
 
-interface AppComponent
+import com.shishkin.itransition.gui.nba.NbaFragment
+import com.shishkin.itransition.gui.nba.NbaViewModel
+import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragment
+import com.shishkin.itransition.gui.nbadetails.NbaDetailsViewModel
+import dagger.Component
+
+@Component(modules = [RepositoryModule::class])
+interface AppComponent {
+    fun inject(nbaFragment: NbaFragment)
+    fun inject(nbaViewModel: NbaViewModel)
+    fun inject(nbaDetailsFragment: NbaDetailsFragment)
+    fun inject(nbaDetailsViewModel: NbaDetailsViewModel)
+
+}

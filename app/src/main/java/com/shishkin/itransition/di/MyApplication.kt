@@ -1,3 +1,9 @@
 package com.shishkin.itransition.di
 
-class MyApplication
+import android.app.Application
+
+class MyApplication : Application() {
+    companion object {
+        val appComponent: AppComponent = DaggerAppComponent.create()
+    }
+}
