@@ -14,10 +14,13 @@ import androidx.navigation.fragment.findNavController
 import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
 import com.shishkin.itransition.db.NbaPlayer
+import com.shishkin.itransition.db.NbaPlayerData
 import com.shishkin.itransition.di.MyApplication
+import kotlinx.android.synthetic.main.fragment_nba.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 @InternalCoroutinesApi
 class NbaFragment : Fragment() {
@@ -44,15 +47,20 @@ class NbaFragment : Fragment() {
         button.setOnClickListener {
             findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment)
         }
-
         lifecycleScope.launch {
 
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaViewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is NbaPlayersUiState.Success ->
-                        is NbaPlayersUiState.Error ->
-                    }
+                nbaViewModel.uiState.collect {
+//                    Получаю в логе null. Почему?
+                    val list : List<NbaPlayer>? = nbaViewModel.nbaPlayerData.getNbaPlayersData()
+                    Log.d("Retrofit", list?.get(1)?.getName().toString())
+
+//                    uiState ->
+//                    when (uiState) {
+//                        is NbaPlayersUiState.Success ->
+//                        is NbaPlayersUiState.Error ->
+//                    }
+
                 }
             }
         }
