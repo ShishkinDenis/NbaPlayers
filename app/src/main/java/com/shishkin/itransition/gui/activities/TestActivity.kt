@@ -11,12 +11,13 @@ import com.shishkin.itransition.db.NbaPlayer
 import com.shishkin.itransition.gui.nba.lists.adapters.NbaPlayersAdapter
 import com.shishkin.itransition.network.NbaPlayersApi
 import com.shishkin.itransition.network.NbaPlayersApiClient
+import dagger.android.support.DaggerAppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 //TODO delete this activity
-class TestActivity : AppCompatActivity() {
+class TestActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -27,9 +28,9 @@ class TestActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         testRecycler.layoutManager = linearLayoutManager
 
-        val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
+//        val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
         val nbaPlayersApi: NbaPlayersApi? = NbaPlayersApiClient.getClient()?.create(NbaPlayersApi::class.java)
-        val call : Call<NbaPlayerData>? =  nbaPlayersApi?.getAllNbaPlayersUsingCall(API_KEY)
+        val call : Call<NbaPlayerData>? =  nbaPlayersApi?.getAllNbaPlayersUsingCall()
 
         call?.enqueue(object : Callback<NbaPlayerData> {
             override fun onFailure(call: Call<NbaPlayerData>, t: Throwable) {

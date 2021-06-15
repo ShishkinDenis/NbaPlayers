@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.shishkin.itransition.R
 import com.shishkin.itransition.di.MyApplication
+import com.shishkin.itransition.gui.nba.NbaViewModel
+import com.shishkin.itransition.utils.MyViewModelFactory
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 
-class NbaDetailsFragment : Fragment() {
+class NbaDetailsFragment : DaggerFragment() {
 
     @Inject
+    lateinit var myViewModelFactory: MyViewModelFactory
     lateinit var nbaDetailsViewModel: NbaDetailsViewModel
 
     override fun onCreateView(
@@ -23,7 +28,10 @@ class NbaDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MyApplication.appComponent.inject(this)
+//        MyApplication.appComponent.inject(this)
+
+        nbaDetailsViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaDetailsViewModel::class.java)
+
         nbaDetailsViewModel.fetchSpecificNbaPlayer(7)
     }
 

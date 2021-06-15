@@ -1,22 +1,54 @@
 package com.shishkin.itransition.network
 
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NbaPlayersApiClient {
-
     //    TODO Use dagger
     companion object {
-        val BASE_URL = "https://free-nba.p.rapidapi.com/"
-        private var retrofit: Retrofit? = null
+    private var retrofit: Retrofit? = null
+    fun getClient(): Retrofit {
+        return if (retrofit == null) {
 
-        fun getClient(): Retrofit? {
-            if (retrofit == null) {
-                retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create()).build()
-            }
-            return retrofit
+            val httpClient = OkHttpClient.Builder()
+            httpClient.addInterceptor(object : Interceptor {
+                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                    val original = chain.request()
+
+                    val newRequest = original.newBuilder()
+                            .header("User-Agent", "App")
+                            .header("x-rapidapi-key", "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd")
+                            .header("x-rapidapi-host", "free-nba.p.rapidapi.com")
+                            .method(original.method, original.body)
+                            .build()
+
+                    return chain.proceed(newRequest)
+                }
+            })
+
+            // Логирование
+            val httpInterceptor = HttpLoggingInterceptor()
+            httpInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            httpClient.addInterceptor(httpInterceptor)
+
+
+            val client = httpClient.build()
+
+            retrofit = Retrofit.Builder()
+                    .baseUrl("https://free-nba.p.rapidapi.com")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build()
+
+            retrofit!!
+        } else {
+            retrofit!!
         }
     }
 }
+
+}
+

@@ -23,6 +23,7 @@ class NbaViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerReposit
     val uiState: StateFlow<NbaPlayersUiState> = _uiState
 
     init {
+//        сюда не приходит
         viewModelScope.launch {
             nbaPlayerRepository.getNbaPlayersData()
                 .collect { nbaPlayers ->

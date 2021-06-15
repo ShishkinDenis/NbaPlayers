@@ -12,17 +12,23 @@ interface NbaPlayersApi {
     //    TODO change to Flow
 //    Coroutines + LiveData
     @GET("players")
-    suspend fun getAllNbaPlayers(@Query("rapidapi-key") apiKey: String): NbaPlayerData
+    suspend fun getAllNbaPlayers(): NbaPlayerData
 
 
 //    Call
     @GET("players")
-    fun  getAllNbaPlayersUsingCall(@Query("rapidapi-key") apiKey : String) : Call<NbaPlayerData>
+    fun  getAllNbaPlayersUsingCall() : Call<NbaPlayerData>
 
 
     //    TODO change to Flow
-//    Call
-    @GET("players/{id}")
-    fun getSpecificPlayer(@Path("id") playerId: Int, @Query("rapidapi-key") apiKey: String): Call<NbaPlayer>
 
+
+    //    Call
+    @GET("players/{id}")
+    fun getSpecificPlayer(@Path("id") playerId: Int): Call<NbaPlayer>
+
+
+    //    Call
+//    @GET("players/{id}")
+//    fun getSpecificPlayer(@Path("id") playerId: Int, @Query("rapidapi-key") apiKey: String): Call<NbaPlayer>
 }

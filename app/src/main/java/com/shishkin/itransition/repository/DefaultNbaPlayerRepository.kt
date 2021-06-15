@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
-    private val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
+//    private val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
     private val nbaPlayersApi: NbaPlayersApi? =
         com.shishkin.itransition.network.NbaPlayersApiClient.getClient()
             ?.create(NbaPlayersApi::class.java)
@@ -23,7 +23,7 @@ class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
 
     override fun getNbaPlayersData(): Flow<NbaPlayerData?> {
         return flow {
-            val flowData = nbaPlayersApi?.getAllNbaPlayers(API_KEY)
+            val flowData = nbaPlayersApi?.getAllNbaPlayers()
             emit(flowData)
         }.flowOn(Dispatchers.IO)
 
@@ -52,7 +52,8 @@ class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
 
 //    TODO use Flow
     override fun getSpecificPlayer(playerId: Int) {
-        val callSpecificPlayer: Call<NbaPlayer>? = nbaPlayersApi?.getSpecificPlayer(playerId, API_KEY)
+//        val callSpecificPlayer: Call<NbaPlayer>? = nbaPlayersApi?.getSpecificPlayer(playerId, API_KEY)
+        val callSpecificPlayer: Call<NbaPlayer>? = nbaPlayersApi?.getSpecificPlayer(playerId)
         callSpecificPlayer?.enqueue(object : Callback<NbaPlayer> {
             override fun onFailure(call: Call<NbaPlayer>, t: Throwable) {
                 Log.d("Retrofit", t.toString() + "exception")

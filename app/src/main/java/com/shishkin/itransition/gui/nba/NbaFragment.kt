@@ -6,31 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
 import com.shishkin.itransition.db.NbaPlayer
-import com.shishkin.itransition.db.NbaPlayerData
-import com.shishkin.itransition.di.MyApplication
-import kotlinx.android.synthetic.main.fragment_nba.*
+import com.shishkin.itransition.utils.MyViewModelFactory
+import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 
 @InternalCoroutinesApi
-class NbaFragment : Fragment() {
+class NbaFragment : DaggerFragment() {
 
     // TODO   view/data binding
     lateinit var button: Button
 
-    //    TODO Factory for viewModel implementation
-    @Inject
-    lateinit var nbaViewModel: NbaViewModel
+        @Inject
+        lateinit var myViewModelFactory: MyViewModelFactory
+        lateinit var nbaViewModel: NbaViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +39,7 @@ class NbaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MyApplication.appComponent.inject(this)
+      nbaViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaViewModel::class.java)
 
         button = view.findViewById(R.id.btnGoToNbaPlayerInfo)
         button.setOnClickListener {
