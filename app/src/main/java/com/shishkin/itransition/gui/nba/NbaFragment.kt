@@ -13,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
-import com.shishkin.itransition.db.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.utils.MyViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -46,22 +46,25 @@ class NbaFragment : DaggerFragment() {
         button.setOnClickListener {
             findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment)
         }
-        lifecycleScope.launch {
 
+        lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 nbaViewModel.uiState.collect {
+                    uiState ->
+                    when (uiState) {
+                        is NbaPlayersUiState.Success ->{Log.d("Retrofit", uiState.nbaPlayers?.data?.nbaPlayersList?.get(1)?.firstName.toString()) }
+                        is NbaPlayersUiState.Error ->{}
+                        is NbaPlayersUiState.Loading ->{}
+                        is NbaPlayersUiState.Empty ->{}
 
-                    (it as NbaPlayersUiState.Success).let {
-                        val list : List<NbaPlayer>? =  it.nbaPlayers?.getNbaPlayersData()
-                        Log.d("Retrofit", it.nbaPlayers?.getNbaPlayersData()?.size.toString())
-                        Log.d("Retrofit", list?.get(1)?.getName().toString())
-                    }
-//                    uiState ->
-//                    when (uiState) {
-//                        is NbaPlayersUiState.Success ->
-//                        is NbaPlayersUiState.Error ->
+//                        Flow
+//                    (it as NbaPlayersUiState.Success).let {
+//                        val list : List<NbaPlayer>? =  it.nbaPlayers?.getNbaPlayersData()
+//                        Log.d("Retrofit", it.nbaPlayers?.getNbaPlayersData()?.size.toString())
+//                        Log.d("Retrofit", list?.get(1)?.getName().toString())
 //                    }
 
+                    }
                 }
             }
         }

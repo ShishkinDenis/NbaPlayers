@@ -3,11 +3,12 @@ package com.shishkin.itransition.gui.nba
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.NbaPlayersUiState
-import com.shishkin.itransition.NbaPlayersUiState.Success
-import com.shishkin.itransition.db.NbaPlayerData
+import com.shishkin.itransition.NbaPlayersUiState.*
+
 import com.shishkin.itransition.repository.NbaPlayerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,32 +17,37 @@ import javax.inject.Inject
 class NbaViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) : ViewModel() {
 
 
-     var nbaPlayerData: NbaPlayerData = NbaPlayerData()
-
-    private val _uiState = MutableStateFlow(Success(nbaPlayerData))
-
+    private val _uiState : MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(Empty)
     val uiState: StateFlow<NbaPlayersUiState> = _uiState
 
     init {
-//        сюда не приходит
         viewModelScope.launch {
+        _uiState.value = Loading
             nbaPlayerRepository.getNbaPlayersData()
+                .catch { e-> _uiState.value = Error(e) }
                 .collect { nbaPlayers ->
                     _uiState.value = Success(nbaPlayers)
                 }
         }
     }
 
+//flow
+//var nbaPlayerData: NbaPlayerData =
+//    NbaPlayerData()
+//    init {
+//        viewModelScope.launch {
+//            nbaPlayerRepository.getNbaPlayersData()
+//                .collect { nbaPlayers ->
+//                    _uiState.value = Success(nbaPlayers)
+//                }
+//        }
+//    }
+
 //        TODO Delete
     //     Coroutines + LiveData
 //    val fetchData = liveData(Dispatchers.IO){
 //        val data =  nbaPlayerRepository.getData()
 //        emit(data)
-//    }
-
-    // Call
-//    fun fetchNbaPlayersData() {
-//        nbaPlayerRepository.getNbaPlayersData()
 //    }
 
 

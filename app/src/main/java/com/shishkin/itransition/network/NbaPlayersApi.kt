@@ -1,23 +1,26 @@
 package com.shishkin.itransition.network
 
-import com.shishkin.itransition.db.NbaPlayerData
-import com.shishkin.itransition.db.NbaPlayer
+
+import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayerData
+import com.shishkin.itransition.network.entities.RestResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface NbaPlayersApi {
 
-    //    TODO change to Flow
-//    Coroutines + LiveData
     @GET("players")
-    suspend fun getAllNbaPlayers(): NbaPlayerData
+    suspend fun getAllNbaPlayers(): RestResponse<NbaPlayerData>
+
+//    Coroutines + LiveData or Flow
+//    @GET("players")
+//    suspend fun getAllNbaPlayers(): NbaPlayerData
 
 
 //    Call
-    @GET("players")
-    fun  getAllNbaPlayersUsingCall() : Call<NbaPlayerData>
+//    @GET("players")
+//    fun  getAllNbaPlayersUsingCall() : Call<NbaPlayerData>
 
 
     //    TODO change to Flow

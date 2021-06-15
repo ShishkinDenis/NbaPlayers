@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.db.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayer
 
 
 class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?) :
@@ -26,7 +26,7 @@ class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?) :
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.titleText.text = playersList?.get(position)?.getName()
+        holder.titleText.text = playersList?.get(position)?.firstName
     }
 
     //    TODO move to another file

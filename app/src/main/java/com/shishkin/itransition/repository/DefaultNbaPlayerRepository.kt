@@ -1,9 +1,10 @@
 package com.shishkin.itransition.repository
 
 import android.util.Log
-import com.shishkin.itransition.db.NbaPlayerData
-import com.shishkin.itransition.db.NbaPlayer
 import com.shishkin.itransition.network.NbaPlayersApi
+import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayerData
+import com.shishkin.itransition.network.entities.RestResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,41 +18,34 @@ import javax.inject.Inject
 class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
     private val nbaPlayersApi: NbaPlayersApi? =
         com.shishkin.itransition.network.NbaPlayersApiClient.getClient()
-            ?.create(NbaPlayersApi::class.java)
+            .create(NbaPlayersApi::class.java)
 
 
-    override fun getNbaPlayersData(): Flow<NbaPlayerData?> {
+
+
+
+    override fun getNbaPlayersData(): Flow<RestResponse<NbaPlayerData>?> {
         return flow {
             val flowData = nbaPlayersApi?.getAllNbaPlayers()
             emit(flowData)
         }.flowOn(Dispatchers.IO)
-
     }
+
+    //Flow
+//    override fun getNbaPlayersData(): Flow<NbaPlayerData?> {
+//        return flow {
+//            val flowData = nbaPlayersApi?.getAllNbaPlayers()
+//            emit(flowData)
+//        }.flowOn(Dispatchers.IO)
+//    }
+
 
     //     Coroutines + LiveData
 //    override suspend fun getData(): Data? = nbaPlayersApi?.getAllNbaPlayers(API_KEY)
 
 
-//    Call
-//    override fun getNbaPlayersData() {
-//    val call : Call<Data>? =  nbaPlayersApi?.getAllNbaPlayers(API_KEY)
-//    call?.enqueue(object : Callback<Data> {
-//        override fun onFailure(call: Call<Data>, t: Throwable) {
-//            Log.d("Retrofit", t.toString() + "exception")
-//        }
-//
-//        override fun onResponse(call: Call<Data>, response: Response<Data>) {
-//            val playersList: List<NbaPlayer>? = response.body()?.getData()
-//            Log.d("Retrofit", response.body().toString() + " success")
-//            Log.d("Retrofit", playersList?.get(1)?.getName() + " success")
-//        }
-//
-//    })
-//}
-
 //    TODO use Flow
     override fun getSpecificPlayer(playerId: Int) {
-//        val callSpecificPlayer: Call<NbaPlayer>? = nbaPlayersApi?.getSpecificPlayer(playerId, API_KEY)
         val callSpecificPlayer: Call<NbaPlayer>? = nbaPlayersApi?.getSpecificPlayer(playerId)
         callSpecificPlayer?.enqueue(object : Callback<NbaPlayer> {
             override fun onFailure(call: Call<NbaPlayer>, t: Throwable) {
@@ -59,7 +53,7 @@ class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
             }
 
             override fun onResponse(call: Call<NbaPlayer>, response: Response<NbaPlayer>) {
-                val playerName = response.body()?.getName()
+                val playerName = response.body()?.firstName
                 Log.d("Retrofit", "$playerName success")
             }
 
