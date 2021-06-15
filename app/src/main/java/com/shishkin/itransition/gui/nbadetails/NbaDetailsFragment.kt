@@ -28,8 +28,6 @@ class NbaDetailsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        MyApplication.appComponent.inject(this)
-
         nbaDetailsViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaDetailsViewModel::class.java)
 
         nbaDetailsViewModel.fetchSpecificNbaPlayer(7)

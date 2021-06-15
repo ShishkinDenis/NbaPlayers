@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 
 class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
-//    private val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
     private val nbaPlayersApi: NbaPlayersApi? =
         com.shishkin.itransition.network.NbaPlayersApiClient.getClient()
             ?.create(NbaPlayersApi::class.java)

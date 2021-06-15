@@ -28,7 +28,6 @@ class TestActivity : DaggerAppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         testRecycler.layoutManager = linearLayoutManager
 
-//        val API_KEY = "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
         val nbaPlayersApi: NbaPlayersApi? = NbaPlayersApiClient.getClient()?.create(NbaPlayersApi::class.java)
         val call : Call<NbaPlayerData>? =  nbaPlayersApi?.getAllNbaPlayersUsingCall()
 

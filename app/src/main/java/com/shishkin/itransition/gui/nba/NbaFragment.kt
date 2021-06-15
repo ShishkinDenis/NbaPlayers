@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
 import com.shishkin.itransition.db.NbaPlayer
 import com.shishkin.itransition.utils.MyViewModelFactory
@@ -49,10 +50,12 @@ class NbaFragment : DaggerFragment() {
 
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 nbaViewModel.uiState.collect {
-//                    Получаю в логе null. Почему?
-                    val list : List<NbaPlayer>? = nbaViewModel.nbaPlayerData.getNbaPlayersData()
-                    Log.d("Retrofit", list?.get(1)?.getName().toString())
 
+                    (it as NbaPlayersUiState.Success).let {
+                        val list : List<NbaPlayer>? =  it.nbaPlayers?.getNbaPlayersData()
+                        Log.d("Retrofit", it.nbaPlayers?.getNbaPlayersData()?.size.toString())
+                        Log.d("Retrofit", list?.get(1)?.getName().toString())
+                    }
 //                    uiState ->
 //                    when (uiState) {
 //                        is NbaPlayersUiState.Success ->
