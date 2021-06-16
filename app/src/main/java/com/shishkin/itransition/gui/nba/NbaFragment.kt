@@ -11,15 +11,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.gui.nba.lists.adapters.NbaPlayersAdapter
 import com.shishkin.itransition.utils.MyViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 
 @InternalCoroutinesApi
 class NbaFragment : DaggerFragment() {
@@ -27,9 +29,11 @@ class NbaFragment : DaggerFragment() {
     // TODO   view/data binding
     lateinit var button: Button
 
-        @Inject
-        lateinit var myViewModelFactory: MyViewModelFactory
-        lateinit var nbaViewModel: NbaViewModel
+    @Inject
+    lateinit var myViewModelFactory: MyViewModelFactory
+    lateinit var nbaViewModel: NbaViewModel
+
+    lateinit var testRecycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,8 @@ class NbaFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      nbaViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaViewModel::class.java)
+        nbaViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaViewModel::class.java)
+        initRecyclerView()
 
         button = view.findViewById(R.id.btnGoToNbaPlayerInfo)
         button.setOnClickListener {
@@ -49,13 +54,24 @@ class NbaFragment : DaggerFragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaViewModel.uiState.collect {
-                    uiState ->
+                nbaViewModel.uiState.collect { uiState ->
                     when (uiState) {
-                        is NbaPlayersUiState.Success ->{Log.d("Retrofit", uiState.nbaPlayers?.data?.nbaPlayersList?.get(1)?.firstName.toString()) }
-                        is NbaPlayersUiState.Error ->{}
-                        is NbaPlayersUiState.Loading ->{}
-                        is NbaPlayersUiState.Empty ->{}
+                        is NbaPlayersUiState.Success -> {
+                            Log.d("Retrofit", uiState.nbaPlayers?.data?.size.toString())
+                            Log.d(
+                                "Retrofit",
+                                uiState.nbaPlayers?.data?.get(1)?.first_name.toString()
+                            )
+                            val list = uiState.nbaPlayers?.data
+                            val nbaPlayersAdapter = NbaPlayersAdapter(list)
+                            testRecycler.adapter = nbaPlayersAdapter
+                        }
+                        is NbaPlayersUiState.Error -> {
+                        }
+                        is NbaPlayersUiState.Loading -> {
+                        }
+                        is NbaPlayersUiState.Empty -> {
+                        }
 
 //                        Flow
 //                    (it as NbaPlayersUiState.Success).let {
@@ -69,16 +85,13 @@ class NbaFragment : DaggerFragment() {
             }
         }
 
-//        TODO Delete
-        //    Coroutines + LiveData
-//        nbaViewModel.fetchData.observe(viewLifecycleOwner, Observer {
-//            val list : List<NbaPlayer>? = it?.getData()
-//            Log.d("Retrofit", list?.get(1)?.getName().toString())
-//        })
+    }
 
-
-//        Call
-//        nbaViewModel.fetchNbaPlayersData()
+    private fun initRecyclerView() {
+        testRecycler = view?.findViewById<RecyclerView>(R.id.nba_rv)!!
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        testRecycler.layoutManager = linearLayoutManager
 
     }
 }

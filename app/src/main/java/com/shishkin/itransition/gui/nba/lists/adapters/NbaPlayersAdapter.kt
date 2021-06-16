@@ -15,8 +15,8 @@ class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_main_article_adapter, parent, false)
-        return NbaPlayersAdapter.ViewHolder(view)
+            .inflate(R.layout.nba_players_adapter, parent, false)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -26,12 +26,17 @@ class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?) :
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.titleText.text = playersList?.get(position)?.firstName
+        val nbaPlayerName: String =
+            playersList?.get(position)?.first_name + " " + playersList?.get(position)?.last_name
+        holder.nbaPlayerFirstName.text = nbaPlayerName
+        holder.nbaTeamAbbreviation.text = playersList?.get(position)?.team?.abbreviation
     }
 
     //    TODO move to another file
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleText: TextView = itemView.findViewById(R.id.nba_player_adapter_tv_title)
-//            val descriptionText: TextView? = itemView.findViewById(R.id.article_adapter_tv_description)
+        val nbaPlayerFirstName: TextView =
+            itemView.findViewById(R.id.tv_nba_player_first_and_last_name)
+        val nbaTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_nba_team_abbreviation)
+
     }
 }

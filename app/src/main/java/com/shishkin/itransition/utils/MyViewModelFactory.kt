@@ -8,14 +8,15 @@ import com.shishkin.itransition.repository.NbaPlayerRepository
 import javax.inject.Inject
 
 
-class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository): ViewModelProvider.Factory {
+class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(NbaViewModel::class.java!!) -> {
+            modelClass.isAssignableFrom(NbaViewModel::class.java) -> {
                 NbaViewModel(this.nbaPlayerRepository) as T
             }
-            modelClass.isAssignableFrom(NbaDetailsViewModel::class.java!!) -> {
+            modelClass.isAssignableFrom(NbaDetailsViewModel::class.java) -> {
                 NbaDetailsViewModel(this.nbaPlayerRepository) as T
             }
             else -> {

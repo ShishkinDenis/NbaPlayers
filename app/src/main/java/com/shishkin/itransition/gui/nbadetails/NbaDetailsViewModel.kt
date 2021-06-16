@@ -7,7 +7,7 @@ import javax.inject.Inject
 class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
     ViewModel() {
 
-//    TODO use Flow
+    //    TODO use Flow
     fun fetchSpecificNbaPlayer(playerId: Int) {
         nbaPlayerRepository.getSpecificPlayer(playerId)
     }

@@ -5,7 +5,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import kotlinx.coroutines.InternalCoroutinesApi
 
-class MyApplication :  DaggerApplication() {
+class MyApplication : DaggerApplication() {
 
     @InternalCoroutinesApi
     override fun applicationInjector(): AndroidInjector<MyApplication> =

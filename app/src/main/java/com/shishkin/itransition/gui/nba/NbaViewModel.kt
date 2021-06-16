@@ -17,38 +17,17 @@ import javax.inject.Inject
 class NbaViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) : ViewModel() {
 
 
-    private val _uiState : MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(Empty)
+    private val _uiState: MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(Empty)
     val uiState: StateFlow<NbaPlayersUiState> = _uiState
 
     init {
         viewModelScope.launch {
-        _uiState.value = Loading
+            _uiState.value = Loading
             nbaPlayerRepository.getNbaPlayersData()
-                .catch { e-> _uiState.value = Error(e) }
+                .catch { e -> _uiState.value = Error(e) }
                 .collect { nbaPlayers ->
                     _uiState.value = Success(nbaPlayers)
                 }
         }
     }
-
-//flow
-//var nbaPlayerData: NbaPlayerData =
-//    NbaPlayerData()
-//    init {
-//        viewModelScope.launch {
-//            nbaPlayerRepository.getNbaPlayersData()
-//                .collect { nbaPlayers ->
-//                    _uiState.value = Success(nbaPlayers)
-//                }
-//        }
-//    }
-
-//        TODO Delete
-    //     Coroutines + LiveData
-//    val fetchData = liveData(Dispatchers.IO){
-//        val data =  nbaPlayerRepository.getData()
-//        emit(data)
-//    }
-
-
 }
