@@ -1,12 +1,18 @@
 package com.shishkin.itransition.network.entities
 
+import com.google.gson.annotations.SerializedName
+
 data class Meta(
-//    TODO Fix camel case
-    val total_pages: Int,
-    val current_page: Int,
-    val next_page: Int,
-    val per_page: Int,
-    val total_count: Int
+    @SerializedName("total_pages")
+    val totalPages: Int,
+    @SerializedName("current_page")
+    val currentPage: Int,
+    @SerializedName("next_page")
+    val nextPage: Int,
+    @SerializedName("per_page")
+    val perPage: Int,
+    @SerializedName("total_count")
+    val totalCount: Int
 )
 
 

@@ -1,12 +1,14 @@
 package com.shishkin.itransition.network.entities
 
+import com.google.gson.annotations.SerializedName
+
 data class NbaTeam(
-//    TODO fix camel case
     val id: Int,
     val abbreviation: String,
     val city: String,
     val conference: String,
     val division: String,
-    val full_name: String,
+    @SerializedName("full_name")
+    val fullName: String,
     val name: String
 )

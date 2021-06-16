@@ -1,16 +1,22 @@
 package com.shishkin.itransition.network.entities
 
+import com.google.gson.annotations.SerializedName
+
 
 data class NbaPlayer(
-//    TODO fix camel case
     val id: Int,
-    val first_name: String,
-    val height_feet: Int,
-    val height_inches: Int,
-    val last_name: String,
+    @SerializedName("first_name")
+    val firstName: String,
+    @SerializedName("height_feet")
+    val heightFeet: Int,
+    @SerializedName("height_inches")
+    val heightInches: Int,
+    @SerializedName("last_name")
+    val lastName: String,
     val position: String,
     val team: NbaTeam,
-    val weight_pounds: Int
+    @SerializedName("weight_pounds")
+    val weightPounds: Int
 )
 
 

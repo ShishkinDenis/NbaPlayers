@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -13,9 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shishkin.itransition.NbaPlayersUiState
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.adapters.NbaPlayersAdapter
+import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
 import com.shishkin.itransition.utils.MyViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -24,16 +24,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-class NbaFragment : DaggerFragment() {
-
-    // TODO   view/data binding
-    lateinit var button: Button
-
+class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
     @Inject
     lateinit var myViewModelFactory: MyViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
 
-    lateinit var testRecycler: RecyclerView
+    private lateinit var testRecycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,23 +43,14 @@ class NbaFragment : DaggerFragment() {
         nbaViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaViewModel::class.java)
         initRecyclerView()
 
-        button = view.findViewById(R.id.btnGoToNbaPlayerInfo)
-        button.setOnClickListener {
-            findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment)
-        }
-
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 nbaViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is NbaPlayersUiState.Success -> {
-                            Log.d("Retrofit", uiState.nbaPlayers?.data?.size.toString())
-                            Log.d(
-                                "Retrofit",
-                                uiState.nbaPlayers?.data?.get(1)?.first_name.toString()
-                            )
+//                            Log.d("Retrofit", uiState.nbaPlayers?.data?.size.toString())
                             val list = uiState.nbaPlayers?.data
-                            val nbaPlayersAdapter = NbaPlayersAdapter(list)
+                            val nbaPlayersAdapter = NbaPlayersAdapter(list,this@NbaFragment)
                             testRecycler.adapter = nbaPlayersAdapter
                         }
                         is NbaPlayersUiState.Error -> {
@@ -72,14 +59,6 @@ class NbaFragment : DaggerFragment() {
                         }
                         is NbaPlayersUiState.Empty -> {
                         }
-
-//                        Flow
-//                    (it as NbaPlayersUiState.Success).let {
-//                        val list : List<NbaPlayer>? =  it.nbaPlayers?.getNbaPlayersData()
-//                        Log.d("Retrofit", it.nbaPlayers?.getNbaPlayersData()?.size.toString())
-//                        Log.d("Retrofit", list?.get(1)?.getName().toString())
-//                    }
-
                     }
                 }
             }
@@ -88,10 +67,12 @@ class NbaFragment : DaggerFragment() {
     }
 
     private fun initRecyclerView() {
-        testRecycler = view?.findViewById<RecyclerView>(R.id.nba_rv)!!
-        val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        testRecycler = view?.findViewById(R.id.nba_rv)!!
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         testRecycler.layoutManager = linearLayoutManager
+    }
 
+    override fun onClickedNbaPlayer(nbaPlayerId: Int) {
+        findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundleOf("id" to nbaPlayerId))
     }
 }

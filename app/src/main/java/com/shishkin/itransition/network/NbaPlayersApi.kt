@@ -12,8 +12,7 @@ interface NbaPlayersApi {
     @GET("players")
     suspend fun getAllNbaPlayers(): RestResponse<List<NbaPlayer>>
 
-    //    Call
     @GET("players/{id}")
-    fun getSpecificPlayer(@Path("id") playerId: Int): Call<NbaPlayer>
+    suspend fun getSpecificPlayer(@Path("id") playerId: Int): NbaPlayer
 
 }

@@ -27,20 +27,19 @@ class MainActivity : DaggerAppCompatActivity() {
 //            data = NbaPlayerData(nbaPlayersList = listOf(nbaPlayer1, nbaPlayer2, nbaPlayer3)),
 //            meta = Meta(0,0,0,0,0)
 //        )
+                val testPlayer = RestResponse<NbaPlayer>(data = nbaPlayer1,meta = Meta(0,0,0,0,0)
+        )
         val test2 = RestResponse<List<NbaPlayer>>(
             data = listOf(nbaPlayer1, nbaPlayer2, nbaPlayer3),
             meta = Meta(0, 0, 0, 0, 0)
         )
         val gson = Gson()
-//        val json = gson.toJson(nbaPlayer1)
-//        Log.d("GSON",json)
-
 //        val json = gson.toJson(test)
 //        Log.d("GSON",json)
 
-        val json = gson.toJson(test2)
+//        val json = gson.toJson(test2)
+        val json = gson.toJson(testPlayer)
         Log.d("GSON", json)
-
     }
 }
 

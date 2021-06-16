@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.nbadetails.NbaDetailsFragment">
+    tools:context=".gui.nbadetails.NbaDetailsFragment"
+    android:orientation="vertical" >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tv_specific_nba_player_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="NBA player info" />
+        android:layout_height="wrap_content"
+        android:text="Name" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_specific_nba_player_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Team" />
+
+    <TextView
+        android:id="@+id/tv_specific_nba_player_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Position" />
+
+    <TextView
+        android:id="@+id/tv_specific_nba_player_height_feet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Height feet" />
+
+    <TextView
+        android:id="@+id/tv_specific_nba_player_height_Inches"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Height inches" />
+
+    <TextView
+        android:id="@+id/tv_specific_nba_player_weight_pounds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Weight pounds" />
+</LinearLayout>

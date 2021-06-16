@@ -2,8 +2,7 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.NbaPlayersUiState
-import com.shishkin.itransition.NbaPlayersUiState.*
+import com.shishkin.itransition.gui.nba.NbaPlayersUiState.*
 
 import com.shishkin.itransition.repository.NbaPlayerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
