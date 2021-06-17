@@ -13,9 +13,10 @@ import javax.inject.Inject
 
 class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
     ViewModel() {
+//    class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository,var nbaPlayerId: Int) :
+//        ViewModel() {
 
-
-    private val _uiState: MutableStateFlow<NbaPlayerUiState> = MutableStateFlow(NbaPlayerUiState.Empty)
+        private val _uiState: MutableStateFlow<NbaPlayerUiState> = MutableStateFlow(NbaPlayerUiState.Empty)
     val uiState: StateFlow<NbaPlayerUiState> = _uiState
 
     init {
@@ -23,6 +24,7 @@ class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayer
             _uiState.value = NbaPlayerUiState.Loading
 //            TODO id
             nbaPlayerRepository.getSpecificPlayer(1)
+//            nbaPlayerRepository.getSpecificPlayer(nbaPlayerId)
                 .catch { e -> _uiState.value = NbaPlayerUiState.Error(e) }
                 .collect { nbaPlayer ->
                     _uiState.value = NbaPlayerUiState.Success(nbaPlayer)

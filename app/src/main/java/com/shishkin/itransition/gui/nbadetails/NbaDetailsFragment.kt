@@ -24,7 +24,10 @@ class NbaDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var myViewModelFactory: MyViewModelFactory
+var nbaPlayerId = arguments?.getInt("id")
+//    lateinit var myViewModelFactory: MyViewModelFactory = MyViewModelFactory()
     lateinit var nbaDetailsViewModel: NbaDetailsViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +41,7 @@ class NbaDetailsFragment : DaggerFragment() {
         nbaDetailsViewModel =
             ViewModelProviders.of(this, myViewModelFactory).get(NbaDetailsViewModel::class.java)
 
-        Log.d("Retrofit", "Id : " + arguments?.getInt("id").toString())
+        Log.d("Retrofit", "Id : " + nbaPlayerId.toString())
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

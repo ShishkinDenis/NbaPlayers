@@ -29,6 +29,7 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
     lateinit var myViewModelFactory: MyViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
 
+
     private lateinit var testRecycler: RecyclerView
 
     override fun onCreateView(
@@ -52,6 +53,7 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
                             val list = uiState.nbaPlayers?.data
                             val nbaPlayersAdapter = NbaPlayersAdapter(list,this@NbaFragment)
                             testRecycler.adapter = nbaPlayersAdapter
+                            nbaPlayersAdapter.submitList(list)
                         }
                         is NbaPlayersUiState.Error -> {
                         }

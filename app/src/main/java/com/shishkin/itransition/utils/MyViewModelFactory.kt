@@ -8,8 +8,11 @@ import com.shishkin.itransition.repository.NbaPlayerRepository
 import javax.inject.Inject
 
 
-class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
-    ViewModelProvider.Factory {
+class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) : ViewModelProvider.Factory {
+//class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository, var nbaPlayerId: Int?) : ViewModelProvider.Factory {
+
+
+//    private  var nbaPlayerId: Int = 0
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
@@ -17,6 +20,7 @@ class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerR
                 NbaViewModel(this.nbaPlayerRepository) as T
             }
             modelClass.isAssignableFrom(NbaDetailsViewModel::class.java) -> {
+//                NbaDetailsViewModel(this.nbaPlayerRepository, this.nbaPlayerId!!) as T
                 NbaDetailsViewModel(this.nbaPlayerRepository) as T
             }
             else -> {
@@ -25,3 +29,22 @@ class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerR
         }
     }
 }
+
+
+//class MyViewModelFactory @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
+//    ViewModelProvider.Factory {
+//
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        return when {
+//            modelClass.isAssignableFrom(NbaViewModel::class.java) -> {
+//                NbaViewModel(this.nbaPlayerRepository) as T
+//            }
+//            modelClass.isAssignableFrom(NbaDetailsViewModel::class.java) -> {
+//                NbaDetailsViewModel(this.nbaPlayerRepository) as T
+//            }
+//            else -> {
+//                throw IllegalArgumentException("ViewModel Not Found")
+//            }
+//        }
+//    }
+//}

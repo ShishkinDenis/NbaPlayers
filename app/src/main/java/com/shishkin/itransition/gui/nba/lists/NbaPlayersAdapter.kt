@@ -5,27 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.network.entities.NbaPlayer
 
 
 class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?,private val listener: NbaPlayerItemListener) :
-    RecyclerView.Adapter<NbaPlayerViewHolder>() {
-
+    ListAdapter<NbaPlayer, NbaPlayerViewHolder>(NbaPlayerItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NbaPlayerViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.nba_players_adapter, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.nba_players_adapter, parent, false)
         return NbaPlayerViewHolder(view,listener )
     }
 
-    override fun getItemCount(): Int {
-        return playersList?.size!!
-    }
-
     override fun onBindViewHolder(holder: NbaPlayerViewHolder, position: Int) {
-        //        TODO string resources
+//                TODO string resources and move to separate method
         val nbaPlayerName: String = playersList?.get(position)?.firstName + " " + playersList?.get(position)?.lastName
         val nbaTeamAbbreviation : String? = "Team: " + playersList?.get(position)?.team?.abbreviation
         val nbaTeamCity : String? = "City: " + playersList?.get(position)?.team?.city
@@ -34,6 +29,7 @@ class NbaPlayersAdapter(private val playersList: List<NbaPlayer>?,private val li
         holder.nbaTeamAbbreviation.text = nbaTeamAbbreviation
         holder.nbaTeamCity.text = nbaTeamCity
         playersList?.get(position)?.let { holder.getItem(it) }
+
     }
 
     interface NbaPlayerItemListener {
