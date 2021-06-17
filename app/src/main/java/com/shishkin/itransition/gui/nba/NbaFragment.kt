@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
-import com.shishkin.itransition.utils.MyViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -26,7 +23,7 @@ import javax.inject.Inject
 @InternalCoroutinesApi
 class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
     @Inject
-    lateinit var myViewModelFactory: MyViewModelFactory
+    lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
 
 
@@ -41,7 +38,7 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        nbaViewModel = ViewModelProviders.of(this, myViewModelFactory).get(NbaViewModel::class.java)
+        nbaViewModel = ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
         initRecyclerView()
 
         lifecycleScope.launch {

@@ -9,13 +9,10 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @Module
 class NbaPlayerIdModule {
-    val nbaDetailsFragment : NbaDetailsFragment = NbaDetailsFragment()
-
     @InternalCoroutinesApi
     @Provides
     @NbaPlayerId
-//    fun provideNbaPlayerId(nbaDetailsFragment: NbaDetailsFragment) : Int? {
-    fun provideNbaPlayerId() : Int? {
+    fun provideNbaPlayerId(nbaDetailsFragment: NbaDetailsFragment) : Int? {
       return nbaDetailsFragment.arguments?.getInt("id")
     }
 }

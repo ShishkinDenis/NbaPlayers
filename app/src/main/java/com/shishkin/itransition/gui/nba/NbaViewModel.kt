@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 class NbaViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) : ViewModel() {
 
-
     private val _uiState: MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(Empty)
     val uiState: StateFlow<NbaPlayersUiState> = _uiState
 

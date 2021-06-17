@@ -12,10 +12,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository) :
-//    ViewModel() {
-    class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository, @NbaPlayerId var nbaPlayerId: Int?) : ViewModel() {
 
+    class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository, @NbaPlayerId var nbaPlayerId: Int?) : ViewModel() {
 
         private val _uiState: MutableStateFlow<NbaPlayerUiState> = MutableStateFlow(NbaPlayerUiState.Empty)
     val uiState: StateFlow<NbaPlayerUiState> = _uiState
@@ -23,8 +21,6 @@ import javax.inject.Inject
     init {
         viewModelScope.launch {
             _uiState.value = NbaPlayerUiState.Loading
-//            TODO id
-//            nbaPlayerRepository.getSpecificPlayer(1)
             nbaPlayerRepository.getSpecificPlayer(nbaPlayerId)
                 .catch { e -> _uiState.value = NbaPlayerUiState.Error(e) }
                 .collect { nbaPlayer ->
