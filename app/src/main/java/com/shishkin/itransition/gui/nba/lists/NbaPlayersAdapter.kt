@@ -54,7 +54,10 @@ class NbaPlayerViewHolder(itemView: View, private val listener: NbaPlayersAdapte
     }
 
     override fun onClick(v: View?) {
-       Log.d("Retrofit", nbaPlayer.id.toString())
+       Log.d("Retrofit","ID from adapter " + nbaPlayer.id.toString())
         listener.onClickedNbaPlayer(nbaPlayer.id)
     }
 }
+
+
+

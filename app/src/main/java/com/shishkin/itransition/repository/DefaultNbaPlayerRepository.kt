@@ -22,7 +22,7 @@ class DefaultNbaPlayerRepository @Inject constructor() : NbaPlayerRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getSpecificPlayer(playerId: Int): Flow<NbaPlayer?> {
+    override fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?> {
         return flow {
             val flowData = nbaPlayersApi?.getSpecificPlayer(playerId)
             emit(flowData)

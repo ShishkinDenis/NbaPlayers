@@ -9,6 +9,6 @@ interface NbaPlayerRepository {
 
     fun getNbaPlayersData(): Flow<RestResponse<List<NbaPlayer>>?>
 
-    fun getSpecificPlayer(playerId: Int): Flow<NbaPlayer?>
+    fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?>
 
 }

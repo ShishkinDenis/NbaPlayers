@@ -10,7 +10,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
     modules = [
         AndroidSupportInjectionModule::class,
         ActivitiesModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        NbaPlayerIdModule::class
+
     ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {

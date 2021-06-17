@@ -49,11 +49,12 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
                 nbaViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is NbaPlayersUiState.Success -> {
-//                            Log.d("Retrofit", uiState.nbaPlayers?.data?.size.toString())
+                            Log.d("Retrofit", "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString())
                             val list = uiState.nbaPlayers?.data
                             val nbaPlayersAdapter = NbaPlayersAdapter(list,this@NbaFragment)
-                            testRecycler.adapter = nbaPlayersAdapter
                             nbaPlayersAdapter.submitList(list)
+                            testRecycler.adapter = nbaPlayersAdapter
+
                         }
                         is NbaPlayersUiState.Error -> {
                         }
@@ -75,6 +76,8 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
-        findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundleOf("id" to nbaPlayerId))
+        val bundle = Bundle()
+        bundle.putInt("id",nbaPlayerId)
+        findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
 }
