@@ -11,9 +11,7 @@ sealed class NbaPlayersUiState {
     data class Success(var nbaPlayers: RestResponse<List<NbaPlayer>>?) : NbaPlayersUiState()
     data class Error(var exception: Throwable) : NbaPlayersUiState()
     object Empty : NbaPlayersUiState()
-
 }
-
 
 sealed class NbaPlayerUiState {
     object Loading : NbaPlayerUiState()

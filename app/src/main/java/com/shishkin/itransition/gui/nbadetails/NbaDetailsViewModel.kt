@@ -13,9 +13,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-    class NbaDetailsViewModel @Inject constructor(var nbaPlayerRepository: NbaPlayerRepository, @NbaPlayerId var nbaPlayerId: Int?) : ViewModel() {
+class NbaDetailsViewModel @Inject constructor(
+    var nbaPlayerRepository: NbaPlayerRepository,
+    @NbaPlayerId var nbaPlayerId: Int?
+) : ViewModel() {
 
-        private val _uiState: MutableStateFlow<NbaPlayerUiState> = MutableStateFlow(NbaPlayerUiState.Empty)
+    private val _uiState: MutableStateFlow<NbaPlayerUiState> =
+        MutableStateFlow(NbaPlayerUiState.Empty)
     val uiState: StateFlow<NbaPlayerUiState> = _uiState
 
     init {

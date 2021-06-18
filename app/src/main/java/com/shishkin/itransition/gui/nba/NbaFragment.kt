@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
+class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
@@ -38,7 +38,8 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        nbaViewModel = ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
+        nbaViewModel =
+            ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
         initRecyclerView()
 
         lifecycleScope.launch {
@@ -46,18 +47,24 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
                 nbaViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is NbaPlayersUiState.Success -> {
-                            Log.d("Retrofit", "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString())
+                            Log.d(
+                                "Retrofit",
+                                "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString()
+                            )
                             val list = uiState.nbaPlayers?.data
-                            val nbaPlayersAdapter = NbaPlayersAdapter(list,this@NbaFragment)
+                            val nbaPlayersAdapter = NbaPlayersAdapter(list, this@NbaFragment)
                             nbaPlayersAdapter.submitList(list)
                             testRecycler.adapter = nbaPlayersAdapter
 
                         }
                         is NbaPlayersUiState.Error -> {
+                            Log.d("Retrofit", "NbaFragment: Error")
                         }
                         is NbaPlayersUiState.Loading -> {
+                            Log.d("Retrofit", "NbaFragment: Loading")
                         }
                         is NbaPlayersUiState.Empty -> {
+                            Log.d("Retrofit", "NbaFragment: Empty")
                         }
                     }
                 }
@@ -74,7 +81,7 @@ class NbaFragment : DaggerFragment(),NbaPlayersAdapter.NbaPlayerItemListener {
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
         val bundle = Bundle()
-        bundle.putInt("id",nbaPlayerId)
+        bundle.putInt("id", nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
 }
