@@ -25,35 +25,34 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="Team full name"
+            android:text="Team "
             android:textColor="#F44336"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_nba_team_abb"
+            android:id="@+id/tv_nba_team_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Team Abb"
+            android:text="City"
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="28dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 <!--TODO naming-->
         <TextView
-            android:id="@+id/tv_team_city"
+            android:id="@+id/tv_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
-            android:text="Team city"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_nba_team_abb"
-            app:layout_constraintStart_toEndOf="@+id/tv_nba_team_abb"
-            app:layout_constraintTop_toTopOf="@+id/tv_nba_team_abb"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nba_team_city"
+            app:layout_constraintStart_toEndOf="@+id/tv_nba_team_city"
+            app:layout_constraintTop_toTopOf="@+id/tv_nba_team_city"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@ package com.shishkin.itransition.gui.nba
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.RestResponse
 
-//TODO объединить. Generics?
+//TODO To merge to one class? Generics?
 
 sealed class NbaPlayersUiState {
     object Loading : NbaPlayersUiState()

@@ -9,20 +9,26 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaTeam
 
 
 class NbaPlayersAdapter(
-    private val playersList: List<NbaPlayer>?,
+    private val playersList: List<ListItem>?,
     private val listener: NbaPlayerItemListener
 ) :
-    ListAdapter<NbaPlayer, RecyclerView.ViewHolder>(NbaPlayerItemDiffCallback()) {
+    ListAdapter<ListItem, RecyclerView.ViewHolder>(NbaPlayerItemDiffCallback()) {
+
+    companion object {
+        const val VIEW_TYPE_NBA_PLAYER = 1
+        const val VIEW_TYPE_NBA_TEAM = 2
+    }
 
     override fun getItemViewType(position: Int): Int {
-        return position % 2
+        return playersList?.get(position)?.viewType!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == 0) {
+        return if (viewType == VIEW_TYPE_NBA_PLAYER) {
             val view: View =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_player_adapter, parent, false)
@@ -36,29 +42,22 @@ class NbaPlayersAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //                TODO string resources and move to separate method
-        when (holder) {
-            is NbaPlayerViewHolder -> {
-                val nbaPlayerName: String =
-                    playersList?.get(position)?.firstName + " " + playersList?.get(position)?.lastName
-                val nbaTeamAbbreviation: String? =
-                    "Team: " + playersList?.get(position)?.team?.abbreviation
-                val nbaTeamCity: String? = "City: " + playersList?.get(position)?.team?.city
-
-                holder.nbaPlayerName.text = nbaPlayerName
-                holder.nbaTeamAbbreviation.text = nbaTeamAbbreviation
-                holder.nbaTeamCity.text = nbaTeamCity
-                playersList?.get(position)?.let { holder.getItem(it) }
-            }
-            is TeamViewHolder -> {
-                val teamFullName: String = playersList?.get(position)?.team?.fullName.toString()
-                val nbaTeamAbbreviation: String? =
-                    "Team: " + playersList?.get(position)?.team?.abbreviation
-                val nbaTeamCity: String? = "City: " + playersList?.get(position)?.team?.city
-
-                holder.teamFullName.text = teamFullName
-                holder.teamAbbreviation.text = nbaTeamAbbreviation
-                holder.nbaTeamCity.text = nbaTeamCity
-            }
+        if (playersList?.get(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
+            val nbaPlayer: NbaPlayer = (playersList[position].item as NbaPlayer)
+            val nbaPlayerName: String =
+                "NBA player: " + nbaPlayer.firstName + " " + nbaPlayer.lastName
+            val nbaPlayerPosition: String = "Position: " + nbaPlayer.position
+            (holder as NbaPlayerViewHolder).nbaPlayerName.text = nbaPlayerName
+            holder.nbaPlayerPosition.text = nbaPlayerPosition
+            holder.getNbaItem(nbaPlayer)
+        }
+//TODO implement separator between items (nba player + team)
+        else {
+            val nbaTeam: NbaTeam = (playersList?.get(position)?.item as NbaTeam)
+            val teamFullName: String = "Team: " + nbaTeam.fullName + ", " + nbaTeam.abbreviation
+            val nbaTeamCity: String? = "City: " + nbaTeam.city
+            (holder as TeamViewHolder).teamFullName.text = teamFullName
+            holder.nbaTeamCity.text = nbaTeamCity
         }
     }
 
@@ -67,7 +66,7 @@ class NbaPlayersAdapter(
     }
 }
 
-//TODO move to separate class
+//TODO move to separate file
 class NbaPlayerViewHolder(
     itemView: View,
     private val listener: NbaPlayersAdapter.NbaPlayerItemListener
@@ -76,10 +75,9 @@ class NbaPlayerViewHolder(
 
     // TODO   view/data binding
     val nbaPlayerName: TextView = itemView.findViewById(R.id.tv_nba_player_first_and_last_name)
-    val nbaTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_nba_team_abbreviation)
-    val nbaTeamCity: TextView = itemView.findViewById(R.id.tv_position)
+    val nbaPlayerPosition: TextView = itemView.findViewById(R.id.tv_position)
 
-    fun getItem(item: NbaPlayer) {
+    fun getNbaItem(item: NbaPlayer) {
         this.nbaPlayer = item
     }
 
@@ -100,8 +98,7 @@ class TeamViewHolder(
 ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
     // TODO   view/data binding
     val teamFullName: TextView = itemView.findViewById(R.id.tv_team_full_name)
-    val teamAbbreviation: TextView = itemView.findViewById(R.id.tv_nba_team_abb)
-    val nbaTeamCity: TextView = itemView.findViewById(R.id.tv_team_city)
+    val nbaTeamCity: TextView = itemView.findViewById(R.id.tv_nba_team_city)
     override fun onClick(v: View?) {
         TODO("Not yet implemented")
     }

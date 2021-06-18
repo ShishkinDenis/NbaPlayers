@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
+import com.shishkin.itransition.network.entities.NbaPlayer
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -22,10 +24,15 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
+
+    companion object {
+        const val VIEW_TYPE_NBA_PLAYER = 1
+        const val VIEW_TYPE_NBA_TEAM = 2
+    }
+
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
-
 
     private lateinit var testRecycler: RecyclerView
 
@@ -51,11 +58,11 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
                                 "Retrofit",
                                 "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString()
                             )
-                            val list = uiState.nbaPlayers?.data
+                            val listOfNbaPlayers = uiState.nbaPlayers?.data
+                            val list = listOfNbaPlayers?.let { convertList(it) }
                             val nbaPlayersAdapter = NbaPlayersAdapter(list, this@NbaFragment)
                             nbaPlayersAdapter.submitList(list)
                             testRecycler.adapter = nbaPlayersAdapter
-
                         }
                         is NbaPlayersUiState.Error -> {
                             Log.d("Retrofit", "NbaFragment: Error")
@@ -84,4 +91,17 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         bundle.putInt("id", nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
+
+    private fun convertList(listOfNbaPlayers: List<NbaPlayer>): List<ListItem> {
+        val listOfListItem = ArrayList<ListItem>()
+        for (item in listOfNbaPlayers) {
+            val nbaPlayerListItem = ListItem(item, VIEW_TYPE_NBA_PLAYER)
+            val nbaTeamListItem = ListItem(item.team, VIEW_TYPE_NBA_TEAM)
+            listOfListItem.add(nbaPlayerListItem)
+            listOfListItem.add(nbaTeamListItem)
+        }
+        return listOfListItem
+    }
+
+
 }

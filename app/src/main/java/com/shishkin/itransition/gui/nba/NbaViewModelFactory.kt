@@ -2,7 +2,6 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.shishkin.itransition.R
 import com.shishkin.itransition.repository.NbaPlayerRepository
 import javax.inject.Inject
 

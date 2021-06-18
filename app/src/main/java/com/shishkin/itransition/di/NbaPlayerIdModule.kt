@@ -1,6 +1,5 @@
 package com.shishkin.itransition.di
 
-import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragment
 import dagger.Module
 import dagger.Provides

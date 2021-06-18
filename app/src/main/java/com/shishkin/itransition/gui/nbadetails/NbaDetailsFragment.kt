@@ -54,6 +54,8 @@ class NbaDetailsFragment : DaggerFragment() {
                                 "Team: " + uiState.nbaPlayer?.team?.abbreviation
                             binding.tvSpecificNbaPlayerPosition.text =
                                 "Position: " + uiState.nbaPlayer?.position
+
+//                            TODO Why three following textView are null?
                             binding.tvSpecificNbaPlayerHeightFeet.text =
                                 "Height feet: " + uiState.nbaPlayer?.heightFeet.toString()
                             binding.tvSpecificNbaPlayerHeightInches.text =
