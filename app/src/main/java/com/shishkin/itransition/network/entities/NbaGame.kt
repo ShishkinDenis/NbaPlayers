@@ -1,18 +1,24 @@
 package com.shishkin.itransition.network.entities
 
-//TODO naming-camel case
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import java.util.*
+
+@Parcelize
 data class NbaGame(
     val id: Int,
-    val date: String,
-    val home_team: NbaTeam,
-    val home_team_score: Int,
+    val date: Date,
+    @SerializedName("home_team") val homeTeam: NbaTeam,
+    @SerializedName("home_team_score") val homeTeamScore: Int,
     val period: Int,
     val postseason: Boolean,
     val season: Int,
     val status: String,
     val time: String,
-    val visitor_team: NbaTeam,
-    val visitor_team_score: Int
-)
+    @SerializedName("visitor_team") val visitorTeam: NbaTeam,
+    @SerializedName("visitor_team_score") val visitorTeamScore: Int
+) : Parcelable
+
 
 

@@ -11,7 +11,7 @@ import com.shishkin.itransition.R
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.NbaTeam
 
-
+//TODO implement header
 class NbaPlayersAdapter(
     private val playersList: List<ListItem>?,
     private val listener: NbaPlayerItemListener

@@ -60,7 +60,8 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
                             )
                             val listOfNbaPlayers = uiState.nbaPlayers?.data
                             val convertedList = listOfNbaPlayers?.let { convertList(it) }
-                            val nbaPlayersAdapter = NbaPlayersAdapter(convertedList, this@NbaFragment)
+                            val nbaPlayersAdapter =
+                                NbaPlayersAdapter(convertedList, this@NbaFragment)
                             nbaPlayersAdapter.submitList(convertedList)
                             nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
                         }

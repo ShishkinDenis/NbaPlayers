@@ -11,8 +11,14 @@ import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.gui.nba.lists.NbaPlayerItemDiffCallback
 import com.shishkin.itransition.network.entities.NbaGame
+import java.text.SimpleDateFormat
+import java.util.*
 
-class NbaGamesAdapter(private val gamesList: List<ListItem>?, private val listener: NbaGameItemListener):
+//TODO implement header
+class NbaGamesAdapter(
+    private val gamesList: List<ListItem>?,
+    private val listener: NbaGameItemListener
+) :
     ListAdapter<ListItem, RecyclerView.ViewHolder>(NbaPlayerItemDiffCallback()) {
 
     companion object {
@@ -34,13 +40,19 @@ class NbaGamesAdapter(private val gamesList: List<ListItem>?, private val listen
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val nbaGame: NbaGame = gamesList?.get(position)?.item as NbaGame
 
-        //TODO with
-        (holder as NbaGameViewHolder).season.text ="Season: " + nbaGame.season.toString()
-        holder.gameStatus.text ="Status: " +  nbaGame.status
-//        TODO to format date
-        holder.gameDate.text ="Date: " + nbaGame.date
-        holder.homeTeamScore.text ="Home team score: " + nbaGame.home_team_score.toString()
-        holder.getNbaItem(nbaGame)
+        with(holder as NbaGameViewHolder) {
+            season.text = "Season: " + nbaGame.season.toString()
+            gameStatus.text = "Status: " + nbaGame.status
+            gameDate.text = "Date: " + convertDate(nbaGame.date)
+            homeTeamScore.text = "Home team score: " + nbaGame.homeTeamScore.toString()
+            getNbaItem(nbaGame)
+        }
+    }
+
+    private fun convertDate(date: Date): String? {
+        val DATE_PATTERN = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(DATE_PATTERN)
+        return sdf.format(date)
     }
 
 }
@@ -50,7 +62,8 @@ interface NbaGameItemListener {
 }
 
 //TODO move to separate file
-class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListener) :
+    RecyclerView.ViewHolder(itemView), View.OnClickListener {
     private lateinit var nbaGame: NbaGame
 
     // TODO   view/data binding

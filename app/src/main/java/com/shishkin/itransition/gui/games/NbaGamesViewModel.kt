@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NbaGamesViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewModel() {
-    private val _uiState: MutableStateFlow<NbaGamesUiState> = MutableStateFlow(NbaGamesUiState.Empty)
+    private val _uiState: MutableStateFlow<NbaGamesUiState> =
+        MutableStateFlow(NbaGamesUiState.Empty)
     val uiState: StateFlow<NbaGamesUiState> = _uiState
 
     init {

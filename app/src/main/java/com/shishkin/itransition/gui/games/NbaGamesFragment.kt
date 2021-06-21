@@ -14,25 +14,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nba.NbaGamesUiState
-import com.shishkin.itransition.gui.nba.NbaPlayersUiState
-import com.shishkin.itransition.gui.nba.NbaViewModel
 import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
 import com.shishkin.itransition.network.entities.NbaGame
-import com.shishkin.itransition.network.entities.NbaTeam
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class NbaGamesFragment : DaggerFragment(),NbaGameItemListener {
+class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
 
     @Inject
     lateinit var nbaGamesViewModelFactory: NbaGamesViewModelFactory
     lateinit var nbaGamesViewModel: NbaGamesViewModel
 
     private lateinit var nbaGamesRecyclerView: RecyclerView
+
     companion object {
         const val VIEW_TYPE_NBA_GAME = 1
         const val VIEW_TYPE_NBA_TEAM = 2
@@ -47,17 +44,22 @@ class NbaGamesFragment : DaggerFragment(),NbaGameItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        nbaGamesViewModel = ViewModelProviders.of(this, nbaGamesViewModelFactory).get(NbaGamesViewModel::class.java)
+        nbaGamesViewModel =
+            ViewModelProviders.of(this, nbaGamesViewModelFactory).get(NbaGamesViewModel::class.java)
         initNbaGamesRecyclerView()
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 nbaGamesViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is NbaGamesUiState.Success -> {
-                            Log.d("Retrofit", "NbaGamesFragment: size " + uiState.nbaGames?.data?.size.toString())
+                            Log.d(
+                                "Retrofit",
+                                "NbaGamesFragment: size " + uiState.nbaGames?.data?.size.toString()
+                            )
                             val listOfNbaGames = uiState.nbaGames?.data
                             val convertedList = convertList(listOfNbaGames)
-                            val nbaGamesAdapter = NbaGamesAdapter(convertedList, this@NbaGamesFragment)
+                            val nbaGamesAdapter =
+                                NbaGamesAdapter(convertedList, this@NbaGamesFragment)
                             nbaGamesAdapter.submitList(convertedList)
                             nbaGamesRecyclerView.adapter = nbaGamesAdapter
                         }
@@ -82,9 +84,10 @@ class NbaGamesFragment : DaggerFragment(),NbaGameItemListener {
         nbaGamesRecyclerView.layoutManager = linearLayoutManager
     }
 
-    override fun onClickedNbaGame(nbaGameId: NbaGame) {
+    override fun onClickedNbaGame(nbaGame: NbaGame) {
         val bundle = Bundle()
-        findNavController().navigate(R.id.action_gamesFragment_to_gamesDetailsFragment)
+        bundle.putParcelable("nbaGame", nbaGame)
+        findNavController().navigate(R.id.action_gamesFragment_to_gamesDetailsFragment, bundle)
     }
 
     private fun convertList(listOfNbaGames: List<NbaGame>?): List<ListItem> {

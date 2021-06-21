@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:layout_margin="5dp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/nba_game_status_adapter_ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_nba_player_last_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
+
+        <TextView
+            android:id="@+id/tv_home_team_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City"
+            app:layout_constraintBottom_toTopOf="@+id/tv_home_team_abbreviation"
+            app:layout_constraintEnd_toEndOf="@+id/tv_home_team_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_home_team_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_team_name" />
+
+        <TextView
+            android:id="@+id/tv_home_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:text="Home team"
+            app:layout_constraintBottom_toTopOf="@+id/tv_home_team_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_home_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            app:layout_constraintBottom_toTopOf="@+id/tv_home_team_city"
+            app:layout_constraintEnd_toEndOf="@+id/tv_home_team"
+            app:layout_constraintStart_toStartOf="@+id/tv_home_team"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_team" />
+
+        <TextView
+            android:id="@+id/tv_home_team_abbreviation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abbreviation"
+            app:layout_constraintBottom_toTopOf="@+id/tv_home_team_full_name"
+            app:layout_constraintEnd_toEndOf="@+id/tv_home_team_city"
+            app:layout_constraintStart_toStartOf="@+id/tv_home_team_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_team_city" />
+
+        <TextView
+            android:id="@+id/tv_home_team_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:text="Full name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_home_team_abbreviation"
+            app:layout_constraintStart_toStartOf="@+id/tv_home_team_abbreviation"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_team_abbreviation" />
+
+        <TextView
+            android:id="@+id/tv_visitor_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            app:layout_constraintBottom_toTopOf="@+id/tv_visitor_city"
+            app:layout_constraintEnd_toEndOf="@+id/tv_visitor_team"
+            app:layout_constraintStart_toStartOf="@+id/tv_visitor_team"
+            app:layout_constraintTop_toBottomOf="@+id/tv_visitor_team" />
+
+        <TextView
+            android:id="@+id/tv_visitor_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City"
+            app:layout_constraintBottom_toTopOf="@+id/tv_visitor_team_abbreviation"
+            app:layout_constraintEnd_toEndOf="@+id/tv_visitor_team_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_visitor_team_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_visitor_team_name" />
+
+        <TextView
+            android:id="@+id/tv_visitor_team_abbreviation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abbreviation"
+            app:layout_constraintBottom_toTopOf="@+id/tv_visitor_team_full_name"
+            app:layout_constraintEnd_toEndOf="@+id/tv_visitor_city"
+            app:layout_constraintStart_toStartOf="@+id/tv_visitor_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_visitor_city" />
+
+        <TextView
+            android:id="@+id/tv_visitor_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="60dp"
+            android:text="Visitor team"
+            app:layout_constraintBottom_toTopOf="@+id/tv_visitor_team_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_visitor_team_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_visitor_team_abbreviation"
+            app:layout_constraintStart_toStartOf="@+id/tv_visitor_team_abbreviation"
+            app:layout_constraintTop_toBottomOf="@+id/tv_visitor_team_abbreviation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
