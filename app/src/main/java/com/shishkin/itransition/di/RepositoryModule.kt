@@ -1,17 +1,17 @@
 package com.shishkin.itransition.di
 
-import com.shishkin.itransition.repository.DefaultNbaPlayerRepository
-import com.shishkin.itransition.repository.NbaPlayerRepository
+import com.shishkin.itransition.repository.DefaultNbaRepository
+import com.shishkin.itransition.repository.NbaRepository
 import dagger.Module
 import dagger.Provides
 
 @Module
 class RepositoryModule {
 
-    var nbaPlayerRepository: NbaPlayerRepository = DefaultNbaPlayerRepository()
+    var nbaRepository: NbaRepository = DefaultNbaRepository()
 
     @Provides
-    fun provideLocationRepository(): NbaPlayerRepository {
-        return nbaPlayerRepository
+    fun provideLocationRepository(): NbaRepository {
+        return nbaRepository
     }
 }

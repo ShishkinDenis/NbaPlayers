@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.di.NbaPlayerId
 import com.shishkin.itransition.gui.nba.NbaPlayerUiState
-import com.shishkin.itransition.repository.NbaPlayerRepository
+import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 
 class NbaDetailsViewModel @Inject constructor(
-    var nbaPlayerRepository: NbaPlayerRepository,
+    var nbaRepository: NbaRepository,
     @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 
@@ -25,7 +25,7 @@ class NbaDetailsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _uiState.value = NbaPlayerUiState.Loading
-            nbaPlayerRepository.getSpecificPlayer(nbaPlayerId)
+            nbaRepository.getSpecificPlayer(nbaPlayerId)
                 .catch { e -> _uiState.value = NbaPlayerUiState.Error(e) }
                 .collect { nbaPlayer ->
                     _uiState.value = NbaPlayerUiState.Success(nbaPlayer)

@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NbaPlayersApiClient {
+class NbaApiClient {
     //    TODO Use dagger
     companion object {
         private var retrofit: Retrofit? = null

@@ -74,8 +74,8 @@ class NbaPlayerViewHolder(
     private lateinit var nbaPlayer: NbaPlayer
 
     // TODO   view/data binding
-    val nbaPlayerName: TextView = itemView.findViewById(R.id.tv_nba_player_first_and_last_name)
-    val nbaPlayerPosition: TextView = itemView.findViewById(R.id.tv_position)
+    val nbaPlayerName: TextView = itemView.findViewById(R.id.tv_game_season)
+    val nbaPlayerPosition: TextView = itemView.findViewById(R.id.tv_game_status)
 
     fun getNbaItem(item: NbaPlayer) {
         this.nbaPlayer = item

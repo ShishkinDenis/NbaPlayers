@@ -8,7 +8,6 @@ data class NbaTeam(
     val city: String,
     val conference: String,
     val division: String,
-    @SerializedName("full_name")
-    val fullName: String,
+    @SerializedName("full_name") val fullName: String,
     val name: String
 )

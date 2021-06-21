@@ -21,7 +21,16 @@
         tools:layout="@layout/fragment_nba_details" />
     <fragment
         android:id="@+id/gamesFragment"
-        android:name="com.shishkin.itransition.gui.games.GamesFragment"
+        android:name="com.shishkin.itransition.gui.games.NbaGamesFragment"
         android:label="fragment_games"
-        tools:layout="@layout/fragment_games" />
+        tools:layout="@layout/fragment_games" >
+        <action
+            android:id="@+id/action_gamesFragment_to_gamesDetailsFragment"
+            app:destination="@id/gamesDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gamesDetailsFragment"
+        android:name="com.shishkin.itransition.gui.gamesdetails.GamesDetailsFragment"
+        android:label="fragment_games_details"
+        tools:layout="@layout/fragment_games_details" />
 </navigation>

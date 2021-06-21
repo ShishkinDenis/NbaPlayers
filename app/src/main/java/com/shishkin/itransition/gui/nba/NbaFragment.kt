@@ -34,7 +34,7 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
 
-    private lateinit var testRecycler: RecyclerView
+    private lateinit var nbaPlayersRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +47,7 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         super.onViewCreated(view, savedInstanceState)
         nbaViewModel =
             ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
-        initRecyclerView()
+        initNbaPlayersRecyclerView()
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -59,10 +59,10 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
                                 "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString()
                             )
                             val listOfNbaPlayers = uiState.nbaPlayers?.data
-                            val list = listOfNbaPlayers?.let { convertList(it) }
-                            val nbaPlayersAdapter = NbaPlayersAdapter(list, this@NbaFragment)
-                            nbaPlayersAdapter.submitList(list)
-                            testRecycler.adapter = nbaPlayersAdapter
+                            val convertedList = listOfNbaPlayers?.let { convertList(it) }
+                            val nbaPlayersAdapter = NbaPlayersAdapter(convertedList, this@NbaFragment)
+                            nbaPlayersAdapter.submitList(convertedList)
+                            nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
                         }
                         is NbaPlayersUiState.Error -> {
                             Log.d("Retrofit", "NbaFragment: Error")
@@ -80,10 +80,10 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
 
     }
 
-    private fun initRecyclerView() {
-        testRecycler = view?.findViewById(R.id.nba_rv)!!
+    private fun initNbaPlayersRecyclerView() {
+        nbaPlayersRecyclerView = view?.findViewById(R.id.rv_nba_players)!!
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        testRecycler.layoutManager = linearLayoutManager
+        nbaPlayersRecyclerView.layoutManager = linearLayoutManager
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
