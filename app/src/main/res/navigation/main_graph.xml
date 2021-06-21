@@ -19,4 +19,9 @@
         android:name="com.shishkin.itransition.gui.nbadetails.NbaDetailsFragment"
         android:label="fragment_nba_details"
         tools:layout="@layout/fragment_nba_details" />
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="com.shishkin.itransition.gui.games.GamesFragment"
+        android:label="fragment_games"
+        tools:layout="@layout/fragment_games" />
 </navigation>
