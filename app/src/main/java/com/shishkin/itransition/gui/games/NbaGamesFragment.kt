@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.gui.nba.NbaFragment
 import com.shishkin.itransition.gui.nba.NbaGamesUiState
 import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.network.entities.NbaGame
@@ -94,7 +95,9 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
         val listOfListItem = ArrayList<ListItem>()
         for (item in listOfNbaGames!!) {
             val nbaPlayerListItem = ListItem(item, VIEW_TYPE_NBA_GAME)
+            val nbaTeamListItem = ListItem(item, VIEW_TYPE_NBA_TEAM)
             listOfListItem.add(nbaPlayerListItem)
+            listOfListItem.add(nbaTeamListItem)
         }
         return listOfListItem
     }
