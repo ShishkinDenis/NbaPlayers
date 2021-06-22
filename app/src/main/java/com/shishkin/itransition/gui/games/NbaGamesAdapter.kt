@@ -62,15 +62,15 @@ class NbaGamesAdapter(
              val nbaGame : NbaGame = gamesList?.get(position)?.item as NbaGame
                 with(holder as NbaGameTeamsViewHolder) {
 
-                    homeTeamName.text = nbaGame.homeTeam.name
-                    homeTeamCity.text = nbaGame.homeTeam.city
-                    homeTeamAbbreviation.text = nbaGame.homeTeam.abbreviation
-                    homeTeamFullName.text = nbaGame.homeTeam.fullName
+                    homeTeamName.text ="Name: " + nbaGame.homeTeam.name
+                    homeTeamCity.text ="City: " + nbaGame.homeTeam.city
+                    homeTeamAbbreviation.text ="Abbreviation: " + nbaGame.homeTeam.abbreviation
+                    homeTeamFullName.text =  nbaGame.homeTeam.fullName
 
-                    visitorTeamName.text = nbaGame.visitorTeam.name
-                    visitorTeamCity.text = nbaGame.visitorTeam.city
-                    visitorTeamAbbreviation.text = nbaGame.visitorTeam.abbreviation
-                    visitorTeamFullName.text = nbaGame.visitorTeam.fullName
+                    visitorTeamName.text ="Name: " + nbaGame.visitorTeam.name
+                    visitorTeamCity.text ="City: " + nbaGame.visitorTeam.city
+                    visitorTeamAbbreviation.text ="Abbreviation: " + nbaGame.visitorTeam.abbreviation
+                    visitorTeamFullName.text =nbaGame.visitorTeam.fullName
                 }
             }
     }

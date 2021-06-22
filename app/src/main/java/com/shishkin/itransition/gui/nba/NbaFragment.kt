@@ -1,17 +1,24 @@
 package com.shishkin.itransition.gui.nba
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration.HORIZONTAL
+import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shishkin.itransition.CustomPositionItemDecoration
 import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
@@ -29,6 +36,8 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         const val VIEW_TYPE_NBA_PLAYER = 1
         const val VIEW_TYPE_NBA_TEAM = 2
     }
+//    private fun getManager() = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    private fun getManager() = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
@@ -43,6 +52,7 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         return inflater.inflate(R.layout.fragment_nba, container, false)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nbaViewModel =
@@ -64,6 +74,19 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
                                 NbaPlayersAdapter(convertedList, this@NbaFragment)
                             nbaPlayersAdapter.submitList(convertedList)
                             nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
+                            nbaPlayersRecyclerView.layoutManager = getManager()
+
+
+                            val itemDecor = DividerItemDecoration(nbaPlayersRecyclerView.context, VERTICAL)
+                            itemDecor.setDrawable(resources.getDrawable(R.drawable.divider_drawable))
+                            nbaPlayersRecyclerView.addItemDecoration(itemDecor)
+
+//                            TODO divider every two items
+//                            nbaPlayersRecyclerView.addItemDecoration(CustomPositionItemDecoration(
+//                                context?.getDrawable(R.drawable.divider_drawable)!!
+//                            ))
+
+
                         }
                         is NbaPlayersUiState.Error -> {
                             Log.d("Retrofit", "NbaFragment: Error")
