@@ -1,6 +1,7 @@
 package com.shishkin.itransition.repository
 
 import androidx.paging.*
+import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.gui.nba.lists.pagination.PlayersPagingDataSource
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.NbaApiClient
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 class DefaultNbaRepository @Inject constructor() : NbaRepository {
 
-//    TODO inject to constructor
+    //    TODO inject to constructor
     private val nbaApi: NbaApi? =
         NbaApiClient.getClient().create(NbaApi::class.java)
 
@@ -27,19 +28,17 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-
-        @ExperimentalPagingApi
-        override fun getNbaPlayersListPagination(): Flow<PagingData<NbaPlayer>> {
-       return Pager(
-           config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-           pagingSourceFactory = {
-               PlayersPagingDataSource(
-                   nbaApi
-               )
-           }
+    @ExperimentalPagingApi
+    override fun getNbaPlayersListPagination(): Flow<PagingData<ListItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, prefetchDistance = 2),
+            pagingSourceFactory = {
+                PlayersPagingDataSource(
+                    nbaApi
+                )
+            }
         ).flow
     }
-
 
     override fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?> {
         return flow {

@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayersAdapter
 import com.shishkin.itransition.gui.nba.lists.pagination.NbaPlayersPaginationAdapter
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayersAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -51,45 +49,12 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
             ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
         initNbaPlayersRecyclerView()
 
-        /*    lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaViewModel.uiState.collect { uiState ->
-
-                    when (uiState) {
-                        is NbaPlayersUiState.Success -> {
-                            Log.d(
-                                "Retrofit",
-                                "NbaFragment: size " + uiState.nbaPlayers?.data?.size.toString()
-                            )
-                            val listOfNbaPlayers = uiState.nbaPlayers?.data
-                            val convertedList = listOfNbaPlayers?.let { convertList(it) }
-//                            TODO remove list from constructor
-                            val nbaPlayersAdapter =
-                                NbaPlayersAdapter(convertedList, this@NbaFragment)
-                            nbaPlayersAdapter.submitList(convertedList)
-                            nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
-                        }
-                        is NbaPlayersUiState.Error -> {
-                            Log.d("Retrofit", "NbaFragment: Error")
-                        }
-                        is NbaPlayersUiState.Loading -> {
-                            Log.d("Retrofit", "NbaFragment: Loading")
-                        }
-                        is NbaPlayersUiState.Empty -> {
-                            Log.d("Retrofit", "NbaFragment: Empty")
-                        }
-                    }
-                }
-
-        }*/
-
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             nbaViewModel.fetchPlayersPagination().collectLatest { pagingData ->
                 nbaPlayersPaginationAdapter.submitData(pagingData)
             }
         }
     }
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initNbaPlayersRecyclerView() {
@@ -115,16 +80,4 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         bundle.putInt("id", nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
-
-    private fun convertList(listOfNbaPlayers: List<NbaPlayer>): List<ListItem> {
-        val listOfListItem = ArrayList<ListItem>()
-        for (item in listOfNbaPlayers) {
-            val nbaPlayerListItem = ListItem(item, VIEW_TYPE_NBA_PLAYER)
-            val nbaTeamListItem = ListItem(item.team, VIEW_TYPE_NBA_TEAM)
-            listOfListItem.add(nbaPlayerListItem)
-            listOfListItem.add(nbaTeamListItem)
-        }
-        return listOfListItem
-    }
-
 }

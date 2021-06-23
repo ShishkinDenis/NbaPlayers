@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.NbaFragment
 import com.shishkin.itransition.gui.nba.NbaGamesUiState
 import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.network.entities.NbaGame

@@ -1,6 +1,5 @@
 package com.shishkin.itransition
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -11,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 class CustomPositionItemDecoration(private val dividerDrawable: Drawable) :
     RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(rect: Rect, view: View, parent: RecyclerView, s: RecyclerView.State) {
+    override fun getItemOffsets(
+        rect: Rect,
+        view: View,
+        parent: RecyclerView,
+        s: RecyclerView.State
+    ) {
         val position = parent.getChildAdapterPosition(view)
             .let { if (it == RecyclerView.NO_POSITION) return else it }
         rect.right =

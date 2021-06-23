@@ -36,8 +36,7 @@ class NbaGamesAdapter(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_game_status_adapter, parent, false)
             NbaGameViewHolder(view, listener)
-        }
-        else{
+        } else {
             val view: View =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_game_teams_adapter, parent, false)
@@ -46,7 +45,7 @@ class NbaGamesAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (gamesList?.get(position)?.viewType  == VIEW_TYPE_NBA_GAME) {
+        if (gamesList?.get(position)?.viewType == VIEW_TYPE_NBA_GAME) {
             val nbaGame: NbaGame = (gamesList[position].item as NbaGame)
             with(holder as NbaGameViewHolder) {
                 season.text = "Season: " + nbaGame.season.toString()
@@ -55,22 +54,21 @@ class NbaGamesAdapter(
                 homeTeamScore.text = "Home team score: " + nbaGame.homeTeamScore.toString()
                 getNbaItem(nbaGame)
             }
-        }
-            else{
-             val nbaGame : NbaGame = gamesList?.get(position)?.item as NbaGame
-                with(holder as NbaGameTeamsViewHolder) {
+        } else {
+            val nbaGame: NbaGame = gamesList?.get(position)?.item as NbaGame
+            with(holder as NbaGameTeamsViewHolder) {
 
-                    homeTeamName.text ="Name: " + nbaGame.homeTeam.name
-                    homeTeamCity.text ="City: " + nbaGame.homeTeam.city
-                    homeTeamAbbreviation.text ="Abbreviation: " + nbaGame.homeTeam.abbreviation
-                    homeTeamFullName.text =  nbaGame.homeTeam.fullName
+                homeTeamName.text = "Name: " + nbaGame.homeTeam.name
+                homeTeamCity.text = "City: " + nbaGame.homeTeam.city
+                homeTeamAbbreviation.text = "Abbreviation: " + nbaGame.homeTeam.abbreviation
+                homeTeamFullName.text = nbaGame.homeTeam.fullName
 
-                    visitorTeamName.text ="Name: " + nbaGame.visitorTeam.name
-                    visitorTeamCity.text ="City: " + nbaGame.visitorTeam.city
-                    visitorTeamAbbreviation.text ="Abbreviation: " + nbaGame.visitorTeam.abbreviation
-                    visitorTeamFullName.text =nbaGame.visitorTeam.fullName
-                }
+                visitorTeamName.text = "Name: " + nbaGame.visitorTeam.name
+                visitorTeamCity.text = "City: " + nbaGame.visitorTeam.city
+                visitorTeamAbbreviation.text = "Abbreviation: " + nbaGame.visitorTeam.abbreviation
+                visitorTeamFullName.text = nbaGame.visitorTeam.fullName
             }
+        }
     }
 
     private fun convertDate(date: Date): String? {
@@ -136,7 +134,7 @@ class NbaGameTeamsViewHolder(itemView: View, private val listener: NbaGameItemLi
     }
 
     override fun onClick(v: View?) {
-      TODO()
+        TODO()
     }
 
 }

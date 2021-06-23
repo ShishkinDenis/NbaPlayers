@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.shishkin.itransition.databinding.FragmentGamesDetailsBinding
 import com.shishkin.itransition.network.entities.NbaGame
 import dagger.android.support.DaggerFragment
