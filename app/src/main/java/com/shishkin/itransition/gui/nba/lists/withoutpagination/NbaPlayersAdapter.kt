@@ -1,4 +1,4 @@
-package com.shishkin.itransition.gui.nba.lists
+package com.shishkin.itransition.gui.nba.lists.withoutpagination
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.gui.nba.lists.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.NbaTeam
 
@@ -32,11 +33,17 @@ class NbaPlayersAdapter(
             val view: View =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_player_adapter, parent, false)
-            NbaPlayerViewHolder(view, listener)
+            NbaPlayerViewHolder(
+                view,
+                listener
+            )
         } else {
             val view: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.nba_player_team_adapter, parent, false)
-            TeamViewHolder(view, listener)
+            TeamViewHolder(
+                view,
+                listener
+            )
         }
     }
 

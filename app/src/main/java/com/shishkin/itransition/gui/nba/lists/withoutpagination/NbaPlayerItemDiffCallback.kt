@@ -1,7 +1,7 @@
-package com.shishkin.itransition.gui.nba.lists
+package com.shishkin.itransition.gui.nba.lists.withoutpagination
 
 import androidx.recyclerview.widget.DiffUtil
-
+import com.shishkin.itransition.gui.nba.lists.ListItem
 
 class NbaPlayerItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
 

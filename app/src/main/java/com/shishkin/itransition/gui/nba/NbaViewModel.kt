@@ -2,13 +2,13 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.shishkin.itransition.gui.nba.NbaPlayersUiState.*
+import com.shishkin.itransition.network.entities.NbaPlayer
 
 import com.shishkin.itransition.repository.NbaRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,4 +28,25 @@ class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewM
                 }
         }
     }
+
+    fun fetchPlayersPagination(): Flow<PagingData<NbaPlayer>> {
+        return nbaRepository.getNbaPlayersListPagination()
+    }
+
+
+//    private lateinit var _playersFlow: Flow<PagingData<NbaPlayer>>
+//    val charactersFlow: Flow<PagingData<NbaPlayer>>
+//        get() = _playersFlow
+//
+//    init {
+//        fetchPlayersPagination()
+//    }
+
+//    private fun fetchPlayersPagination() = launchPagingAsync({
+//        nbaRepository.getNbaPlayersListPagination().cachedIn(viewModelScope)
+//    }, {
+//        _playersFlow = it
+//    })
+
+
 }

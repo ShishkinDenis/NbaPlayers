@@ -95,5 +95,10 @@ dependencies {
     //GSON
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //    Pagination
+    def paging_version = "3.0.0"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+
 
 }

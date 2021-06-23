@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.NbaPlayerItemDiffCallback
-import com.shishkin.itransition.gui.nba.lists.NbaPlayersAdapter
+import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayerItemDiffCallback
 import com.shishkin.itransition.network.entities.NbaGame
-import com.shishkin.itransition.network.entities.NbaTeam
 import java.text.SimpleDateFormat
 import java.util.*
 
