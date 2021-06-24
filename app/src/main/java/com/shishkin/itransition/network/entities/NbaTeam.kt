@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+//TODO camelcase
 @Parcelize
 data class NbaTeam(
     val id: Int,
@@ -12,5 +13,7 @@ data class NbaTeam(
     val conference: String,
     val division: String,
     @SerializedName("full_name") val fullName: String,
-    val name: String
+    val name: String,
+    val home_team_score: Int,
+    val visitor_team_score: Int
 ) : Parcelable
