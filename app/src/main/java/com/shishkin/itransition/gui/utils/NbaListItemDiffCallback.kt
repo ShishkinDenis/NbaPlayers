@@ -1,9 +1,9 @@
-package com.shishkin.itransition.gui.nba.lists.withoutpagination
+package com.shishkin.itransition.gui.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.shishkin.itransition.gui.nba.lists.ListItem
+import com.shishkin.itransition.network.entities.ListItem
 
-class NbaPlayerItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
+class NbaListItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
 
     override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
         return oldItem == newItem

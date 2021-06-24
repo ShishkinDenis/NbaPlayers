@@ -1,6 +1,7 @@
 package com.shishkin.itransition.di
 
 import com.shishkin.itransition.gui.games.NbaGamesFragment
+import com.shishkin.itransition.gui.gamesdetails.GamesDetailsFragment
 import com.shishkin.itransition.gui.nba.NbaFragment
 import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragment
 import dagger.Module
@@ -22,4 +23,7 @@ abstract class FragmentsModule {
 
     @ContributesAndroidInjector()
     abstract fun provideNbaGamesFragment(): NbaGamesFragment
+
+    @ContributesAndroidInjector()
+    abstract fun provideNbaGamesDetailsFragment(): GamesDetailsFragment
 }

@@ -5,21 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayerItemDiffCallback
+import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
+import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaGame
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO implement header
 class NbaGamesAdapter(
-    private val gamesList: List<ListItem>?,
     private val listener: NbaGameItemListener
 ) :
-    ListAdapter<ListItem, RecyclerView.ViewHolder>(NbaPlayerItemDiffCallback()) {
+    PagingDataAdapter<ListItem, RecyclerView.ViewHolder>(NbaListItemDiffCallback()) {
 
     companion object {
         const val VIEW_TYPE_NBA_GAME = 1
@@ -27,7 +25,7 @@ class NbaGamesAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return gamesList?.get(position)?.viewType!!
+        return getItem(position)!!.viewType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -40,13 +38,13 @@ class NbaGamesAdapter(
             val view: View =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_game_teams_adapter, parent, false)
-            NbaGameTeamsViewHolder(view, listener)
+            NbaGameTeamsViewHolder(view)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (gamesList?.get(position)?.viewType == VIEW_TYPE_NBA_GAME) {
-            val nbaGame: NbaGame = (gamesList[position].item as NbaGame)
+        if (getItem(position)?.viewType == VIEW_TYPE_NBA_GAME) {
+            val nbaGame: NbaGame = (getItem(position)?.item as NbaGame)
             with(holder as NbaGameViewHolder) {
                 season.text = "Season: " + nbaGame.season.toString()
                 gameStatus.text = "Status: " + nbaGame.status
@@ -55,7 +53,7 @@ class NbaGamesAdapter(
                 getNbaItem(nbaGame)
             }
         } else {
-            val nbaGame: NbaGame = gamesList?.get(position)?.item as NbaGame
+            val nbaGame: NbaGame = (getItem(position)?.item as NbaGame)
             with(holder as NbaGameTeamsViewHolder) {
 
                 homeTeamName.text = "Name: " + nbaGame.homeTeam.name
@@ -110,9 +108,7 @@ class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListene
 }
 
 
-class NbaGameTeamsViewHolder(itemView: View, private val listener: NbaGameItemListener) :
-    RecyclerView.ViewHolder(itemView), View.OnClickListener {
-    private lateinit var nbaGame: NbaGame
+class NbaGameTeamsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     // TODO   view/data binding
     val homeTeamName: TextView = itemView.findViewById(R.id.tv_home_team_name)
@@ -125,17 +121,8 @@ class NbaGameTeamsViewHolder(itemView: View, private val listener: NbaGameItemLi
     val visitorTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_visitor_team_abbreviation)
     val visitorTeamFullName: TextView = itemView.findViewById(R.id.tv_visitor_team_full_name)
 
-    fun getNbaItem(item: NbaGame) {
-        this.nbaGame = item
-    }
-
-    init {
-        itemView.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        TODO()
-    }
 
 }
+
+
 

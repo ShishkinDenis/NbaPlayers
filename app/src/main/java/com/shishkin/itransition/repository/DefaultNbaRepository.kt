@@ -1,13 +1,15 @@
 package com.shishkin.itransition.repository
 
-import androidx.paging.*
-import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.pagination.PlayersPagingDataSource
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
+import com.shishkin.itransition.gui.nba.PlayersPagingDataSource
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.NbaApiClient
-import com.shishkin.itransition.network.entities.NbaGame
+import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
-import com.shishkin.itransition.network.entities.RestResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,13 +22,6 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
     //    TODO inject to constructor
     private val nbaApi: NbaApi? =
         NbaApiClient.getClient().create(NbaApi::class.java)
-
-    override fun getNbaPlayersList(): Flow<RestResponse<List<NbaPlayer>>?> {
-        return flow {
-            val flowData = nbaApi?.getAllNbaPlayers()
-            emit(flowData)
-        }.flowOn(Dispatchers.IO)
-    }
 
     @ExperimentalPagingApi
     override fun getNbaPlayersListPagination(): Flow<PagingData<ListItem>> {
@@ -47,10 +42,15 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getNbaGamesList(): Flow<RestResponse<List<NbaGame>>?> {
-        return flow {
-            val flowData = nbaApi?.getAllNbaGames()
-            emit(flowData)
-        }.flowOn(Dispatchers.IO)
+    @ExperimentalPagingApi
+    override fun getNbaGamesListPagination(): Flow<PagingData<ListItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, prefetchDistance = 2),
+            pagingSourceFactory = {
+                NbaGamesPagingDataSource(
+                    nbaApi
+                )
+            }
+        ).flow
     }
 }

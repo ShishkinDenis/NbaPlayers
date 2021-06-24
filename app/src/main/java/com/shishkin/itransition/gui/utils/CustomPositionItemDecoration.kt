@@ -1,4 +1,4 @@
-package com.shishkin.itransition
+package com.shishkin.itransition.gui.utils
 
 import android.graphics.Canvas
 import android.graphics.Rect

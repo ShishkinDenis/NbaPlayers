@@ -1,5 +1,6 @@
-package com.shishkin.itransition.gui.nba.lists.pagination
+package com.shishkin.itransition.gui.nba.lists
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,16 +8,14 @@ import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.ListItem
-import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayerItemDiffCallback
-import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayersAdapter
+import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
+import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.NbaTeam
 
 
-//TODO ListItem
-class NbaPlayersPaginationAdapter :
-    PagingDataAdapter<ListItem, RecyclerView.ViewHolder>(NbaPlayerItemDiffCallback()) {
+class NbaPlayersPaginationAdapter(private val listener: NbaPlayerItemListener) :
+    PagingDataAdapter<ListItem, RecyclerView.ViewHolder>(NbaListItemDiffCallback()) {
 
     companion object {
         const val VIEW_TYPE_NBA_PLAYER = 1
@@ -24,12 +23,12 @@ class NbaPlayersPaginationAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == NbaPlayersAdapter.VIEW_TYPE_NBA_PLAYER) {
+        return if (viewType == VIEW_TYPE_NBA_PLAYER) {
             val view: View =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_player_adapter, parent, false)
             NbaPlayerPaginationViewHolder(
-                view
+                view,listener
             )
         } else {
             val view: View = LayoutInflater.from(parent.context)
@@ -46,13 +45,13 @@ class NbaPlayersPaginationAdapter :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
-            val nbaPlayer: NbaPlayer? = getItem(position)?.item as NbaPlayer
+            val nbaPlayer: NbaPlayer = getItem(position)?.item as NbaPlayer
             val nbaPlayerName: String =
                 "NBA player: " + nbaPlayer?.firstName + " " + nbaPlayer?.lastName
             val nbaPlayerPosition: String = "Position: " + nbaPlayer?.position
-
             (holder as NbaPlayerPaginationViewHolder).nbaPlayerName.text = nbaPlayerName
             holder.nbaPlayerPosition.text = nbaPlayerPosition
+            nbaPlayer?.let { holder.getNbaItem(it) }
         } else {
             val nbaTeam: NbaTeam = (getItem(position)?.item as NbaTeam)
             val teamFullName: String = "Team: " + nbaTeam.fullName + ", " + nbaTeam.abbreviation
@@ -63,7 +62,12 @@ class NbaPlayersPaginationAdapter :
     }
 }
 
-class NbaPlayerPaginationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+interface NbaPlayerItemListener {
+    fun onClickedNbaPlayer(nbaPlayerId: Int)
+}
+
+
+class NbaPlayerPaginationViewHolder(itemView: View, private val listener: NbaPlayerItemListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
     private lateinit var nbaPlayer: NbaPlayer
 
     // TODO   view/data binding
@@ -72,6 +76,15 @@ class NbaPlayerPaginationViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 
     fun getNbaItem(item: NbaPlayer) {
         this.nbaPlayer = item
+    }
+
+    init {
+        itemView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        Log.d("Retrofit", "ID from adapter " + nbaPlayer.id.toString())
+        listener.onClickedNbaPlayer(nbaPlayer.id)
     }
 
 }

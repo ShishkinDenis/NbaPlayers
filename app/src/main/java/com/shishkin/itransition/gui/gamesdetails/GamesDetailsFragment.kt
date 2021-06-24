@@ -18,7 +18,7 @@ class GamesDetailsFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentGamesDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -28,6 +28,7 @@ class GamesDetailsFragment : DaggerFragment() {
 
         val nbaGame: NbaGame? = arguments?.getParcelable("nbaGame")
         Log.d("GameDetails", nbaGame?.homeTeamScore.toString())
+
     }
 
 }

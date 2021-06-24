@@ -13,20 +13,15 @@ import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.pagination.NbaPlayersPaginationAdapter
-import com.shishkin.itransition.gui.nba.lists.withoutpagination.NbaPlayersAdapter
+import com.shishkin.itransition.gui.nba.lists.NbaPlayerItemListener
+import com.shishkin.itransition.gui.nba.lists.NbaPlayersPaginationAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
-
-    companion object {
-        const val VIEW_TYPE_NBA_PLAYER = 1
-        const val VIEW_TYPE_NBA_TEAM = 2
-    }
+class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
@@ -67,7 +62,7 @@ class NbaFragment : DaggerFragment(), NbaPlayersAdapter.NbaPlayerItemListener {
         nbaPlayersRecyclerView.addItemDecoration(itemDecor)
 
         nbaPlayersPaginationAdapter =
-            NbaPlayersPaginationAdapter()
+            NbaPlayersPaginationAdapter(this@NbaFragment)
         nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
 
 //        TODO divider every two items

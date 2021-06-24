@@ -12,35 +12,65 @@
         android:id="@+id/tv_specific_nba_player_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Name"
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tv_specific_nba_player_team"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:text="Team" />
 
     <TextView
         android:id="@+id/tv_specific_nba_player_position"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:text="Position" />
 
     <TextView
         android:id="@+id/tv_specific_nba_player_height_feet"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:text="Height feet" />
 
     <TextView
         android:id="@+id/tv_specific_nba_player_height_Inches"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:text="Height inches" />
 
     <TextView
         android:id="@+id/tv_specific_nba_player_weight_pounds"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="16sp"
         android:text="Weight pounds" />
 </LinearLayout>

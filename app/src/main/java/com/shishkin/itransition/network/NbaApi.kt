@@ -9,10 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NbaApi {
-
-    @GET("players")
-    suspend fun getAllNbaPlayers(): RestResponse<List<NbaPlayer>>
-
+//    TODO naming
     @GET("players")
     suspend fun getAllNbaPlayersPagination(@Query("page") page: Int): RestResponse<List<NbaPlayer>>
 
@@ -20,7 +17,7 @@ interface NbaApi {
     suspend fun getSpecificPlayer(@Path("id") playerId: Int?): NbaPlayer
 
     @GET("games")
-    suspend fun getAllNbaGames(): RestResponse<List<NbaGame>>
+    suspend fun getAllNbaGamesPagination(@Query("page") page: Int): RestResponse<List<NbaGame>>
 
 
 }

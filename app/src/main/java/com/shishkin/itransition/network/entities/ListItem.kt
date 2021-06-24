@@ -1,4 +1,4 @@
-package com.shishkin.itransition.gui.nba.lists
+package com.shishkin.itransition.network.entities
 
 data class ListItem(
     val item: Any,
