@@ -4,6 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.shishkin.itransition.db.LocalInjector
+import com.shishkin.itransition.db.NbaPlayerDataBase
+import com.shishkin.itransition.db.NbaPlayerMediator
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
 import com.shishkin.itransition.gui.nba.PlayersPagingDataSource
 import com.shishkin.itransition.network.NbaApi
@@ -17,13 +20,24 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 
+@ExperimentalPagingApi
 class DefaultNbaRepository @Inject constructor() : NbaRepository {
 
     //    TODO inject to constructor
-    private val nbaApi: NbaApi? =
+    private val nbaApi: NbaApi =
         NbaApiClient.getClient().create(NbaApi::class.java)
 
-    @ExperimentalPagingApi
+//    TODO use dagger
+   var nbaPlayerDataBase: NbaPlayerDataBase? = LocalInjector.injectDb()
+
+
+    companion object {
+        const val DEFAULT_PAGE_INDEX = 1
+        const val DEFAULT_PAGE_SIZE = 20
+    }
+
+
+
     override fun getNbaPlayersListPagination(): Flow<PagingData<ListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),
@@ -35,6 +49,32 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         ).flow
     }
 
+//        override fun getNbaPlayersListDb(): Flow<PagingData<ListItem>> {
+//        if (nbaPlayerDataBase == null) throw IllegalStateException("Database is not initialized")
+//
+//        val pagingSourceFactory = { nbaPlayerDataBase!!.nbaPlayerDao().getAllPlayers() }
+//        return Pager(
+//            PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true),
+//            NbaPlayerMediator(nbaApi, nbaPlayerDataBase!!),
+//            pagingSourceFactory
+//        ).flow
+//    }
+
+    override fun getNbaPlayersListDb(): Flow<PagingData<NbaPlayer>> {
+        if (nbaPlayerDataBase == null) throw IllegalStateException("Database is not initialized")
+
+        val pagingSourceFactory = { nbaPlayerDataBase!!.nbaPlayerDao().getAllPlayers() }
+        return Pager(
+            config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true),
+            remoteMediator =   NbaPlayerMediator(nbaApi, nbaPlayerDataBase!!),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow
+    }
+
+    fun getDefaultPageConfig(): PagingConfig {
+        return PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
+    }
+
     override fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?> {
         return flow {
             val flowData = nbaApi?.getSpecificPlayer(playerId)
@@ -42,7 +82,6 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    @ExperimentalPagingApi
     override fun getNbaGamesListPagination(): Flow<PagingData<ListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),

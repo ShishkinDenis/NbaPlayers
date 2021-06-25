@@ -13,4 +13,7 @@ interface NbaRepository {
     fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?>
 
     fun getNbaGamesListPagination(): Flow<PagingData<ListItem>?>
+
+//    fun getNbaPlayersListDb(): Flow<PagingData<ListItem>>
+    fun getNbaPlayersListDb(): Flow<PagingData<NbaPlayer>>
 }

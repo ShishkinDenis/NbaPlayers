@@ -13,20 +13,21 @@ import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.lists.NbaPlayerItemListener
-import com.shishkin.itransition.gui.nba.lists.NbaPlayersPaginationAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
+//TODO naming
+//class NbaFragmentPagination : DaggerFragment(), NbaPlayerPaginationItemListener {
+class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
-    lateinit var nbaPlayersPaginationAdapter: NbaPlayersPaginationAdapter
+//    lateinit var nbaPlayersPaginationAdapter: NbaPlayersPaginationAdapter
+    lateinit var nbaPlayersAdapter: NbaPlayersAdapter
 
     private lateinit var nbaPlayersRecyclerView: RecyclerView
 
@@ -45,8 +46,19 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         initNbaPlayersRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            nbaViewModel.fetchPlayersPagination().collectLatest { pagingData ->
-                nbaPlayersPaginationAdapter.submitData(pagingData)
+
+//            nbaViewModel.fetchPlayersPagination().collectLatest { pagingData ->
+//                nbaPlayersPaginationAdapter.submitData(pagingData)
+//            }
+
+//            nbaViewModel.fetchPlayersDb().collectLatest {
+//                    pagingData ->
+//                nbaPlayersPaginationAdapter.submitData(pagingData)
+//            }
+
+            nbaViewModel.fetchPlayersDb().collectLatest {
+                    pagingData ->
+                nbaPlayersAdapter.submitData(pagingData)
             }
         }
     }
@@ -61,9 +73,13 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         itemDecor.setDrawable(resources.getDrawable(R.drawable.divider_drawable))
         nbaPlayersRecyclerView.addItemDecoration(itemDecor)
 
-        nbaPlayersPaginationAdapter =
-            NbaPlayersPaginationAdapter(this@NbaFragment)
-        nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
+//        nbaPlayersPaginationAdapter =
+//            NbaPlayersPaginationAdapter(this@NbaFragmentPagination)
+//        nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
+
+        nbaPlayersAdapter =
+            NbaPlayersAdapter(this@NbaFragmentPagination)
+        nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
 
 //        TODO divider every two items
 //        nbaPlayersRecyclerView.addItemDecoration(

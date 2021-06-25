@@ -18,6 +18,7 @@ class NbaDetailsViewModel @Inject constructor(
     @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 
+
     private val _uiState: MutableStateFlow<NbaPlayerUiState> =
         MutableStateFlow(NbaPlayerUiState.Empty)
     val uiState: StateFlow<NbaPlayerUiState> = _uiState

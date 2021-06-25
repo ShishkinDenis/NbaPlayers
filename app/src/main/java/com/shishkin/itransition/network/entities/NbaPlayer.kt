@@ -1,10 +1,12 @@
 package com.shishkin.itransition.network.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-
+@Entity(tableName = "players")
 data class NbaPlayer(
-    val id: Int,
+    @PrimaryKey val id: Int,
     @SerializedName("first_name") val firstName: String,
     @SerializedName("height_feet") val heightFeet: Int,
     @SerializedName("height_inches") val heightInches: Int,

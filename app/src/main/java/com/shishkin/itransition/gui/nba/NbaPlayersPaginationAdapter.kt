@@ -1,4 +1,4 @@
-package com.shishkin.itransition.gui.nba.lists
+package com.shishkin.itransition.gui.nba
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.NbaTeam
 
 
-class NbaPlayersPaginationAdapter(private val listener: NbaPlayerItemListener) :
+class NbaPlayersPaginationAdapter(private val listenerPagination: NbaPlayerPaginationItemListener) :
     PagingDataAdapter<ListItem, RecyclerView.ViewHolder>(NbaListItemDiffCallback()) {
 
     companion object {
@@ -28,7 +28,7 @@ class NbaPlayersPaginationAdapter(private val listener: NbaPlayerItemListener) :
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.nba_player_adapter, parent, false)
             NbaPlayerPaginationViewHolder(
-                view,listener
+                view,listenerPagination
             )
         } else {
             val view: View = LayoutInflater.from(parent.context)
@@ -62,12 +62,12 @@ class NbaPlayersPaginationAdapter(private val listener: NbaPlayerItemListener) :
     }
 }
 
-interface NbaPlayerItemListener {
+interface NbaPlayerPaginationItemListener {
     fun onClickedNbaPlayer(nbaPlayerId: Int)
 }
 
 
-class NbaPlayerPaginationViewHolder(itemView: View, private val listener: NbaPlayerItemListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class NbaPlayerPaginationViewHolder(itemView: View, private val listenerPagination: NbaPlayerPaginationItemListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
     private lateinit var nbaPlayer: NbaPlayer
 
     // TODO   view/data binding
@@ -84,7 +84,7 @@ class NbaPlayerPaginationViewHolder(itemView: View, private val listener: NbaPla
 
     override fun onClick(v: View?) {
         Log.d("Retrofit", "ID from adapter " + nbaPlayer.id.toString())
-        listener.onClickedNbaPlayer(nbaPlayer.id)
+        listenerPagination.onClickedNbaPlayer(nbaPlayer.id)
     }
 
 }
