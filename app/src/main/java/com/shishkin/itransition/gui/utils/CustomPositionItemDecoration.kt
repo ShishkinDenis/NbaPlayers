@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
+//TODO implement for separator every two items
 class CustomPositionItemDecoration(private val dividerDrawable: Drawable) :
     RecyclerView.ItemDecoration() {
 

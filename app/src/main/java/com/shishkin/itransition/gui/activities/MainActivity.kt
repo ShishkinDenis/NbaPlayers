@@ -18,6 +18,7 @@ class MainActivity : DaggerAppCompatActivity() {
 //        TODO bottom navigation view overlaps recycler view's last item
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
     }
 }
 

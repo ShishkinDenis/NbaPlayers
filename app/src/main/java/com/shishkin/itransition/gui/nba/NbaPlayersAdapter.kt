@@ -11,16 +11,14 @@ import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.utils.NbaPlayerDiffCallback
 import com.shishkin.itransition.network.entities.NbaPlayer
 
+//TODO for Paging 3 (one viewHolder) + Room
 class NbaPlayersAdapter(private val listener: NbaPlayerItemListener) :
     PagingDataAdapter<NbaPlayer, RecyclerView.ViewHolder>(NbaPlayerDiffCallback()) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
          val view: View = LayoutInflater.from(parent.context).inflate(R.layout.nba_player_adapter, parent, false)
         return NbaPlayerViewHolder(view,listener)
         }
-
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val nbaPlayer: NbaPlayer = getItem(position)!!

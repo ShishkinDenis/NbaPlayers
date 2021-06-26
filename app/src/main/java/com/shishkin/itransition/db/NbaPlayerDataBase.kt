@@ -31,30 +31,3 @@ abstract class NbaPlayerDataBase : RoomDatabase(){
     }
 
 }
-
-
-//@TypeConverters(TeamConverter::class)
-//@Database(entities = [NbaPlayer::class, RemoteKeys::class], version = 1)
-//abstract class NbaPlayerDataBase : RoomDatabase(){
-//    abstract fun nbaPlayerDao(): NbaPlayerDao
-//    abstract fun remoteKeysDao(): RemoteKeysDao
-//
-//    companion object {
-//
-//        val PLAYER_DB = "player.db"
-//
-//        @Volatile
-//        private var INSTANCE: NbaPlayerDataBase? = null
-//
-//        fun getInstance(context: Context): NbaPlayerDataBase =
-//            INSTANCE ?: synchronized(this) {
-//                INSTANCE
-//                    ?: buildDatabase(context).also { INSTANCE = it }
-//            }
-//
-//        private fun buildDatabase(context: Context) =
-//            Room.databaseBuilder(context.applicationContext, NbaPlayerDataBase::class.java, PLAYER_DB)
-//                .build()
-//    }
-//
-//}

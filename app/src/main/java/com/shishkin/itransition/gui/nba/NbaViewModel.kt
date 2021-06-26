@@ -17,10 +17,9 @@ class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewM
         return nbaRepository.getNbaPlayersListPagination()
     }
 
-//    fun fetchPlayersDb(): Flow<PagingData<ListItem>> {
-//        return nbaRepository.getNbaPlayersListDb().cachedIn(viewModelScope)
-//    }
 
+//    TODO for Paging 3 + multiType
+//    fun fetchPlayersDb(): Flow<PagingData<ListItem>> {
     fun fetchPlayersDb(): Flow<PagingData<NbaPlayer>> {
         return nbaRepository.getNbaPlayersListDb().cachedIn(viewModelScope)
     }

@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.shishkin.itransition.db.LocalInjector
 import com.shishkin.itransition.db.NbaPlayerDataBase
 import com.shishkin.itransition.db.NbaPlayerMediator
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
@@ -22,21 +21,20 @@ import javax.inject.Inject
 
 @ExperimentalPagingApi
 class DefaultNbaRepository @Inject constructor() : NbaRepository {
+//class DefaultNbaRepository @Inject constructor(var nbaPlayerDataBase: NbaPlayerDataBase?) : NbaRepository {
 
     //    TODO inject to constructor
     private val nbaApi: NbaApi =
         NbaApiClient.getClient().create(NbaApi::class.java)
 
-//    TODO use dagger
-   var nbaPlayerDataBase: NbaPlayerDataBase? = LocalInjector.injectDb()
-
+//    TODO delete after injection to constructor
+    lateinit var nbaPlayerDataBase: NbaPlayerDataBase
+//   var nbaPlayerDataBase: NbaPlayerDataBase? = LocalInjector.injectDb()
 
     companion object {
         const val DEFAULT_PAGE_INDEX = 1
         const val DEFAULT_PAGE_SIZE = 20
     }
-
-
 
     override fun getNbaPlayersListPagination(): Flow<PagingData<ListItem>> {
         return Pager(
@@ -49,17 +47,6 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         ).flow
     }
 
-//        override fun getNbaPlayersListDb(): Flow<PagingData<ListItem>> {
-//        if (nbaPlayerDataBase == null) throw IllegalStateException("Database is not initialized")
-//
-//        val pagingSourceFactory = { nbaPlayerDataBase!!.nbaPlayerDao().getAllPlayers() }
-//        return Pager(
-//            PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true),
-//            NbaPlayerMediator(nbaApi, nbaPlayerDataBase!!),
-//            pagingSourceFactory
-//        ).flow
-//    }
-
     override fun getNbaPlayersListDb(): Flow<PagingData<NbaPlayer>> {
         if (nbaPlayerDataBase == null) throw IllegalStateException("Database is not initialized")
 
@@ -69,10 +56,6 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
             remoteMediator =   NbaPlayerMediator(nbaApi, nbaPlayerDataBase!!),
             pagingSourceFactory = pagingSourceFactory
         ).flow
-    }
-
-    fun getDefaultPageConfig(): PagingConfig {
-        return PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
     }
 
     override fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?> {

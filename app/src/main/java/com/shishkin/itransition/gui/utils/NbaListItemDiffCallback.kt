@@ -16,7 +16,6 @@ class NbaListItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
 
 }
 
-//TODO delete
 class NbaPlayerDiffCallback : DiffUtil.ItemCallback<NbaPlayer>() {
 
     override fun areItemsTheSame(oldItem: NbaPlayer, newItem: NbaPlayer): Boolean {

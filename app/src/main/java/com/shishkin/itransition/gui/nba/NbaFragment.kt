@@ -19,15 +19,16 @@ import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-//TODO naming
-//class NbaFragmentPagination : DaggerFragment(), NbaPlayerPaginationItemListener {
-class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
+
+class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
+    //            TODO for Room + Paging 3
+//class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
-//    lateinit var nbaPlayersPaginationAdapter: NbaPlayersPaginationAdapter
-    lateinit var nbaPlayersAdapter: NbaPlayersAdapter
+    lateinit var nbaPlayersPaginationAdapter: NbaPlayersPaginationAdapter
+//    lateinit var nbaPlayersAdapter: NbaPlayersAdapter
 
     private lateinit var nbaPlayersRecyclerView: RecyclerView
 
@@ -47,19 +48,16 @@ class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
 
-//            nbaViewModel.fetchPlayersPagination().collectLatest { pagingData ->
-//                nbaPlayersPaginationAdapter.submitData(pagingData)
-//            }
+            nbaViewModel.fetchPlayersPagination().collectLatest { pagingData ->
+                nbaPlayersPaginationAdapter.submitData(pagingData)
+            }
 
+//            TODO for Room + Paging 3
 //            nbaViewModel.fetchPlayersDb().collectLatest {
 //                    pagingData ->
 //                nbaPlayersPaginationAdapter.submitData(pagingData)
 //            }
 
-            nbaViewModel.fetchPlayersDb().collectLatest {
-                    pagingData ->
-                nbaPlayersAdapter.submitData(pagingData)
-            }
         }
     }
 
@@ -73,13 +71,14 @@ class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
         itemDecor.setDrawable(resources.getDrawable(R.drawable.divider_drawable))
         nbaPlayersRecyclerView.addItemDecoration(itemDecor)
 
-//        nbaPlayersPaginationAdapter =
-//            NbaPlayersPaginationAdapter(this@NbaFragmentPagination)
-//        nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
+        nbaPlayersPaginationAdapter =
+            NbaPlayersPaginationAdapter(this@NbaFragment)
+        nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
 
-        nbaPlayersAdapter =
-            NbaPlayersAdapter(this@NbaFragmentPagination)
-        nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
+//            TODO for Room + Paging 3
+//        nbaPlayersAdapter =
+//            NbaPlayersAdapter(this@NbaFragmentPagination)
+//        nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
 
 //        TODO divider every two items
 //        nbaPlayersRecyclerView.addItemDecoration(

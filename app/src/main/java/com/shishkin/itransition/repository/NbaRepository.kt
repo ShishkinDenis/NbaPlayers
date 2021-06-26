@@ -14,6 +14,8 @@ interface NbaRepository {
 
     fun getNbaGamesListPagination(): Flow<PagingData<ListItem>?>
 
+//TODO for MultiType
+
 //    fun getNbaPlayersListDb(): Flow<PagingData<ListItem>>
     fun getNbaPlayersListDb(): Flow<PagingData<NbaPlayer>>
 }

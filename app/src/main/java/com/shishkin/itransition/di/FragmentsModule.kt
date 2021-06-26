@@ -2,7 +2,7 @@ package com.shishkin.itransition.di
 
 import com.shishkin.itransition.gui.games.NbaGamesFragment
 import com.shishkin.itransition.gui.gamesdetails.GamesDetailsFragment
-import com.shishkin.itransition.gui.nba.NbaFragmentPagination
+import com.shishkin.itransition.gui.nba.NbaFragment
 import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -12,7 +12,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Module
 abstract class FragmentsModule {
     @ContributesAndroidInjector()
-    abstract fun provideNbaFragment(): NbaFragmentPagination
+    abstract fun provideNbaFragment(): NbaFragment
 
     @ContributesAndroidInjector(
         modules = [

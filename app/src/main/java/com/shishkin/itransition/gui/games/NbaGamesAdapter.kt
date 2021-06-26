@@ -104,9 +104,7 @@ class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListene
         Log.d("Retrofit", "ID from NbaGameAdapter " + nbaGame.id.toString())
         listener.onClickedNbaGame(nbaGame)
     }
-
 }
-
 
 class NbaGameTeamsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

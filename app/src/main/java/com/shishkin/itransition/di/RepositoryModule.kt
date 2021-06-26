@@ -10,7 +10,13 @@ import dagger.Provides
 @ExperimentalPagingApi
 @Module
 class RepositoryModule {
-
+//    TODO for providing context for DB
+//class RepositoryModule(val application: MyApplication) {
+//    @Provides
+//    @Singleton
+//    fun providesContext(): Context = application.applicationContext
+//    var nbaPlayerDataBase: NbaPlayerDataBase? =  NbaPlayerDataBase.getInstance(providesContext)
+//    var nbaRepository: NbaRepository = DefaultNbaRepository(nbaPlayerDataBase)
     var nbaRepository: NbaRepository = DefaultNbaRepository()
 
     @Provides
