@@ -8,21 +8,26 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
+
 
 @InternalCoroutinesApi
 
 class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
     //            TODO for Room + Paging 3
 //class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
+
+//    companion object {
+//        const val VIEW_TYPE_NBA_PLAYER = 1
+//        const val VIEW_TYPE_NBA_TEAM = 2
+//    }
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
@@ -67,13 +72,14 @@ class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         nbaPlayersRecyclerView.layoutManager = linearLayoutManager
 
-        val itemDecor = DividerItemDecoration(nbaPlayersRecyclerView.context, VERTICAL)
-        itemDecor.setDrawable(resources.getDrawable(R.drawable.divider_drawable))
-        nbaPlayersRecyclerView.addItemDecoration(itemDecor)
-
         nbaPlayersPaginationAdapter =
             NbaPlayersPaginationAdapter(this@NbaFragment)
         nbaPlayersRecyclerView.adapter = nbaPlayersPaginationAdapter
+
+        nbaPlayersRecyclerView.addItemDecoration(
+            CustomViewTypeItemDecoration(nbaPlayersRecyclerView.context,
+            linearLayoutManager.orientation,resources.getDrawable(R.drawable.divider_drawable))
+        )
 
 //            TODO for Room + Paging 3
 //        nbaPlayersAdapter =
