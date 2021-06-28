@@ -17,7 +17,6 @@ class RepositoryModule {
 //    fun providesContext(): Context = application.applicationContext
 //    var nbaPlayerDataBase: NbaPlayerDataBase? =  NbaPlayerDataBase.getInstance(providesContext)
 //    var nbaRepository: NbaRepository = DefaultNbaRepository(nbaPlayerDataBase)
-
     var nbaRepository: NbaRepository = DefaultNbaRepository()
 
     @Provides
