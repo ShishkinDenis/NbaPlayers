@@ -22,12 +22,9 @@ import javax.inject.Inject
 
 class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
     //            TODO for Room + Paging 3
-//class NbaFragmentPagination : DaggerFragment(), NbaPlayerItemListener {
+//class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
-//    companion object {
-//        const val VIEW_TYPE_NBA_PLAYER = 1
-//        const val VIEW_TYPE_NBA_TEAM = 2
-//    }
+
 
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
@@ -60,7 +57,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
 //            TODO for Room + Paging 3
 //            nbaViewModel.fetchPlayersDb().collectLatest {
 //                    pagingData ->
-//                nbaPlayersPaginationAdapter.submitData(pagingData)
+//                nbaPlayersAdapter.submitData(pagingData)
 //            }
 
         }
@@ -82,13 +79,10 @@ class NbaFragment : DaggerFragment(), NbaPlayerPaginationItemListener {
         )
 
 //            TODO for Room + Paging 3
-//        nbaPlayersAdapter =
-//            NbaPlayersAdapter(this@NbaFragmentPagination)
+//        nbaPlayersAdapter = NbaPlayersAdapter(this@NbaFragment)
 //        nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
 
-//        TODO divider every two items
-//        nbaPlayersRecyclerView.addItemDecoration(
-//            CustomPositionItemDecoration(context?.getDrawable(R.drawable.divider_drawable)!!)
+
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {

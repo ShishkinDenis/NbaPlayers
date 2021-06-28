@@ -28,6 +28,7 @@ class DefaultNbaRepository @Inject constructor() : NbaRepository {
         NbaApiClient.getClient().create(NbaApi::class.java)
 
 //    TODO delete after injection to constructor
+
     lateinit var nbaPlayerDataBase: NbaPlayerDataBase
 //   var nbaPlayerDataBase: NbaPlayerDataBase? = LocalInjector.injectDb()
 
