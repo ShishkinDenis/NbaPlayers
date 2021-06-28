@@ -14,10 +14,8 @@ class MyApplication : DaggerApplication() {
     @InternalCoroutinesApi
     override fun applicationInjector(): AndroidInjector<MyApplication> =
         DaggerAppComponent
-//            .application(this)
             .builder()
             .create(this)
 
 }
-
 
