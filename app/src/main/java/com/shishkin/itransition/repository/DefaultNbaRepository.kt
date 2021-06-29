@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import com.shishkin.itransition.db.NbaPlayerDao
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
 import com.shishkin.itransition.network.NbaApi
-import com.shishkin.itransition.network.NbaApiClient
 import com.shishkin.itransition.network.entities.KResult
 import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
@@ -19,40 +18,42 @@ import javax.inject.Inject
 
 
 @ExperimentalPagingApi
-class DefaultNbaRepository @Inject constructor(val nbaPlayerDao: NbaPlayerDao) : NbaRepository {
+class DefaultNbaRepository @Inject constructor(private val nbaPlayerDao: NbaPlayerDao, private val nbaApi: NbaApi) : NbaRepository {
 
-    //    TODO inject to constructor
-    private val nbaApi: NbaApi =
-        NbaApiClient.getClient().create(NbaApi::class.java)
-
-    override fun getNbaPlayersList(): Flow<KResult<List<NbaPlayer>>> {
+    override fun getNbaPlayersListDB(): Flow<KResult<List<NbaPlayer>>> {
         return flow {
-            val flowData = nbaApi.getAllNbaPlayers()
+            val cashedData = nbaPlayerDao.getAllPlayers()
+            emit(KResult.success(cashedData))
 
+            val flowData = nbaApi.getAllNbaPlayers()
             if (flowData.data == null) {
-                emit(Result.failure(NullPointerException("No data found, test message")))
+                emit(KResult.failure(NullPointerException("No data found, test message")))
             } else {
-                emit(Result.success(flowData.data))
+                nbaPlayerDao.clearAllPlayers()
+                nbaPlayerDao.insertAllPlayers(flowData.data)
+
+                emit(KResult.success(flowData.data))
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getSpecificPlayer(playerId: Int?): Flow<KResult<NbaPlayer?>> {
+    override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<NbaPlayer?>> {
         return flow {
+            val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
+            emit(KResult.success(cashedData))
+
             val flowData = nbaApi.getSpecificPlayer(playerId)
             emit(Result.success(flowData))
         }.flowOn(Dispatchers.IO)
     }
 
-
-
     override fun getNbaGamesListPagination(): Flow<PagingData<ListItem>> {
         return Pager(
-            config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-            pagingSourceFactory = {
-                NbaGamesPagingDataSource(
-                    nbaApi)
-            }
+                config = PagingConfig(pageSize = 20, prefetchDistance = 2),
+                pagingSourceFactory = {
+                    NbaGamesPagingDataSource(
+                            nbaApi)
+                }
         ).flow
     }
 }

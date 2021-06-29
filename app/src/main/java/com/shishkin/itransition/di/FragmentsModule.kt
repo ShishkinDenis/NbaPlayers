@@ -17,9 +17,9 @@ abstract class FragmentsModule {
     abstract fun provideNbaFragment(): NbaFragment
 
     @ContributesAndroidInjector(
-        modules = [
-            NbaPlayerIdModule::class
-        ]
+            modules = [
+                NbaPlayerIdModule::class
+            ]
     )
     abstract fun provideNbaDetailsFragment(): NbaDetailsFragment
 

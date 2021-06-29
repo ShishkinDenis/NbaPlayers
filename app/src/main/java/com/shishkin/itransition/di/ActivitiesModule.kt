@@ -12,9 +12,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
 abstract class ActivitiesModule {
 
     @ContributesAndroidInjector(
-        modules = [
-            FragmentsModule::class
-        ]
+            modules = [
+                FragmentsModule::class
+            ]
     )
     abstract fun provideMainActivity(): MainActivity
 

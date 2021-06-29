@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomViewTypeItemDecoration(context: Context, orientation: Int, private val drawableView: Drawable) :DividerItemDecoration(context,orientation) {
+class CustomViewTypeItemDecoration(context: Context, orientation: Int, private val drawableView: Drawable) : DividerItemDecoration(context, orientation) {
 
     companion object {
         const val VIEW_TYPE_NBA_PLAYER = 1
@@ -25,7 +25,7 @@ class CustomViewTypeItemDecoration(context: Context, orientation: Int, private v
             if (viewType == VIEW_TYPE_NBA_TEAM) {
                 val params = view.layoutParams as RecyclerView.LayoutParams
                 val top = view.bottom + params.bottomMargin
-                val bottom = top + d!!.intrinsicHeight
+                val bottom = top + d.intrinsicHeight
                 d.setBounds(0, top, parent.right, bottom)
                 d.draw(c)
             }

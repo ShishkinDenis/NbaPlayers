@@ -28,7 +28,7 @@ class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewM
     private fun loadPlayers() {
         viewModelScope.launch {
             _playersState.value = com.shishkin.itransition.network.entities.Result.loading()
-            nbaRepository.getNbaPlayersList()
+            nbaRepository.getNbaPlayersListDB()
                     .catch { e -> _playersState.value = com.shishkin.itransition.network.entities.Result.error(e.message, e) }
                     .collect { nbaPlayers ->
                         nbaPlayers.fold(

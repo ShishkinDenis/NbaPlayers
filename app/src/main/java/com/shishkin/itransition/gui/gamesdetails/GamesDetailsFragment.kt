@@ -17,8 +17,8 @@ class GamesDetailsFragment : DaggerFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGamesDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -29,18 +29,18 @@ class GamesDetailsFragment : DaggerFragment() {
 
         val nbaGame: NbaGame? = arguments?.getParcelable("nbaGame")
 
-        with(binding){
-            tvGameSeason.text ="Season: " + nbaGame?.season.toString()
+        with(binding) {
+            tvGameSeason.text = "Season: " + nbaGame?.season.toString()
             tvGameDate.text = "Date: " + nbaGame?.date?.let { convertDate(it) }
 
-            tvHomeTeamCity.text ="City: " + nbaGame?.homeTeam?.city
-            tvHomeTeamFullName.text =nbaGame?.homeTeam?.fullName
-            tvHomeTeamDivision.text ="Division: " +  nbaGame?.homeTeam?.division
+            tvHomeTeamCity.text = "City: " + nbaGame?.homeTeam?.city
+            tvHomeTeamFullName.text = nbaGame?.homeTeam?.fullName
+            tvHomeTeamDivision.text = "Division: " + nbaGame?.homeTeam?.division
 
 
-            tvVisitorTeamCity.text ="City: " + nbaGame?.visitorTeam?.city
-            tvVisitorTeamFullName.text =nbaGame?.visitorTeam?.fullName
-            tvVisitorTeamDivision.text ="Division: " +  nbaGame?.visitorTeam?.division
+            tvVisitorTeamCity.text = "City: " + nbaGame?.visitorTeam?.city
+            tvVisitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
+            tvVisitorTeamDivision.text = "Division: " + nbaGame?.visitorTeam?.division
         }
 
     }

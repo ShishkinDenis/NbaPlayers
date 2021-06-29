@@ -14,13 +14,13 @@ abstract class NbaPlayerDataBase : RoomDatabase() {
 
     companion object {
 
-        val PLAYER_DB = "player.db"
+        private const val PLAYER_DB = "player.db"
 
         fun buildDatabase(context: Context) =
-            Room.databaseBuilder(
-                context,
-                NbaPlayerDataBase::class.java, PLAYER_DB
-            ).build()
+                Room.databaseBuilder(
+                        context,
+                        NbaPlayerDataBase::class.java, PLAYER_DB
+                ).build()
     }
 
 }

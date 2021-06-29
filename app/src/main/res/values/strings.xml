@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">Itransition</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="id">id</string>
     <string name="viewmodel_not_found">ViewModel Not Found</string>
+    <string name="first_and_last_name">First and Last Name</string>
+    <string name="position">Position</string>
+    <string name="date_2021_06_21">Date: 2021-06-21</string>
+    <string name="division">Division</string>
+    <string name="season_2021">Season: 2021</string>
+    <string name="status_final">Status: Final</string>
+    <string name="home_team_score_100">Home team score: 100</string>
+    <string name="home_team">Home team</string>
+    <string name="name">Name</string>
+    <string name="abbreviation">Abbreviation</string>
+    <string name="visitor_team">Visitor team</string>
+    <string name="full_name">Full name</string>
+    <string name="team">Team</string>
+    <string name="city">City</string>
+    <string name="players">Players</string>
+    <string name="games">Games</string>
 </resources>

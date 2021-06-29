@@ -27,8 +27,8 @@ class NbaDetailsFragment : DaggerFragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNbaDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -38,8 +38,8 @@ class NbaDetailsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         nbaDetailsViewModel =
-            ViewModelProviders.of(this, nbaDetailsViewModelFactory)
-                .get(NbaDetailsViewModel::class.java)
+                ViewModelProviders.of(this, nbaDetailsViewModelFactory)
+                        .get(NbaDetailsViewModel::class.java)
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -50,19 +50,19 @@ class NbaDetailsFragment : DaggerFragment() {
                             },
                             onSuccess = {
                                 binding.tvSpecificNbaPlayerName.text =
-                                "Name: " + uiState.data?.firstName + " " + uiState.data?.lastName
-                            binding.tvSpecificNbaPlayerTeam.text =
-                                "Team: " + uiState.data?.team?.abbreviation
-                            binding.tvSpecificNbaPlayerPosition.text =
-                                "Position: " + uiState.data?.position
+                                        "Name: " + uiState.data?.firstName + " " + uiState.data?.lastName
+                                binding.tvSpecificNbaPlayerTeam.text =
+                                        "Team: " + uiState.data?.team?.abbreviation
+                                binding.tvSpecificNbaPlayerPosition.text =
+                                        "Position: " + uiState.data?.position
 
 //                            TODO Why three following textView are null?
-                            binding.tvSpecificNbaPlayerHeightFeet.text =
-                                "Height feet: " + uiState.data?.heightFeet.toString()
-                            binding.tvSpecificNbaPlayerHeightInches.text =
-                                "Height inches: " + uiState.data?.heightInches.toString()
-                            binding.tvSpecificNbaPlayerWeightPounds.text =
-                                "Weight pounds: " + uiState.data?.weightPounds.toString()
+                                binding.tvSpecificNbaPlayerHeightFeet.text =
+                                        "Height feet: " + uiState.data?.heightFeet.toString()
+                                binding.tvSpecificNbaPlayerHeightInches.text =
+                                        "Height inches: " + uiState.data?.heightInches.toString()
+                                binding.tvSpecificNbaPlayerWeightPounds.text =
+                                        "Weight pounds: " + uiState.data?.weightPounds.toString()
                             },
                             onError = { throwable, message ->
                                 Log.d("Retrofit", "NbaFragment: Error: " + message)

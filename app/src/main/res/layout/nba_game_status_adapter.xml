@@ -18,14 +18,14 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
 
 
-        <!--        TODO string resources + styles-->
+        <!--       styles-->
         <TextView
             android:id="@+id/tv_game_season"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="Season: 2021"
+            android:text="@string/season_2021"
             android:textColor="#4CAF50"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="68dp"
-            android:text="Date: 2021-06-21"
+            android:text="@string/date_2021_06_21"
             android:textColor="#4CAF50"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_game_season"
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Status: Final"
+            android:text="@string/status_final"
             android:textColor="#000000"
             android:textSize="16sp"
             android:visibility="visible"
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
-            android:text="Home team score: 100"
+            android:text="@string/home_team_score_100"
             android:textColor="#000000"
             android:textSize="16sp"
             android:visibility="visible"

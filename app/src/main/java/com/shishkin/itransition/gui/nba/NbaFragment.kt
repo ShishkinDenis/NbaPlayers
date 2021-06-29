@@ -14,9 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-
-import com.shishkin.itransition.network.entities.ListItem
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
+import com.shishkin.itransition.network.entities.NbaPlayersMapper
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -26,17 +25,15 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
-
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
     lateinit var nbaViewModel: NbaViewModel
-//    lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
-    lateinit var nbaPlayersAdapter: NbaPlayersAdapter
+    lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
     private lateinit var nbaPlayersRecyclerView: RecyclerView
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_nba, container, false)
     }
@@ -59,7 +56,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                                 if (it.isNullOrEmpty()) {
                                     Log.d("Retrofit", "NbaFragment: Empty")
                                 } else {
-                                    nbaPlayersAdapter.submitList(it)
+                                    nbaPlayersListAdapter.submitList(NbaPlayersMapper().invoke(it))
                                 }
                             },
                             onError = { throwable, message ->
@@ -77,41 +74,20 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         nbaPlayersRecyclerView.layoutManager = linearLayoutManager
 
-//        TODO for multiType
-//        nbaPlayersListAdapter =
-//            NbaPlayersListAdapter(this@NbaFragment)
-//        nbaPlayersRecyclerView.adapter = nbaPlayersListAdapter
+        nbaPlayersListAdapter =
+                NbaPlayersListAdapter(this@NbaFragment)
+        nbaPlayersRecyclerView.adapter = nbaPlayersListAdapter
 
-        nbaPlayersAdapter =
-            NbaPlayersAdapter(this@NbaFragment)
-        nbaPlayersRecyclerView.adapter = nbaPlayersAdapter
-
-//        TODO for multiType
-//        nbaPlayersRecyclerView.addItemDecoration(
-//            CustomViewTypeItemDecoration(nbaPlayersRecyclerView.context,
-//            linearLayoutManager.orientation,resources.getDrawable(R.drawable.divider_drawable))
-//        )
-
+        nbaPlayersRecyclerView.addItemDecoration(
+                CustomViewTypeItemDecoration(nbaPlayersRecyclerView.context,
+                        linearLayoutManager.orientation, resources.getDrawable(R.drawable.divider_drawable))
+        )
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
         val bundle = Bundle()
         bundle.putInt("id", nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
-    }
-
-    private fun convertList(listOfNbaPlayers: List<NbaPlayer>): List<ListItem> {
-        val VIEW_TYPE_NBA_PLAYER = 1
-        val VIEW_TYPE_NBA_TEAM = 2
-
-        val listOfListItem = ArrayList<ListItem>()
-        for (item in listOfNbaPlayers) {
-            val nbaPlayerListItem = ListItem(item, VIEW_TYPE_NBA_PLAYER)
-            val nbaTeamListItem = ListItem(item.team, VIEW_TYPE_NBA_TEAM)
-            listOfListItem.add(nbaPlayerListItem)
-            listOfListItem.add(nbaTeamListItem)
-        }
-        return listOfListItem
     }
 
 }

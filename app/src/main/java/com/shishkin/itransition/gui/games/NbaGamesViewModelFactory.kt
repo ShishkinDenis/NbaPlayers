@@ -6,7 +6,7 @@ import com.shishkin.itransition.repository.NbaRepository
 import javax.inject.Inject
 
 class NbaGamesViewModelFactory @Inject constructor(var nbaRepository: NbaRepository) :
-    ViewModelProvider.Factory {
+        ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NbaGamesViewModel::class.java)) {

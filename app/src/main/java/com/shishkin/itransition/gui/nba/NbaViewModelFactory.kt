@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 class NbaViewModelFactory @Inject constructor(var nbaRepository: NbaRepository) :
-    ViewModelProvider.Factory {
+        ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NbaViewModel::class.java)) {

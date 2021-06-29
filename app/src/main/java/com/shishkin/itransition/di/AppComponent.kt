@@ -12,13 +12,13 @@ import javax.inject.Singleton
 @Singleton
 @InternalCoroutinesApi
 @Component(
-    modules = [
-        AndroidSupportInjectionModule::class,
-        RepositoryModule::class,
-        NbaAppModule::class,
-        ActivitiesModule::class,
-        NbaPlayerIdModule::class
-    ]
+        modules = [
+            AndroidSupportInjectionModule::class,
+            RepositoryModule::class,
+            NbaAppModule::class,
+            ActivitiesModule::class,
+            NbaPlayerIdModule::class
+        ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {
 

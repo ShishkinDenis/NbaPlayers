@@ -18,14 +18,14 @@ class NbaApiClient {
                         val original = chain.request()
 
                         val newRequest = original.newBuilder()
-                            .header("User-Agent", "App")
-                            .header(
-                                "x-rapidapi-key",
-                                "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
-                            )
-                            .header("x-rapidapi-host", "free-nba.p.rapidapi.com")
-                            .method(original.method, original.body)
-                            .build()
+                                .header("User-Agent", "App")
+                                .header(
+                                        "x-rapidapi-key",
+                                        "6db3e9805dmsh48065f33193b2d0p1e1a19jsn8cc478ac8bdd"
+                                )
+                                .header("x-rapidapi-host", "free-nba.p.rapidapi.com")
+                                .method(original.method, original.body)
+                                .build()
 
                         return chain.proceed(newRequest)
                     }
@@ -38,10 +38,10 @@ class NbaApiClient {
                 val client = httpClient.build()
 
                 retrofit = Retrofit.Builder()
-                    .baseUrl("https://free-nba.p.rapidapi.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build()
+                        .baseUrl("https://free-nba.p.rapidapi.com")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(client)
+                        .build()
 
                 retrofit!!
             } else {

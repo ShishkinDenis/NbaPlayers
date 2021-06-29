@@ -9,7 +9,7 @@ data class Result<out T>(val status: Status, val data: T?, val error: Throwable?
             onSuccess: (result: T?) -> Unit,
             onError: (throwable: Throwable?, message: String?) -> Unit
     ) {
-        when(this.status) {
+        when (this.status) {
             Status.SUCCESS -> onSuccess(data)
             Status.ERROR -> onError(error, message)
             Status.LOADING -> onLoading()

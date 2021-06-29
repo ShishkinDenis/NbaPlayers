@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 
 class NbaDetailsViewModel @Inject constructor(
-    var nbaRepository: NbaRepository,
-    @NbaPlayerId var nbaPlayerId: Int?
+        var nbaRepository: NbaRepository,
+        @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 
     private val _specificPlayerState: MutableStateFlow<Result<NbaPlayer>> =
@@ -31,7 +31,7 @@ class NbaDetailsViewModel @Inject constructor(
     private fun loadSpecificPlayer() {
         viewModelScope.launch {
             _specificPlayerState.value = com.shishkin.itransition.network.entities.Result.loading()
-            nbaRepository.getSpecificPlayer(nbaPlayerId)
+            nbaRepository.getSpecificPlayerDB(nbaPlayerId)
                     .catch { e -> _specificPlayerState.value = com.shishkin.itransition.network.entities.Result.error(e.message, e) }
                     .collect { nbaPlayers ->
                         nbaPlayers.fold(

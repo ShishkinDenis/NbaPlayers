@@ -18,25 +18,24 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
 
 
-        <!--        TODO string resources-->
         <TextView
-            android:id="@+id/tv_game_season"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="First and Last Name"
+            android:text="@string/first_and_last_name"
             android:textColor="#4CAF50"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_game_status"
+            android:id="@+id/tv_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Position"
+            android:text="@string/position"
             android:textColor="#000000"
             android:textSize="16sp"
             android:visibility="visible"

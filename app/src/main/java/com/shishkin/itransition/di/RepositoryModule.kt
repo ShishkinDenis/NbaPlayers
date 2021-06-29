@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import com.shishkin.itransition.db.NbaPlayerDao
 import com.shishkin.itransition.db.NbaPlayerDataBase
+import com.shishkin.itransition.network.NbaApi
+import com.shishkin.itransition.network.NbaApiClient
 import com.shishkin.itransition.repository.DefaultNbaRepository
 import com.shishkin.itransition.repository.NbaRepository
 import dagger.Module
@@ -25,12 +27,16 @@ class RepositoryModule {
         return db.nbaPlayerDao()
     }
 
+    @Singleton
+    @Provides
+    fun provideNbaApi(): NbaApi {
+        return NbaApiClient.getClient().create(NbaApi::class.java)
+    }
 
     @ExperimentalPagingApi
     @Provides
-    fun provideLocationRepository(nbaPlayerDao: NbaPlayerDao): NbaRepository {
-        return DefaultNbaRepository(nbaPlayerDao)
+    fun provideLocationRepository(nbaPlayerDao: NbaPlayerDao, nbaApi: NbaApi): NbaRepository {
+        return DefaultNbaRepository(nbaPlayerDao,nbaApi)
     }
-
 
 }

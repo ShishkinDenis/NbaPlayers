@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 
 class NbaDetailsViewModelFactory @Inject constructor(
-    var nbaRepository: NbaRepository,
-    @NbaPlayerId var nbaPlayerId: Int?
+        var nbaRepository: NbaRepository,
+        @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

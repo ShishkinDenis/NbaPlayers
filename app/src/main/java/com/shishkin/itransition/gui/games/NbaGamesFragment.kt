@@ -28,8 +28,8 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     private lateinit var nbaGamesRecyclerView: RecyclerView
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_games, container, false)
     }
@@ -37,7 +37,7 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nbaGamesViewModel =
-            ViewModelProviders.of(this, nbaGamesViewModelFactory).get(NbaGamesViewModel::class.java)
+                ViewModelProviders.of(this, nbaGamesViewModelFactory).get(NbaGamesViewModel::class.java)
         initNbaGamesRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -58,7 +58,7 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
         nbaGamesRecyclerView.addItemDecoration(itemDecor)
 
         nbaGamesAdapter =
-            NbaGamesAdapter(this@NbaGamesFragment)
+                NbaGamesAdapter(this@NbaGamesFragment)
         nbaGamesRecyclerView.adapter = nbaGamesAdapter
     }
 
