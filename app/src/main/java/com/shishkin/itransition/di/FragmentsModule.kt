@@ -1,5 +1,6 @@
 package com.shishkin.itransition.di
 
+import androidx.paging.ExperimentalPagingApi
 import com.shishkin.itransition.gui.games.NbaGamesFragment
 import com.shishkin.itransition.gui.gamesdetails.GamesDetailsFragment
 import com.shishkin.itransition.gui.nba.NbaFragment
@@ -8,6 +9,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalPagingApi
 @InternalCoroutinesApi
 @Module
 abstract class FragmentsModule {

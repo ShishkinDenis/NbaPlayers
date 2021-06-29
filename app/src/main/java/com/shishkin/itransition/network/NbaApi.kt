@@ -9,8 +9,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NbaApi {
+
     @GET("players")
-    suspend fun getAllNbaPlayersPagination(@Query("page") page: Int): RestResponse<List<NbaPlayer>>
+    suspend fun getAllNbaPlayers(): RestResponse<List<NbaPlayer>>
 
     @GET("/players/{id}")
     suspend fun getSpecificPlayer(@Path("id") playerId: Int?): NbaPlayer

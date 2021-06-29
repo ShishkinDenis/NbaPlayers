@@ -2,26 +2,31 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.shishkin.itransition.network.entities.ListItem
-import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.repository.NbaRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@InternalCoroutinesApi
 class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewModel() {
 
-    fun fetchPlayersPagination(): Flow<PagingData<ListItem>> {
-        return nbaRepository.getNbaPlayersListPagination()
-    }
+    private val _uiState: MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(NbaPlayersUiState.Empty)
+    val uiState: StateFlow<NbaPlayersUiState> = _uiState
 
-
-//    TODO for Paging 3 + multiType
-//    fun fetchPlayersDb(): Flow<PagingData<ListItem>> {
-    fun fetchPlayersDb(): Flow<PagingData<NbaPlayer>> {
-        return nbaRepository.getNbaPlayersListDb().cachedIn(viewModelScope)
+    init {
+        viewModelScope.launch {
+            _uiState.value = NbaPlayersUiState.Loading
+            nbaRepository.getNbaPlayersList()
+                    .catch { e -> _uiState.value = NbaPlayersUiState.Error(e) }
+                    .collect { nbaPlayers ->
+                        _uiState.value = NbaPlayersUiState.Success(nbaPlayers)
+                    }
+        }
     }
 
 }

@@ -5,29 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.gui.utils.NbaPlayerDiffCallback
 import com.shishkin.itransition.network.entities.NbaPlayer
 
-//TODO for Paging 3 (one viewHolder) + Room
 class NbaPlayersAdapter(private val listener: NbaPlayerItemListener) :
-    PagingDataAdapter<NbaPlayer, RecyclerView.ViewHolder>(NbaPlayerDiffCallback()) {
+    ListAdapter<NbaPlayer, RecyclerView.ViewHolder>(NbaPlayerDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.nba_player_adapter, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.nba_player_adapter, parent, false)
         return NbaPlayerViewHolder(view,listener)
-        }
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val nbaPlayer: NbaPlayer = getItem(position)!!
-            val nbaPlayerName: String =
-                "NBA player: " + nbaPlayer?.firstName + " " + nbaPlayer?.lastName
-            val nbaPlayerPosition: String = "Position: " + nbaPlayer?.position
-            (holder as NbaPlayerViewHolder).nbaPlayerName.text = nbaPlayerName
-            holder.nbaPlayerPosition.text = nbaPlayerPosition
-            nbaPlayer?.let { holder.getNbaItem(it) }
+        val nbaPlayer: NbaPlayer = getItem(position)!!
+        val nbaPlayerName: String =
+            "NBA player: " + nbaPlayer?.firstName + " " + nbaPlayer?.lastName
+        val nbaPlayerPosition: String = "Position: " + nbaPlayer?.position
+        (holder as NbaPlayerViewHolder).nbaPlayerName.text = nbaPlayerName
+        holder.nbaPlayerPosition.text = nbaPlayerPosition
+        nbaPlayer?.let { holder.getNbaItem(it) }
 
     }
 }
@@ -58,7 +57,3 @@ class NbaPlayerViewHolder(itemView: View, private val listenerPagination: NbaPla
     }
 
 }
-
-
-
-

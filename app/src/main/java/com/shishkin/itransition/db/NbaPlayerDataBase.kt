@@ -8,10 +8,9 @@ import androidx.room.TypeConverters
 import com.shishkin.itransition.network.entities.NbaPlayer
 
 @TypeConverters(TeamConverter::class)
-@Database(entities = [NbaPlayer::class, RemoteKeys::class], version = 1)
+@Database(entities = [NbaPlayer::class], version = 1)
 abstract class NbaPlayerDataBase : RoomDatabase() {
     abstract fun nbaPlayerDao(): NbaPlayerDao
-    abstract fun remoteKeysDao(): RemoteKeysDao
 
     companion object {
 

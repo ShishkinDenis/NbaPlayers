@@ -1,6 +1,5 @@
 package com.shishkin.itransition.db
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,12 +10,11 @@ import com.shishkin.itransition.network.entities.NbaPlayer
 interface NbaPlayerDao{
 
     @Query("SELECT * FROM players")
-    fun getAllPlayers(): PagingSource<Int, NbaPlayer>
-//    fun getAllPlayers(): PagingSource<Int, ListItem>
+    fun getAllPlayers(): List<NbaPlayer>
 
-//    TODO listItem?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllPlayers(nbaPlayers: List<NbaPlayer>)
+    fun insertAllPlayers(nbaPlayers: List<NbaPlayer>)
 
     @Query("DELETE FROM players")
     suspend fun clearAllPlayers()

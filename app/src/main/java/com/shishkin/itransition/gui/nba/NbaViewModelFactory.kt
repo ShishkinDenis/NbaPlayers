@@ -3,8 +3,10 @@ package com.shishkin.itransition.gui.nba
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.shishkin.itransition.repository.NbaRepository
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 class NbaViewModelFactory @Inject constructor(var nbaRepository: NbaRepository) :
     ViewModelProvider.Factory {
 

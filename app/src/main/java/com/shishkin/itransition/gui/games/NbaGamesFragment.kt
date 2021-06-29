@@ -1,5 +1,6 @@
 package com.shishkin.itransition.gui.games
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initNbaGamesRecyclerView() {
         nbaGamesRecyclerView = view?.findViewById(R.id.rv_nba_games)!!
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
