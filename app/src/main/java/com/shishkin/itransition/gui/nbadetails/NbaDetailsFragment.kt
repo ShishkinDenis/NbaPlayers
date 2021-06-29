@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.shishkin.itransition.databinding.FragmentNbaDetailsBinding
-import com.shishkin.itransition.gui.nba.NbaPlayerUiState
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,35 +43,31 @@ class NbaDetailsFragment : DaggerFragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaDetailsViewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is NbaPlayerUiState.Success -> {
-//                            TODO string resources
-                            binding.tvSpecificNbaPlayerName.text =
-                                "Name: " + uiState.nbaPlayer?.firstName + " " + uiState.nbaPlayer?.lastName
+                nbaDetailsViewModel.specificPlayerState.collectLatest { uiState ->
+                    uiState.fold(
+                            onLoading = {
+                                Log.d("Retrofit", "NbaFragment: Loading")
+                            },
+                            onSuccess = {
+                                binding.tvSpecificNbaPlayerName.text =
+                                "Name: " + uiState.data?.firstName + " " + uiState.data?.lastName
                             binding.tvSpecificNbaPlayerTeam.text =
-                                "Team: " + uiState.nbaPlayer?.team?.abbreviation
+                                "Team: " + uiState.data?.team?.abbreviation
                             binding.tvSpecificNbaPlayerPosition.text =
-                                "Position: " + uiState.nbaPlayer?.position
+                                "Position: " + uiState.data?.position
 
 //                            TODO Why three following textView are null?
                             binding.tvSpecificNbaPlayerHeightFeet.text =
-                                "Height feet: " + uiState.nbaPlayer?.heightFeet.toString()
+                                "Height feet: " + uiState.data?.heightFeet.toString()
                             binding.tvSpecificNbaPlayerHeightInches.text =
-                                "Height inches: " + uiState.nbaPlayer?.heightInches.toString()
+                                "Height inches: " + uiState.data?.heightInches.toString()
                             binding.tvSpecificNbaPlayerWeightPounds.text =
-                                "Weight pounds: " + uiState.nbaPlayer?.weightPounds.toString()
-                        }
-                        is NbaPlayerUiState.Error -> {
-                            Log.d("Retrofit", "NbaDetailsFragment: Error")
-                        }
-                        is NbaPlayerUiState.Loading -> {
-                            Log.d("Retrofit", "NbaDetailsFragment: Loading")
-                        }
-                        is NbaPlayerUiState.Empty -> {
-                            Log.d("Retrofit", "NbaDetailsFragment: Empty")
-                        }
-                    }
+                                "Weight pounds: " + uiState.data?.weightPounds.toString()
+                            },
+                            onError = { throwable, message ->
+                                Log.d("Retrofit", "NbaFragment: Error: " + message)
+                            }
+                    )
                 }
             }
         }

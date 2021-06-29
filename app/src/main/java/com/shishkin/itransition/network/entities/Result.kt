@@ -1,6 +1,20 @@
 package com.shishkin.itransition.network.entities
 
-data class Result<out T>(val status: Status, val data: T?, val error: Error?, val message: String?) {
+typealias KResult<T> = kotlin.Result<T>
+
+data class Result<out T>(val status: Status, val data: T?, val error: Throwable?, val message: String?) {
+
+    fun fold(
+            onLoading: () -> Unit,
+            onSuccess: (result: T?) -> Unit,
+            onError: (throwable: Throwable?, message: String?) -> Unit
+    ) {
+        when(this.status) {
+            Status.SUCCESS -> onSuccess(data)
+            Status.ERROR -> onError(error, message)
+            Status.LOADING -> onLoading()
+        }
+    }
 
     enum class Status {
         SUCCESS,
@@ -13,12 +27,12 @@ data class Result<out T>(val status: Status, val data: T?, val error: Error?, va
             return Result(Status.SUCCESS, data, null, null)
         }
 
-        fun <T> error(message: String, error: Error?): Result<T> {
+        fun <T> error(message: String?, error: Throwable?): Result<T> {
             return Result(Status.ERROR, null, error, message)
         }
 
-        fun <T> loading(data: T? = null): Result<T> {
-            return Result(Status.LOADING, data, null, null)
+        fun <T> loading(): Result<T> {
+            return Result(Status.LOADING, null, null, null)
         }
     }
 

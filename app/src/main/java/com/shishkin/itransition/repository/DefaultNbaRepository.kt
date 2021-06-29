@@ -8,9 +8,9 @@ import com.shishkin.itransition.db.NbaPlayerDao
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.NbaApiClient
+import com.shishkin.itransition.network.entities.KResult
 import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
-import com.shishkin.itransition.network.entities.RestResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,19 +25,26 @@ class DefaultNbaRepository @Inject constructor(val nbaPlayerDao: NbaPlayerDao) :
     private val nbaApi: NbaApi =
         NbaApiClient.getClient().create(NbaApi::class.java)
 
-    override fun getNbaPlayersList(): Flow<RestResponse<List<NbaPlayer>>?> {
+    override fun getNbaPlayersList(): Flow<KResult<List<NbaPlayer>>> {
         return flow {
-            val flowData = nbaApi?.getAllNbaPlayers()
-            emit(flowData)
+            val flowData = nbaApi.getAllNbaPlayers()
+
+            if (flowData.data == null) {
+                emit(Result.failure(NullPointerException("No data found, test message")))
+            } else {
+                emit(Result.success(flowData.data))
+            }
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getSpecificPlayer(playerId: Int?): Flow<NbaPlayer?> {
+    override fun getSpecificPlayer(playerId: Int?): Flow<KResult<NbaPlayer?>> {
         return flow {
-            val flowData = nbaApi?.getSpecificPlayer(playerId)
-            emit(flowData)
+            val flowData = nbaApi.getSpecificPlayer(playerId)
+            emit(Result.success(flowData))
         }.flowOn(Dispatchers.IO)
     }
+
+
 
     override fun getNbaGamesListPagination(): Flow<PagingData<ListItem>> {
         return Pager(

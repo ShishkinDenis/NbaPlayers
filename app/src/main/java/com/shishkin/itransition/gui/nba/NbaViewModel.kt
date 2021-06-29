@@ -2,6 +2,7 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,18 +16,31 @@ import javax.inject.Inject
 @InternalCoroutinesApi
 class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<NbaPlayersUiState> = MutableStateFlow(NbaPlayersUiState.Empty)
-    val uiState: StateFlow<NbaPlayersUiState> = _uiState
+    private val _playersState: MutableStateFlow<com.shishkin.itransition.network.entities.Result<List<NbaPlayer>>> =
+            MutableStateFlow(com.shishkin.itransition.network.entities.Result.loading())
+
+    val playersState: StateFlow<com.shishkin.itransition.network.entities.Result<List<NbaPlayer>>> = _playersState
 
     init {
-        viewModelScope.launch {
-            _uiState.value = NbaPlayersUiState.Loading
-            nbaRepository.getNbaPlayersList()
-                    .catch { e -> _uiState.value = NbaPlayersUiState.Error(e) }
-                    .collect { nbaPlayers ->
-                        _uiState.value = NbaPlayersUiState.Success(nbaPlayers)
-                    }
-        }
+        loadPlayers()
     }
 
+    private fun loadPlayers() {
+        viewModelScope.launch {
+            _playersState.value = com.shishkin.itransition.network.entities.Result.loading()
+            nbaRepository.getNbaPlayersList()
+                    .catch { e -> _playersState.value = com.shishkin.itransition.network.entities.Result.error(e.message, e) }
+                    .collect { nbaPlayers ->
+                        nbaPlayers.fold(
+                                onSuccess = { list ->
+                                    _playersState.value = com.shishkin.itransition.network.entities.Result.success(list)
+                                },
+                                onFailure = { error ->
+                                    _playersState.value = com.shishkin.itransition.network.entities.Result.error(error.message, error)
+                                }
+                        )
+                    }
+        }
+
+    }
 }

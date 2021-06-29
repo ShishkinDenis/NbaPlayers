@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.nba.NbaPlayersUiState.*
+
 import com.shishkin.itransition.network.entities.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
 import dagger.android.support.DaggerFragment
@@ -45,28 +45,27 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nbaViewModel =
-            ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
+                ViewModelProviders.of(this, nbaViewModelFactory).get(NbaViewModel::class.java)
         initNbaPlayersRecyclerView()
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaViewModel.uiState.collectLatest {
-                        uiState ->
-                    when (uiState) {
-                        is Success -> {
-                            val list = uiState.nbaPlayers?.data
-                            nbaPlayersAdapter.submitList(list)
-                        }
-                        is Error -> {
-                            Log.d("Retrofit", "NbaFragment: Error")
-                        }
-                        is Loading -> {
-                            Log.d("Retrofit", "NbaFragment: Loading")
-                        }
-                        is Empty -> {
-                            Log.d("Retrofit", "NbaFragment: Empty")
-                        }
-                    }
+                nbaViewModel.playersState.collectLatest { uiState ->
+                    uiState.fold(
+                            onLoading = {
+                                Log.d("Retrofit", "NbaFragment: Loading")
+                            },
+                            onSuccess = {
+                                if (it.isNullOrEmpty()) {
+                                    Log.d("Retrofit", "NbaFragment: Empty")
+                                } else {
+                                    nbaPlayersAdapter.submitList(it)
+                                }
+                            },
+                            onError = { throwable, message ->
+                                Log.d("Retrofit", "NbaFragment: Error: " + message)
+                            }
+                    )
                 }
             }
         }
