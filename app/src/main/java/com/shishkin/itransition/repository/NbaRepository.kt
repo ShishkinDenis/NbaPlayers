@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface NbaRepository {
 
     fun getNbaPlayersListDB(): Flow<KResult<List<NbaPlayer>>>
+//    fun getNbaPlayersListDB(): Flow<Result<List<NbaPlayer>?>>
 
     fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<NbaPlayer?>>
 

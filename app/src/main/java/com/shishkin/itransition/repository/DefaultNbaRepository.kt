@@ -22,28 +22,36 @@ class DefaultNbaRepository @Inject constructor(private val nbaPlayerDao: NbaPlay
 
     override fun getNbaPlayersListDB(): Flow<KResult<List<NbaPlayer>>> {
         return flow {
-            val cashedData = nbaPlayerDao.getAllPlayers()
-            emit(KResult.success(cashedData))
 
-            val flowData = nbaApi.getAllNbaPlayers()
-            if (flowData.data == null) {
-                emit(KResult.failure(NullPointerException("No data found, test message")))
-            } else {
-                nbaPlayerDao.clearAllPlayers()
-                nbaPlayerDao.insertAllPlayers(flowData.data)
+            try {
+                val apiData = nbaApi.getAllNbaPlayers()
+                val apiList = apiData.data
 
-                emit(KResult.success(flowData.data))
+                if (apiList.isNullOrEmpty()) {
+                    throw IllegalStateException("Data not found exception")
+                }
+                nbaPlayerDao.insertAllPlayers(apiList)
+                emit(KResult.success(apiList))
+            } catch (e: Exception) {
+                val cachedData = nbaPlayerDao.getAllPlayers()
+                if (cachedData.isNullOrEmpty()) {
+                    emit(KResult.failure(IllegalStateException("No data found, test message")))
+                } else {
+                    emit(KResult.success(cachedData))
+                }
             }
         }.flowOn(Dispatchers.IO)
     }
 
     override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<NbaPlayer?>> {
         return flow {
-            val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
-            emit(KResult.success(cashedData))
-
-            val flowData = nbaApi.getSpecificPlayer(playerId)
-            emit(Result.success(flowData))
+            try {
+                val flowData = nbaApi.getSpecificPlayer(playerId)
+                emit(Result.success(flowData))
+            } catch (e: Exception) {
+                val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
+                emit(KResult.success(cashedData))
+            }
         }.flowOn(Dispatchers.IO)
     }
 

@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:enabled="true"
         android:id="@+id/nbaFragment"
         android:title="@string/players"
         android:icon="@drawable/ic_players_24" />

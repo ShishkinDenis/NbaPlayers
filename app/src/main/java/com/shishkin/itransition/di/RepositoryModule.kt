@@ -36,7 +36,7 @@ class RepositoryModule {
     @ExperimentalPagingApi
     @Provides
     fun provideLocationRepository(nbaPlayerDao: NbaPlayerDao, nbaApi: NbaApi): NbaRepository {
-        return DefaultNbaRepository(nbaPlayerDao,nbaApi)
+        return DefaultNbaRepository(nbaPlayerDao, nbaApi)
     }
 
 }
