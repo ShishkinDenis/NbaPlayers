@@ -37,7 +37,7 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return getItem(position)!!.viewType
+        return getItem(position)?.viewType ?: VIEW_TYPE_NBA_PLAYER
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
