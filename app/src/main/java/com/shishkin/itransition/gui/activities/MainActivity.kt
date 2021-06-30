@@ -19,6 +19,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+        // TODO Evgeny закомментированный код оставлять нельзя
 //        bottomNavigationView.selectedItemId = R.id.nbaFragment
 //        bottomNavigationView.menu.findItem(R.id.nbaFragment).isChecked = true
     }

@@ -16,6 +16,7 @@ import javax.inject.Inject
 @InternalCoroutinesApi
 class NbaViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewModel() {
 
+  // TODO Evgeny: почему такой длинный пакет для Result?
     private val _playersState: MutableStateFlow<com.shishkin.itransition.network.entities.Result<List<NbaPlayer>>> =
             MutableStateFlow(com.shishkin.itransition.network.entities.Result.loading())
 

@@ -10,7 +10,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagingApi
 class MyApplication : DaggerApplication() {
 
-
+// TODO Evgeny: опять форматирование класса с пробелами.
     @InternalCoroutinesApi
     override fun applicationInjector(): AndroidInjector<MyApplication> =
             DaggerAppComponent
