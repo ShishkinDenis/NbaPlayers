@@ -1,4 +1,12 @@
 <resources>
+
+    <!-- TODO Evgeny Все ресурсы должны быть распределны по сегментам.
+    Т.е. часть которая относится к NbaDetailsFragment, часть которая отностися к NbaFragment
+    и так далее. Обычно помечется комментарием сверху, и ресурс содержит префикс этого аля
+    <string name="nba_details_position"></string>
+        <string name="nba_position"></string>
+    -->
+
     <string name="app_name">Itransition</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="id">id</string>

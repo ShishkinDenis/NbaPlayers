@@ -28,6 +28,7 @@ class NbaDetailsViewModel @Inject constructor(
         loadSpecificPlayer()
     }
 
+  // TODO Evgeny  Опять длиннющий пакет для Result
     private fun loadSpecificPlayer() {
         viewModelScope.launch {
             _specificPlayerState.value = com.shishkin.itransition.network.entities.Result.loading()

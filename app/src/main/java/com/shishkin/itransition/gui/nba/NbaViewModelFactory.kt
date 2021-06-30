@@ -17,4 +17,12 @@ class NbaViewModelFactory @Inject constructor(var nbaRepository: NbaRepository) 
             throw IllegalArgumentException("ViewModel Not Found")
         }
     }
+
+    // TODO Evgeny логика create сделать таким образом:
+ /*   @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return  NbaViewModel(
+         nbaRepository=  nbaRepository
+        ) as T
+    }*/
 }

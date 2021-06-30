@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CustomViewTypeItemDecoration(context: Context, orientation: Int, private val drawableView: Drawable) : DividerItemDecoration(context, orientation) {
 
+    // TODO Evgeny Зачем тебе тут View Type, и в NbaPlayersListAdapter?
+    // Если я тут захочу поменять  VIEW_TYPE_NBA_TEAM на 20, все пойдет по попе.
     companion object {
         const val VIEW_TYPE_NBA_PLAYER = 1
         const val VIEW_TYPE_NBA_TEAM = 2

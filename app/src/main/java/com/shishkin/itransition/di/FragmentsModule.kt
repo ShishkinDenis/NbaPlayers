@@ -9,6 +9,9 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import kotlinx.coroutines.InternalCoroutinesApi
 
+// TODO Evgeny: советую делать не общий FragmentsModule, а для каждого фрагмента делать отдельный модуль.
+// соотв. FragmentsModule должен быть удален.
+
 @ExperimentalPagingApi
 @InternalCoroutinesApi
 @Module

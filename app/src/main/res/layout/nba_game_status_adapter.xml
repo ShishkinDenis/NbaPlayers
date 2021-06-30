@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- TODO Evgeny: названия .xml файлов для элементов адаптера должны быть такие: item_... аля item_nba_game_status.xml -->
+
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -44,6 +47,8 @@
             app:layout_constraintTop_toTopOf="@+id/tv_game_season"
             app:layout_constraintVertical_bias="1.0" />
 
+        <!-- TODO Evgeny: зачем тебе тут android:visibility="visible" -->
+
         <TextView
             android:id="@+id/tv_game_status"
             android:layout_width="wrap_content"
@@ -55,6 +60,8 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- TODO Evgeny: зачем тебе тут layout_constraintVertical_bias -->
 
         <TextView
             android:id="@+id/tv_home_team_score"

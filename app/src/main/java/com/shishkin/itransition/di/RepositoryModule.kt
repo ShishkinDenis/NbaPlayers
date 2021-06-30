@@ -12,6 +12,19 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/*
+TODO Evgeny очень много всего намешано в RepositoryModule
+И API, и database, и dao,  repository.
+
+Надо распределить по ответствееностям.
+
+Специальный будет ApiServiceModule,
+
+DatabaseModule (провайдит provideDatabase, и все DAO к нему),
+
+RepositoryModule
+ */
+
 @Module
 class RepositoryModule {
 

@@ -37,6 +37,8 @@ class NbaDetailsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+          // TODO Evgeny: для получения viewModel ты можешь использовать специальный extension:
+      //  val nbaDetailsViewModel: NbaDetailsViewModel by viewModels { nbaDetailsViewModelFactory }
         nbaDetailsViewModel =
                 ViewModelProviders.of(this, nbaDetailsViewModelFactory)
                         .get(NbaDetailsViewModel::class.java)
@@ -49,6 +51,8 @@ class NbaDetailsFragment : DaggerFragment() {
                                 Log.d("Retrofit", "NbaFragment: Loading")
                             },
                             onSuccess = {
+                              // TODO Evgeny и тут текст не вынесен в strings.xml
+                              // TODO Evgeny Почему используешь uiState.data когда у тебя есть в it -> твой NbaPlayer
                                 binding.tvSpecificNbaPlayerName.text =
                                         "Name: " + uiState.data?.firstName + " " + uiState.data?.lastName
                                 binding.tvSpecificNbaPlayerTeam.text =

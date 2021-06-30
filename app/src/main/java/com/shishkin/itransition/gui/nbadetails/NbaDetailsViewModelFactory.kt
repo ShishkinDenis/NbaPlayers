@@ -12,6 +12,7 @@ class NbaDetailsViewModelFactory @Inject constructor(
         @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModelProvider.Factory {
 
+  // TODO Evgeny см NbaViewModelFactory
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NbaDetailsViewModel::class.java)) {
             NbaDetailsViewModel(this.nbaRepository, this.nbaPlayerId) as T

@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".gui.gamesdetails.GamesDetailsFragment">
 
+    <!-- TODO Evgeny Все базовые размеры текста и отпуспы должны выноситься в dimens. -->
+    <!-- Реализовать для всех лайаутов -->
     <TextView
         android:id="@+id/tv_visitor_team"
         android:layout_width="wrap_content"

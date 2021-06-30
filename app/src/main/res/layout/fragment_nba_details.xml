@@ -8,6 +8,8 @@
     tools:context=".gui.nbadetails.NbaDetailsFragment"
     android:orientation="vertical" >
 
+    <!-- TODO Evgeny дублирование цвета для каждого элемента идет. -->
+    <!-- Вынести в colors.xml и переиспользовать -->
     <TextView
         android:id="@+id/tv_specific_nba_player_name"
         android:layout_width="match_parent"

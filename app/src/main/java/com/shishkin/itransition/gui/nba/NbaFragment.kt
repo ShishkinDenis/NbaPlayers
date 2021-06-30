@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +26,18 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
+
+    // TODO Evgeny можно обойтись наименованиями обычными: viewModelFactory, viewModel
+    // По тому что это NBaFragment и так понятно,
+
     @Inject
     lateinit var nbaViewModelFactory: NbaViewModelFactory
+
     lateinit var nbaViewModel: NbaViewModel
     lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
+
+    // TODO Evgeny убрать все findViewById() и разобраться во ViewBinding: https://developer.android.com/topic/libraries/view-binding
+
     private lateinit var nbaPlayersRecyclerView: RecyclerView
 
     override fun onCreateView(
@@ -38,6 +47,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         return inflater.inflate(R.layout.fragment_nba, container, false)
     }
 
+    // TODO Evgeny зачем тут Supress Lint?
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +60,8 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 nbaViewModel.playersState.collectLatest { uiState ->
                     uiState.fold(
                             onLoading = {
+                                // TODO Evgeny Логирование лучше делать не через Log.d и прочие,
+                                // А подключить либу: Timber.
                                 Log.d("Retrofit", "NbaFragment: Loading")
                             },
                             onSuccess = {
@@ -68,8 +80,9 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    // TODO Evgeny зачем добавлял? Не ндао ставить заглушки на ругань @SuppressLint("UseCompatLoadingForDrawables")
     private fun initNbaPlayersRecyclerView() {
+        // TODO Evgeny: Удалить все !! из приложения. !! - это плохо и зло
         nbaPlayersRecyclerView = view?.findViewById(R.id.rv_nba_players)!!
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         nbaPlayersRecyclerView.layoutManager = linearLayoutManager
@@ -81,11 +94,15 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         nbaPlayersRecyclerView.addItemDecoration(
                 CustomViewTypeItemDecoration(nbaPlayersRecyclerView.context,
                         linearLayoutManager.orientation, resources.getDrawable(R.drawable.divider_drawable))
+
+        // TODO Evgeny: раз ругается на resources.getDrawable(R.drawable.divider_drawable), значит что-то не так
+        // Подсказка: использовать ContextCompat.getDrawable()
         )
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
         val bundle = Bundle()
+        // TODO Evgeny: смотри NbaPlayerIdModule
         bundle.putInt("id", nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
