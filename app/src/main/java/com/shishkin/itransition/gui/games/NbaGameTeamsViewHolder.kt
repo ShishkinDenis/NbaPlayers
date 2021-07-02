@@ -17,6 +17,4 @@ class NbaGameTeamsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     val visitorTeamCity: TextView = itemView.findViewById(R.id.tv_visitor_team_city)
     val visitorTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_visitor_team_abbreviation)
     val visitorTeamFullName: TextView = itemView.findViewById(R.id.tv_visitor_team_full_name)
-
-
 }

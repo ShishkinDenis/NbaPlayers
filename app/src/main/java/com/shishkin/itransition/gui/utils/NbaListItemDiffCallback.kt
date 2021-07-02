@@ -1,7 +1,6 @@
 package com.shishkin.itransition.gui.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.shishkin.itransition.network.entities.ListItem
 
 class NbaListItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
 
@@ -16,5 +15,4 @@ class NbaListItemDiffCallback : DiffUtil.ItemCallback<ListItem>() {
         // А вот тут уже ок, .т.к. они = data классы.
         return oldItem == newItem
     }
-
 }

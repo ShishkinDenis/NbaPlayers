@@ -1,6 +1,5 @@
 package com.shishkin.itransition.network
 
-
 import com.shishkin.itransition.network.entities.NbaGame
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.RestResponse
@@ -18,6 +17,4 @@ interface NbaApi {
 
     @GET("games")
     suspend fun getAllNbaGamesPagination(@Query("page") page: Int): RestResponse<List<NbaGame>>
-
-
 }
