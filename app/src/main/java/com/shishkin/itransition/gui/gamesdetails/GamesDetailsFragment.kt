@@ -43,7 +43,7 @@ class GamesDetailsFragment : DaggerFragment() {
     }
 
     private fun convertDate(date: Date): String? {
-        val datePattern = getString(R.string.date_format)
+        val datePattern = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(datePattern, Locale.US)
         return sdf.format(date)
     }

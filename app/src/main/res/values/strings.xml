@@ -10,7 +10,6 @@
     <string name="app_name">Itransition</string>
     <string name="first_and_last_name">First and Last Name</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="viewmodel_not_found">ViewModel Not Found</string>
     <string name="position">Position</string>
     <string name="name">Name</string>
     <string name="abbreviation">Abbreviation</string>
@@ -33,7 +32,6 @@
     <string name="nba_details_height_inches">Height inches: %1$d</string>
     <string name="nba_details_weight_pounds">Weight pounds: %1$d</string>
 <!--    GamesDetailsFragment-->
-    <string name="date_format">yyyy-MM-dd</string>
     <string name="games_details_season_2021">Season: 2021</string>
     <string name="games_details_date_2021_06_21">Date: 2021–06–21</string>
     <string name="games_details_home_team">Home team</string>
@@ -62,11 +60,4 @@
     <string name="nba_game_visitor_team_name">Name: %1$s</string>
     <string name="nba_game_visitor_team_city">City: %1$s</string>
     <string name="nba_game_visitor_team_abbreviation">\Abbreviation: %1$s</string>
-<!--    NbaGamesAdapter-->
-    <string name="nba_games_date_format">yyyy-MM-dd</string>
-<!--    DefaultNbaRepository-->
-    <string name="repository_data_not_found_exception">Data not found exception</string>
-
-
-
 </resources>

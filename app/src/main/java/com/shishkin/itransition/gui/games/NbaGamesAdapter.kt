@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
-import com.shishkin.itransition.di.MyApplication.Companion.context
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
 import com.shishkin.itransition.network.entities.NbaGame
@@ -39,10 +38,10 @@ class NbaGamesAdapter(private val listener: NbaGameItemListener)
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_GAME) {
             val nbaGame: NbaGame? = (getItem(position)?.item as? NbaGame)
             with(holder as NbaGameViewHolder) {
-                season.text = context?.getString(R.string.nba_game_season, nbaGame?.season)
-                gameStatus.text = context?.getString(R.string.nba_game_status, nbaGame?.status)
-                gameDate.text = context?.getString(R.string.nba_game_date,convertDate(nbaGame?.date))
-                homeTeamScore.text = context?.getString(R.string.nba_game_home_team_score,
+                season.text = itemView.context.getString(R.string.nba_game_season, nbaGame?.season)
+                gameStatus.text = itemView.context.getString(R.string.nba_game_status, nbaGame?.status)
+                gameDate.text = itemView.context.getString(R.string.nba_game_date,convertDate(nbaGame?.date))
+                homeTeamScore.text = itemView.context.getString(R.string.nba_game_home_team_score,
                     nbaGame?.homeTeamScore
                 )
                 nbaGame?.let { setNbaItem(it) }
@@ -51,19 +50,19 @@ class NbaGamesAdapter(private val listener: NbaGameItemListener)
             val nbaGame: NbaGame? = (getItem(position)?.item as? NbaGame)
             with(holder as NbaGameTeamsViewHolder) {
 
-                homeTeamName.text = context?.getString(R.string.nba_game_home_team_name,
+                homeTeamName.text = itemView.context.getString(R.string.nba_game_home_team_name,
                     nbaGame?.homeTeam?.name)
-                homeTeamCity.text = context?.getString(R.string.nba_game_home_team_city,
+                homeTeamCity.text = itemView.context.getString(R.string.nba_game_home_team_city,
                     nbaGame?.homeTeam?.city)
-                homeTeamAbbreviation.text = context?.getString(R.string.nba_game_home_team_abbreviation,
+                homeTeamAbbreviation.text = itemView.context.getString(R.string.nba_game_home_team_abbreviation,
                     nbaGame?.homeTeam?.abbreviation)
                 homeTeamFullName.text = nbaGame?.homeTeam?.fullName
 
-                visitorTeamName.text = context?.getString(R.string.nba_game_visitor_team_name,
+                visitorTeamName.text = itemView.context.getString(R.string.nba_game_visitor_team_name,
                     nbaGame?.visitorTeam?.name)
-                visitorTeamCity.text = context?.getString(R.string.nba_game_visitor_team_city,
+                visitorTeamCity.text = itemView.context.getString(R.string.nba_game_visitor_team_city,
                     nbaGame?.visitorTeam?.city)
-                visitorTeamAbbreviation.text = context?.getString(R.string.nba_game_visitor_team_abbreviation,
+                visitorTeamAbbreviation.text = itemView.context.getString(R.string.nba_game_visitor_team_abbreviation,
                     nbaGame?.visitorTeam?.abbreviation)
                 visitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
             }
@@ -71,7 +70,7 @@ class NbaGamesAdapter(private val listener: NbaGameItemListener)
     }
 
     private fun convertDate(date: Date?): String? {
-        val datePattern = context?.getString(R.string.nba_games_date_format)
+        val datePattern = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(datePattern, Locale.US)
         return sdf.format(date)
     }
