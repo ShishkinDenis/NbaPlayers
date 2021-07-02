@@ -42,14 +42,13 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNbaApi(): NbaApi {
-        return NbaApiClient.getClient().create(NbaApi::class.java)
+    fun provideNbaApi(): NbaApi? {
+        return NbaApiClient.getClient()?.create(NbaApi::class.java)
     }
 
     @ExperimentalPagingApi
     @Provides
-    fun provideLocationRepository(nbaPlayerDao: NbaPlayerDao, nbaApi: NbaApi): NbaRepository {
+    fun provideLocationRepository(nbaPlayerDao: NbaPlayerDao, nbaApi: NbaApi?): NbaRepository {
         return DefaultNbaRepository(nbaPlayerDao, nbaApi)
     }
-
 }

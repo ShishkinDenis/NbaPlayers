@@ -1,21 +1,24 @@
 package com.shishkin.itransition.di
 
-
-import androidx.paging.ExperimentalPagingApi
+import android.content.Context
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import kotlinx.coroutines.InternalCoroutinesApi
 
-
-@ExperimentalPagingApi
 class MyApplication : DaggerApplication() {
 
-// TODO Evgeny: опять форматирование класса с пробелами.
-    @InternalCoroutinesApi
+    override fun onCreate() {
+        super.onCreate()
+        context = this
+    }
+//TODO memory leak
+    companion object {
+        var context: Context? = null
+            private set
+    }
+
     override fun applicationInjector(): AndroidInjector<MyApplication> =
             DaggerAppComponent
                     .builder()
                     .create(this)
-
 }
 

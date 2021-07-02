@@ -10,7 +10,7 @@ import com.shishkin.itransition.network.entities.NbaPlayer
 @TypeConverters(TeamConverter::class)
 @Database(entities = [NbaPlayer::class], version = 1)
 abstract class NbaPlayerDataBase : RoomDatabase() {
-  // TODO Evgeny: форматирование. После обьявления класса/интерфейса лучше всегда ставить пробел (на строчку 13)
+
     abstract fun nbaPlayerDao(): NbaPlayerDao
 
     companion object {
@@ -23,5 +23,4 @@ abstract class NbaPlayerDataBase : RoomDatabase() {
                         NbaPlayerDataBase::class.java, PLAYER_DB
                 ).build()
     }
-// TODO: Evgeny а вот на этой строчке (26) пробел лишний
 }

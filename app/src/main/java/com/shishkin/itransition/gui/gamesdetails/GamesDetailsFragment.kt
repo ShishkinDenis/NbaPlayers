@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentGamesDetailsBinding
 import com.shishkin.itransition.network.entities.NbaGame
 import dagger.android.support.DaggerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class GamesDetailsFragment : DaggerFragment() {
 
-    private var _binding: FragmentGamesDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentGamesDetailsBinding
+    private val binding get() = _binding
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -26,29 +26,25 @@ class GamesDetailsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val nbaGame: NbaGame? = arguments?.getParcelable("nbaGame")
+        val nbaGame: NbaGame? = arguments?.getParcelable(getString(R.string.nba_game))
 
         with(binding) {
-            tvGameSeason.text = "Season: " + nbaGame?.season.toString()
-            tvGameDate.text = "Date: " + nbaGame?.date?.let { convertDate(it) }
+            tvGameSeason.text = getString(R.string.games_details_season,nbaGame?.season)
+            tvGameDate.text = getString(R.string.games_details_date,nbaGame?.date?.let { convertDate(it)})
 
-            tvHomeTeamCity.text = "City: " + nbaGame?.homeTeam?.city
+            tvHomeTeamCity.text = getString(R.string.games_details_home_team_city,nbaGame?.homeTeam?.city)
             tvHomeTeamFullName.text = nbaGame?.homeTeam?.fullName
-            tvHomeTeamDivision.text = "Division: " + nbaGame?.homeTeam?.division
+            tvHomeTeamDivision.text = getString(R.string.games_details_home_team_division,nbaGame?.homeTeam?.division)
 
-
-            tvVisitorTeamCity.text = "City: " + nbaGame?.visitorTeam?.city
+            tvVisitorTeamCity.text = getString(R.string.games_details_visitor_team_city,nbaGame?.visitorTeam?.city)
             tvVisitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
-            tvVisitorTeamDivision.text = "Division: " + nbaGame?.visitorTeam?.division
+            tvVisitorTeamDivision.text = getString(R.string.games_details_visitor_team_division,nbaGame?.visitorTeam?.division)
         }
-
     }
 
     private fun convertDate(date: Date): String? {
-        val DATE_PATTERN = "yyyy-MM-dd"
-        val sdf = SimpleDateFormat(DATE_PATTERN)
+        val datePattern = getString(R.string.date_format)
+        val sdf = SimpleDateFormat(datePattern, Locale.US)
         return sdf.format(date)
     }
-
 }

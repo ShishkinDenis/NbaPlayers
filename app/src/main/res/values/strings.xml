@@ -6,25 +6,67 @@
     <string name="nba_details_position"></string>
         <string name="nba_position"></string>
     -->
-
+<!--TODO will be fixed in layout branch-->
     <string name="app_name">Itransition</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="id">id</string>
-    <string name="viewmodel_not_found">ViewModel Not Found</string>
     <string name="first_and_last_name">First and Last Name</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="viewmodel_not_found">ViewModel Not Found</string>
     <string name="position">Position</string>
-    <string name="date_2021_06_21">Date: 2021-06-21</string>
-    <string name="division">Division</string>
-    <string name="season_2021">Season: 2021</string>
-    <string name="status_final">Status: Final</string>
-    <string name="home_team_score_100">Home team score: 100</string>
-    <string name="home_team">Home team</string>
     <string name="name">Name</string>
     <string name="abbreviation">Abbreviation</string>
     <string name="visitor_team">Visitor team</string>
-    <string name="full_name">Full name</string>
     <string name="team">Team</string>
-    <string name="city">City</string>
     <string name="players">Players</string>
     <string name="games">Games</string>
+
+<!--    NbaPlayerViewHolder-->
+    <string name="nba_player_name">NBA player: %1$s %2$s</string>
+    <string name="nba_player_position">Position: %1$s</string>
+<!--    NbaTeamViewHolder-->
+    <string name="nba_team_full_name">Team: %1$s, %2$s</string>
+    <string name="nba_team_city">City: %1s</string>
+<!--    NbaDetailsFragment-->
+    <string name="nba_details_name">Name: %1$s %2$s</string>
+    <string name="nba_details_team">Team: %1$s</string>
+    <string name="nba_details_position">Position: %1$s</string>
+    <string name="nba_details_height_feet">Height feet: %1$d</string>
+    <string name="nba_details_height_inches">Height inches: %1$d</string>
+    <string name="nba_details_weight_pounds">Weight pounds: %1$d</string>
+<!--    GamesDetailsFragment-->
+    <string name="date_format">yyyy-MM-dd</string>
+    <string name="games_details_season_2021">Season: 2021</string>
+    <string name="games_details_date_2021_06_21">Date: 2021–06–21</string>
+    <string name="games_details_home_team">Home team</string>
+    <string name="games_details_city">City</string>
+    <string name="games_details_full_name">Full name</string>
+    <string name="games_details_division">Division</string>
+    <string name="games_details_season">Season: %1$d</string>
+    <string name="games_details_date">Date: %1$s</string>
+    <string name="games_details_home_team_city">City: %1$s</string>
+    <string name="games_details_home_team_division">Division: %1$s</string>
+    <string name="games_details_visitor_team_city">City: %1$s</string>
+    <string name="games_details_visitor_team_division">Division: %1$s</string>
+<!--    NbaGameViewHolder-->
+    <string name="date_2021_06_21">Date: 2021–06–21</string>
+    <string name="season_2021">Season: 2021</string>
+    <string name="status_final">Status: Final</string>
+    <string name="home_team_score_100">Home team score: 100</string>
+    <string name="nba_game_season">Season: %1$d</string>
+    <string name="nba_game_status">Status: %1$s</string>
+    <string name="nba_game_date">Date: %1$s</string>
+    <string name="nba_game_home_team_score">Home team score: %1$d</string>
+<!--    NbaGameTeamsViewHolder-->
+    <string name="nba_game_home_team_name">Name: %1$s</string>
+    <string name="nba_game_home_team_city">City: %1$s</string>
+    <string name="nba_game_home_team_abbreviation">\Abbreviation: %1$s</string>
+    <string name="nba_game_visitor_team_name">Name: %1$s</string>
+    <string name="nba_game_visitor_team_city">City: %1$s</string>
+    <string name="nba_game_visitor_team_abbreviation">\Abbreviation: %1$s</string>
+<!--    NbaGamesAdapter-->
+    <string name="nba_games_date_format">yyyy-MM-dd</string>
+<!--    DefaultNbaRepository-->
+    <string name="repository_data_not_found_exception">Data not found exception</string>
+
+
+
 </resources>

@@ -1,6 +1,5 @@
 package com.shishkin.itransition.gui.nbadetails
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,26 +9,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentNbaDetailsBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class NbaDetailsFragment : DaggerFragment() {
 
     @Inject
-    lateinit var nbaDetailsViewModelFactory: NbaDetailsViewModelFactory
-    lateinit var nbaDetailsViewModel: NbaDetailsViewModel
-
-    private var _binding: FragmentNbaDetailsBinding? = null
-    private val binding get() = _binding!!
+    lateinit var viewModelFactory: NbaDetailsViewModelFactory
+    private lateinit var viewModel: NbaDetailsViewModel
+    private lateinit var _binding: FragmentNbaDetailsBinding
+    private val binding get() = _binding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentNbaDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,44 +35,40 @@ class NbaDetailsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-          // TODO Evgeny: для получения viewModel ты можешь использовать специальный extension:
-      //  val nbaDetailsViewModel: NbaDetailsViewModel by viewModels { nbaDetailsViewModelFactory }
-        nbaDetailsViewModel =
-                ViewModelProviders.of(this, nbaDetailsViewModelFactory)
-                        .get(NbaDetailsViewModel::class.java)
+        // TODO Evgeny: для получения viewModel ты можешь использовать специальный extension:
+        //  val nbaDetailsViewModel: NbaDetailsViewModel by viewModels { nbaDetailsViewModelFactory }
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(NbaDetailsViewModel::class.java)
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nbaDetailsViewModel.specificPlayerState.collectLatest { uiState ->
+                viewModel.specificPlayerState.collectLatest { uiState ->
                     uiState.fold(
-                            onLoading = {
-                                Log.d("Retrofit", "NbaFragment: Loading")
-                            },
-                            onSuccess = {
-                              // TODO Evgeny и тут текст не вынесен в strings.xml
-                              // TODO Evgeny Почему используешь uiState.data когда у тебя есть в it -> твой NbaPlayer
-                                binding.tvSpecificNbaPlayerName.text =
-                                        "Name: " + uiState.data?.firstName + " " + uiState.data?.lastName
-                                binding.tvSpecificNbaPlayerTeam.text =
-                                        "Team: " + uiState.data?.team?.abbreviation
-                                binding.tvSpecificNbaPlayerPosition.text =
-                                        "Position: " + uiState.data?.position
+                        onLoading = {
+                            Log.d("Retrofit", "NbaFragment: Loading")
+                        },
+                        onSuccess = {
+                            binding.tvSpecificNbaPlayerName.text =
+                                getString(R.string.nba_details_name, it?.firstName, it?.lastName)
+                            binding.tvSpecificNbaPlayerTeam.text =
+                                getString(R.string.nba_details_team, it?.team?.abbreviation)
+                            binding.tvSpecificNbaPlayerPosition.text =
+                                getString(R.string.nba_details_position, it?.position)
 
-//                            TODO Why three following textView are null?
-                                binding.tvSpecificNbaPlayerHeightFeet.text =
-                                        "Height feet: " + uiState.data?.heightFeet.toString()
-                                binding.tvSpecificNbaPlayerHeightInches.text =
-                                        "Height inches: " + uiState.data?.heightInches.toString()
-                                binding.tvSpecificNbaPlayerWeightPounds.text =
-                                        "Weight pounds: " + uiState.data?.weightPounds.toString()
-                            },
-                            onError = { throwable, message ->
-                                Log.d("Retrofit", "NbaFragment: Error: " + message)
-                            }
+                            binding.tvSpecificNbaPlayerHeightFeet.text =
+                                getString(R.string.nba_details_height_feet, it?.heightFeet)
+                            binding.tvSpecificNbaPlayerHeightInches.text =
+                                getString(R.string.nba_details_height_inches, it?.heightInches)
+                            binding.tvSpecificNbaPlayerWeightPounds.text =
+                                getString(R.string.nba_details_weight_pounds, it?.weightPounds)
+                        },
+                        onError = { throwable, message ->
+                            Log.d("Retrofit", "NbaFragment: Error: " + message)
+                        }
                     )
                 }
             }
         }
     }
-
 }
