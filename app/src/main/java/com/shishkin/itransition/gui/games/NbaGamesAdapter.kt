@@ -14,6 +14,7 @@ import java.util.*
 
 const val VIEW_TYPE_NBA_GAME = 1
 const val VIEW_TYPE_NBA_GAME_TEAM = 2
+private const val NBA_DATE_FORMAT  =  "yyyy-MM-dd"
 
 class NbaGamesAdapter(private val listener: NbaGameItemListener)
     : PagingDataAdapter<ListItem, RecyclerView.ViewHolder>(NbaListItemDiffCallback()) {
@@ -70,8 +71,7 @@ class NbaGamesAdapter(private val listener: NbaGameItemListener)
     }
 
     private fun convertDate(date: Date?): String? {
-        val datePattern = "yyyy-MM-dd"
-        val sdf = SimpleDateFormat(datePattern, Locale.US)
+        val sdf = SimpleDateFormat(NBA_DATE_FORMAT, Locale.US)
         return sdf.format(date)
     }
 }

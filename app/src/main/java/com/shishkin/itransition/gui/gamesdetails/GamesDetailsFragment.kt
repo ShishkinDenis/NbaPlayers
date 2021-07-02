@@ -11,6 +11,8 @@ import dagger.android.support.DaggerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val NBA_DATE_FORMAT  =  "yyyy-MM-dd"
+
 class GamesDetailsFragment : DaggerFragment() {
 
     private lateinit var _binding: FragmentGamesDetailsBinding
@@ -43,8 +45,7 @@ class GamesDetailsFragment : DaggerFragment() {
     }
 
     private fun convertDate(date: Date): String? {
-        val datePattern = "yyyy-MM-dd"
-        val sdf = SimpleDateFormat(datePattern, Locale.US)
+        val sdf = SimpleDateFormat(NBA_DATE_FORMAT, Locale.US)
         return sdf.format(date)
     }
 }
