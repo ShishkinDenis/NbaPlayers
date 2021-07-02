@@ -6,7 +6,6 @@ import com.shishkin.itransition.di.NbaPlayerId
 import com.shishkin.itransition.repository.NbaRepository
 import javax.inject.Inject
 
-
 class NbaDetailsViewModelFactory @Inject constructor(
         var nbaRepository: NbaRepository,
         @NbaPlayerId var nbaPlayerId: Int?

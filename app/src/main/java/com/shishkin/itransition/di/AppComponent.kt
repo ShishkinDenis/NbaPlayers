@@ -1,16 +1,11 @@
 package com.shishkin.itransition.di
 
-import androidx.paging.ExperimentalPagingApi
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Singleton
 
-
-@ExperimentalPagingApi
 @Singleton
-@InternalCoroutinesApi
 @Component(
         modules = [
             AndroidSupportInjectionModule::class,
@@ -27,5 +22,4 @@ interface AppComponent : AndroidInjector<MyApplication> {
 
         abstract override fun build(): AppComponent
     }
-
 }

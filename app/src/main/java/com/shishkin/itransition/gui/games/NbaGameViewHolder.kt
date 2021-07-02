@@ -8,6 +8,7 @@ import com.shishkin.itransition.network.entities.NbaGame
 
 class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListener) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
     private lateinit var nbaGame: NbaGame
 
     // TODO   view/data binding
@@ -16,12 +17,12 @@ class NbaGameViewHolder(itemView: View, private val listener: NbaGameItemListene
     val gameDate: TextView = itemView.findViewById(R.id.tv_game_date)
     val homeTeamScore: TextView = itemView.findViewById(R.id.tv_home_team_score)
 
-    fun getNbaItem(item: NbaGame) {
-        this.nbaGame = item
-    }
-
     init {
         itemView.setOnClickListener(this)
+    }
+    // TODO delete
+    fun setNbaItem(item: NbaGame) {
+        this.nbaGame = item
     }
 
     override fun onClick(v: View?) {
