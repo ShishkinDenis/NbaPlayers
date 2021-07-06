@@ -49,19 +49,36 @@ class NbaDetailsFragment : DaggerFragment() {
                             Log.d("Retrofit", "NbaFragment: Loading")
                         },
                         onSuccess = { nbaPlayer ->
-                            binding.tvNbaDetailsName.text =
-                                getString(R.string.nba_details_name, nbaPlayer?.firstName, nbaPlayer?.lastName)
-                            binding.tvNbaDetailsTeam.text =
-                                getString(R.string.nba_details_team, nbaPlayer?.team?.abbreviation)
-                            binding.tvNbaDetailsPosition.text =
-                                getString(R.string.nba_details_position, nbaPlayer?.position)
+                            with(binding) {
+                                tvNbaDetailsName.text =
+                                    getString(
+                                        R.string.nba_details_name, nbaPlayer?.firstName,
+                                        nbaPlayer?.lastName
+                                    )
+                                tvNbaDetailsTeam.text =
+                                    getString(
+                                        R.string.nba_details_team,
+                                        nbaPlayer?.team?.abbreviation
+                                    )
+                                tvNbaDetailsPosition.text =
+                                    getString(R.string.nba_details_position, nbaPlayer?.position)
 
-                            binding.tvNbaDetailsHeightFeet.text =
-                                getString(R.string.nba_details_height_feet, nbaPlayer?.heightFeet)
-                            binding.tvNbaDetailsHeightInches.text =
-                                getString(R.string.nba_details_height_inches, nbaPlayer?.heightInches)
-                            binding.tvNbaDetailsWeightPounds.text =
-                                getString(R.string.nba_details_weight_pounds, nbaPlayer?.weightPounds)
+                                tvNbaDetailsHeightFeet.text =
+                                    getString(
+                                        R.string.nba_details_height_feet,
+                                        nbaPlayer?.heightFeet
+                                    )
+                                tvNbaDetailsHeightInches.text =
+                                    getString(
+                                        R.string.nba_details_height_inches,
+                                        nbaPlayer?.heightInches
+                                    )
+                                tvNbaDetailsWeightPounds.text =
+                                    getString(
+                                        R.string.nba_details_weight_pounds,
+                                        nbaPlayer?.weightPounds
+                                    )
+                            }
                         },
                         onError = { throwable, message ->
                             Log.d("Retrofit", "NbaFragment: Error: " + message)

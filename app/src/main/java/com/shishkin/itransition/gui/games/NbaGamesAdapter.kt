@@ -8,6 +8,7 @@ import com.shishkin.itransition.databinding.ItemNbaGameStatusBinding
 import com.shishkin.itransition.databinding.ItemNbaGameTeamsBinding
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
+import com.shishkin.itransition.network.entities.NbaGame
 
 const val VIEW_TYPE_NBA_GAME = 1
 const val VIEW_TYPE_NBA_GAME_TEAM = 2
@@ -33,9 +34,13 @@ class NbaGamesAdapter(private val listener: NbaGameItemListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_GAME) {
-            getItem(position)?.let { (holder as? NbaGameStatusViewHolder)?.bind(it) }
+            (getItem(position)?.item as? NbaGame)?.let {
+                (holder as? NbaGameStatusViewHolder)?.bind(it)
+            }
         } else {
-            getItem(position)?.let { (holder as? NbaGameTeamsViewHolder)?.bind(it) }
+            (getItem(position)?.item as? NbaGame)?.let {
+                (holder as? NbaGameTeamsViewHolder)?.bind(it)
+            }
         }
     }
 }

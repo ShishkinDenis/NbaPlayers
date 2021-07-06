@@ -4,11 +4,10 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.ItemNbaPlayerBinding
-import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.entities.NbaPlayer
 
 class NbaPlayerViewHolder(
-    val binding: ItemNbaPlayerBinding,
+    private val binding: ItemNbaPlayerBinding,
     private val listener: NbaPlayerItemListener
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -22,11 +21,11 @@ class NbaPlayerViewHolder(
         nbaPlayer?.id?.let(listener::onClickedNbaPlayer)
     }
 
-    fun bind(item: ListItem) {
-        nbaPlayer = item.item as? NbaPlayer
+    fun bind(nbaPlayer: NbaPlayer) {
         binding.tvItemNbaPlayerName.text = itemView.context.getString(
-            R.string.nba_player_name, nbaPlayer?.firstName, nbaPlayer?.lastName)
+            R.string.nba_player_name, nbaPlayer.firstName, nbaPlayer.lastName
+        )
         binding.tvItemNbaPlayerPosition.text =
-            itemView.context.getString(R.string.nba_player_position, nbaPlayer?.position)
+            itemView.context.getString(R.string.nba_player_position, nbaPlayer.position)
     }
 }

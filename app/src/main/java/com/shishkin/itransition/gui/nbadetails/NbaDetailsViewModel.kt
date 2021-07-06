@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NbaDetailsViewModel @Inject constructor(
-    var nbaRepository: NbaRepository,
+    private val nbaRepository: NbaRepository,
     @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 

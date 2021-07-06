@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.shishkin.itransition.repository.NbaRepository
 import javax.inject.Inject
 
-class NbaViewModelFactory @Inject constructor(var nbaRepository: NbaRepository) :
-        ViewModelProvider.Factory {
+class NbaViewModelFactory @Inject constructor(private val nbaRepository: NbaRepository) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NbaViewModel::class.java)) {

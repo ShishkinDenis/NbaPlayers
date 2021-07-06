@@ -58,9 +58,7 @@ class DefaultNbaRepository @Inject constructor(
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),
             pagingSourceFactory = {
-                NbaGamesPagingDataSource(
-                    nbaApi
-                )
+                NbaGamesPagingDataSource(nbaApi)
             }
         ).flow
     }

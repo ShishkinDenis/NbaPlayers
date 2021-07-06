@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nba_game_status_adapter_ll_parent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_height_ultra_large"
+        android:layout_height="@dimen/layout_item_nba_game_teams_height"
         android:layout_margin="@dimen/layout_margin_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_nba_player_last_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
@@ -31,7 +31,7 @@
             android:id="@+id/tv_item_nba_game_home_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_view_margin_bottom_large"
+            android:layout_marginStart="@dimen/margin_bottom_large"
             android:text="@string/nba_game_home_team"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_medium"
@@ -115,7 +115,7 @@
             android:id="@+id/tv_item_nba_game_teams_visitor_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/text_view_margin_end_large"
+            android:layout_marginEnd="@dimen/margin_end_large"
             android:text="@string/nba_game_visitor_team"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_medium"

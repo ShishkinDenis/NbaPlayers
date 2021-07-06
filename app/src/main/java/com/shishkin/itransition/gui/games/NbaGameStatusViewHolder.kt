@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.ItemNbaGameStatusBinding
-import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.entities.NbaGame
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,7 +11,7 @@ import java.util.*
 private const val NBA_DATE_FORMAT = "yyyy-MM-dd"
 
 class NbaGameStatusViewHolder(
-    val binding: ItemNbaGameStatusBinding,
+    private val binding: ItemNbaGameStatusBinding,
     private val listener: NbaGameItemListener
 ) :
     RecyclerView.ViewHolder(binding.root), View.OnClickListener {
@@ -27,17 +26,19 @@ class NbaGameStatusViewHolder(
         listener.onClickedNbaGame(nbaGame)
     }
 
-    fun bind(item: ListItem) {
-        nbaGame = item.item as? NbaGame
-        with(binding){
+    fun bind(nbaGame: NbaGame) {
+        with(binding) {
+            val context = root.context
             tvItemNbaGameStatusGameSeason.text =
-                binding.root.context.getString(R.string.nba_game_season, nbaGame?.season)
+                context.getString(R.string.nba_game_season, nbaGame.season)
             tvItemNbaGameStatusGameStatus.text =
-                binding.root.context.getString(R.string.nba_game_status, nbaGame?.status)
-            tvItemNbaGameStatusGameDate.text = binding.root.context.getString(
-                R.string.nba_game_date, nbaGame?.date?.let { date -> convertDate(date) })
-            tvItemNbaGameStatusHomeTeamScore.text = binding.root.context.getString(
-                R.string.nba_game_home_team_score, nbaGame?.homeTeamScore)
+                context.getString(R.string.nba_game_status, nbaGame.status)
+            tvItemNbaGameStatusGameDate.text = context.getString(
+                R.string.nba_game_date, convertDate(nbaGame.date)
+            )
+            tvItemNbaGameStatusHomeTeamScore.text = context.getString(
+                R.string.nba_game_home_team_score, nbaGame.homeTeamScore
+            )
         }
     }
 

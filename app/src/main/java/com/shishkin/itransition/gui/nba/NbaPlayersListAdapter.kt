@@ -8,6 +8,8 @@ import com.shishkin.itransition.databinding.ItemNbaPlayerBinding
 import com.shishkin.itransition.databinding.ItemNbaTeamBinding
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
+import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaTeam
 
 const val VIEW_TYPE_NBA_PLAYER = 1
 const val VIEW_TYPE_NBA_TEAM = 2
@@ -17,10 +19,12 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_NBA_PLAYER) {
-            val binding = ItemNbaPlayerBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+            val binding =
+                ItemNbaPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             NbaPlayerViewHolder(binding, listener)
         } else {
-            val binding = ItemNbaTeamBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+            val binding =
+                ItemNbaTeamBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             NbaTeamViewHolder(binding)
         }
     }
@@ -31,9 +35,9 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
-            (holder as? NbaPlayerViewHolder)?.bind(getItem(position))
+            (getItem(position)?.item as? NbaPlayer)?.let { (holder as? NbaPlayerViewHolder)?.bind(it) }
         } else {
-            (holder as? NbaTeamViewHolder)?.bind(getItem(position))
+            (getItem(position)?.item as? NbaTeam)?.let { (holder as? NbaTeamViewHolder)?.bind(it) }
         }
     }
 }

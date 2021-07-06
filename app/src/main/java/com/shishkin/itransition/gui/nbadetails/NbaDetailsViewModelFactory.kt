@@ -7,8 +7,8 @@ import com.shishkin.itransition.repository.NbaRepository
 import javax.inject.Inject
 
 class NbaDetailsViewModelFactory @Inject constructor(
-        var nbaRepository: NbaRepository,
-        @NbaPlayerId var nbaPlayerId: Int?
+    private val nbaRepository: NbaRepository,
+    @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModelProvider.Factory {
 
   // TODO Evgeny см NbaViewModelFactory

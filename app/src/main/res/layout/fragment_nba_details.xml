@@ -12,9 +12,9 @@
         android:id="@+id/tv_nba_details_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:text="@string/nba_details_name"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium" />
@@ -23,18 +23,18 @@
         android:id="@+id/tv_nba_details_team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:text="@string/nba_details_team"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium" />
 
     <TextView
         android:id="@+id/tv_nba_details_position"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -43,9 +43,9 @@
 
     <TextView
         android:id="@+id/tv_nba_details_height_feet"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -54,9 +54,9 @@
 
     <TextView
         android:id="@+id/tv_nba_details_height_inches"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -65,9 +65,9 @@
 
     <TextView
         android:id="@+id/tv_nba_details_weight_pounds"
-        android:layout_marginStart="@dimen/text_view_margin_start_large"
-        android:layout_marginTop="@dimen/text_view_margin_top_large"
-        android:layout_marginEnd="@dimen/text_view_margin_end_large"
+        android:layout_marginStart="@dimen/margin_start_large"
+        android:layout_marginTop="@dimen/margin_top_large"
+        android:layout_marginEnd="@dimen/margin_end_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
