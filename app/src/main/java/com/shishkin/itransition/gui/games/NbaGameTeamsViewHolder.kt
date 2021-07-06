@@ -1,20 +1,44 @@
 package com.shishkin.itransition.gui.games
 
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.databinding.ItemNbaGameTeamsBinding
+import com.shishkin.itransition.network.entities.NbaGame
 
-class NbaGameTeamsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class NbaGameTeamsViewHolder(private val binding: ItemNbaGameTeamsBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    // TODO   view/data binding
-    val homeTeamName: TextView = itemView.findViewById(R.id.tv_home_team_name)
-    val homeTeamCity: TextView = itemView.findViewById(R.id.tv_home_team_city)
-    val homeTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_home_team_abbreviation)
-    val homeTeamFullName: TextView = itemView.findViewById(R.id.tv_home_team_full_name)
+    fun bind(nbaGame: NbaGame) {
+        with(binding) {
+            val context = root.context
+            tvItemNbaGameTeamsHomeTeamName.text = context.getString(
+                R.string.nba_game_home_team_name, nbaGame.homeTeam.name
+            )
 
-    val visitorTeamName: TextView = itemView.findViewById(R.id.tv_visitor_team_name)
-    val visitorTeamCity: TextView = itemView.findViewById(R.id.tv_visitor_team_city)
-    val visitorTeamAbbreviation: TextView = itemView.findViewById(R.id.tv_visitor_team_abbreviation)
-    val visitorTeamFullName: TextView = itemView.findViewById(R.id.tv_visitor_team_full_name)
+            tvItemNbaGameTeamsHomeTeamCity.text = context.getString(
+                R.string.nba_game_home_team_city, nbaGame.homeTeam.city
+            )
+
+            tvItemNbaGameTeamsHomeTeamAbbreviation.text = context.getString(
+                R.string.nba_game_home_team_abbreviation, nbaGame.homeTeam.abbreviation
+            )
+
+            tvItemNbaGameTeamsHomeTeamFullName.text = nbaGame.homeTeam.fullName
+
+            tvItemNbaGameTeamsVisitorTeamName.text = context.getString(
+                R.string.nba_game_visitor_team_name, nbaGame.visitorTeam.name
+            )
+
+            tvItemNbaGamesTeamsVisitorTeamCity.text = context.getString(
+                R.string.nba_game_visitor_team_city, nbaGame.visitorTeam.city
+            )
+
+            tvItemNbaGameTeamsVisitorTeamAbbreviation.text = context.getString(
+                R.string.nba_game_visitor_team_abbreviation, nbaGame.visitorTeam.abbreviation
+            )
+
+            tvItemNbaGameTeamsVisitorTeamFullName.text = nbaGame.visitorTeam.fullName
+        }
+
+    }
 }

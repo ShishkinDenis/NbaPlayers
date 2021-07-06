@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nba_player_id">id</string>
-    <string name="nba_game">nbaGame</string>
+    <string name="arg_nba_player_id">id</string>
+    <string name="arg_nba_game">nbaGame</string>
 </resources>

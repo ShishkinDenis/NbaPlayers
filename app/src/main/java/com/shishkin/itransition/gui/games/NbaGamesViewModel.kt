@@ -7,7 +7,8 @@ import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class NbaGamesViewModel @Inject constructor(var nbaRepository: NbaRepository) : ViewModel() {
+class NbaGamesViewModel @Inject constructor(private val nbaRepository: NbaRepository) :
+    ViewModel() {
 
     fun fetchGamesPagination(): Flow<PagingData<ListItem>?> {
         return nbaRepository.getNbaGamesListPagination()

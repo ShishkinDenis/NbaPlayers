@@ -6,12 +6,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val USER_AGENT = "User-Agent"
-const val APP = "App"
-const val X_RAPID_API_KEY_NAME = "x-rapidapi-key"
-const val X_RAPID_API_HOST_NAME = "x-rapidapi-host"
-const val X_RAPID_API_HOST_VALUE = "free-nba.p.rapidapi.com"
-const val URL = "https://free-nba.p.rapidapi.com"
+private const val USER_AGENT = "User-Agent"
+private const val APP = "App"
+private const val X_RAPID_API_KEY_NAME = "x-rapidapi-key"
+private const val X_RAPID_API_HOST_NAME = "x-rapidapi-host"
+private const val X_RAPID_API_HOST_VALUE = "free-nba.p.rapidapi.com"
+private const val URL = "https://free-nba.p.rapidapi.com"
 
 class NbaApiClient {
 

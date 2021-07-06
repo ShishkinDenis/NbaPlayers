@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class DefaultNbaRepository @Inject constructor(
-    private val nbaPlayerDao: NbaPlayerDao, private val nbaApi: NbaApi?
+    private val nbaPlayerDao: NbaPlayerDao,
+    private val nbaApi: NbaApi?
 ) : NbaRepository {
 
     override fun getNbaPlayersListDB(): Flow<KResult<List<NbaPlayer>>> {
@@ -57,9 +58,7 @@ class DefaultNbaRepository @Inject constructor(
         return Pager(
             config = PagingConfig(pageSize = 20, prefetchDistance = 2),
             pagingSourceFactory = {
-                NbaGamesPagingDataSource(
-                    nbaApi
-                )
+                NbaGamesPagingDataSource(nbaApi)
             }
         ).flow
     }
