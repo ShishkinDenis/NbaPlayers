@@ -31,9 +31,9 @@ class NbaGamesPagingDataSource(private val nbaApi: NbaApi?) : PagingSource<Int, 
 
     private fun convertList(listOfNbaGames: List<NbaGame>?): List<ListItem> {
         val listOfListItem = ArrayList<ListItem>()
-        listOfNbaGames?.forEach {
-            val nbaGameListItem = ListItem(it, VIEW_TYPE_NBA_GAME)
-            val nbaTeamListItem = ListItem(it, VIEW_TYPE_NBA_GAME_TEAM)
+        listOfNbaGames?.forEach { player ->
+            val nbaGameListItem = ListItem(player, VIEW_TYPE_NBA_GAME)
+            val nbaTeamListItem = ListItem(player, VIEW_TYPE_NBA_GAME_TEAM)
             listOfListItem.add(nbaGameListItem)
             listOfListItem.add(nbaTeamListItem)
         }

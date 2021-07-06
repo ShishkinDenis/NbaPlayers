@@ -8,71 +8,69 @@
     tools:context=".gui.nbadetails.NbaDetailsFragment"
     android:orientation="vertical" >
 
-    <!-- TODO Evgeny дублирование цвета для каждого элемента идет. -->
-    <!-- Вынести в colors.xml и переиспользовать -->
     <TextView
-        android:id="@+id/tv_specific_nba_player_name"
+        android:id="@+id/tv_nba_details_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Name"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+        android:text="@string/nba_details_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium" />
 
     <TextView
-        android:id="@+id/tv_specific_nba_player_team"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/tv_nba_details_team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="Team" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/nba_details_team"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium" />
 
     <TextView
-        android:id="@+id/tv_specific_nba_player_position"
+        android:id="@+id/tv_nba_details_position"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="Position" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium"
+        android:text="@string/nba_details_position" />
 
     <TextView
-        android:id="@+id/tv_specific_nba_player_height_feet"
+        android:id="@+id/tv_nba_details_height_feet"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="Height feet" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium"
+        android:text="@string/nba_details_height_feet" />
 
     <TextView
-        android:id="@+id/tv_specific_nba_player_height_Inches"
+        android:id="@+id/tv_nba_details_height_inches"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="Height inches" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium"
+        android:text="@string/nba_details_height_inches" />
 
     <TextView
-        android:id="@+id/tv_specific_nba_player_weight_pounds"
+        android:id="@+id/tv_nba_details_weight_pounds"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:text="Weight pounds" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_medium"
+        android:text="@string/nba_details_weight_pounds" />
 </LinearLayout>

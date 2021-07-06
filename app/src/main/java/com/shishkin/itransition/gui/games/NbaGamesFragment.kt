@@ -9,9 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
+import com.shishkin.itransition.databinding.FragmentGamesBinding
 import com.shishkin.itransition.network.entities.NbaGame
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
@@ -23,13 +22,15 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     lateinit var viewModelFactory: NbaGamesViewModelFactory
     private lateinit var viewModel: NbaGamesViewModel
     private lateinit var nbaGamesAdapter: NbaGamesAdapter
-    private var nbaGamesRecyclerView: RecyclerView? = null
+    private lateinit var _binding: FragmentGamesBinding
+    private val binding get() = _binding
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_games, container, false)
+    ): View {
+        _binding = FragmentGamesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,30 +41,26 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.fetchGamesPagination().collectLatest { pagingData ->
-                pagingData?.let { nbaGamesAdapter.submitData(it) }
+                pagingData?.let { data -> nbaGamesAdapter.submitData(data) }
             }
         }
     }
 
     private fun initNbaGamesRecyclerView() {
-        nbaGamesRecyclerView = view?.findViewById(R.id.rv_nba_games)
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        nbaGamesRecyclerView?.layoutManager = linearLayoutManager
-
-        val itemDecor = DividerItemDecoration(nbaGamesRecyclerView?.context, DividerItemDecoration.VERTICAL)
-        context?.let {
-            ContextCompat.getDrawable(it,R.drawable.divider_drawable)?.let {
-                itemDecor.setDrawable(it)
+        val itemDecor = DividerItemDecoration(binding.rvNbaGames.context, DividerItemDecoration.VERTICAL)
+        context?.let { context ->
+            ContextCompat.getDrawable(context,R.drawable.divider_drawable)?.let { drawable ->
+                itemDecor.setDrawable(drawable)
             }
         }
-        nbaGamesRecyclerView?.addItemDecoration(itemDecor)
+        binding.rvNbaGames.addItemDecoration(itemDecor)
         nbaGamesAdapter = NbaGamesAdapter(this@NbaGamesFragment)
-        nbaGamesRecyclerView?.adapter = nbaGamesAdapter
+        binding.rvNbaGames.adapter = nbaGamesAdapter
     }
 
-    override fun onClickedNbaGame(nbaGame: NbaGame) {
+    override fun onClickedNbaGame(nbaGame: NbaGame?) {
         val bundle = Bundle()
-        bundle.putParcelable(getString(R.string.nba_game), nbaGame)
+        bundle.putParcelable(getString(R.string.arg_nba_game), nbaGame)
         findNavController().navigate(R.id.action_gamesFragment_to_gamesDetailsFragment, bundle)
     }
 }

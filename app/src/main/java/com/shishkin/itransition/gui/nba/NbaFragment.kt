@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.shishkin.itransition.R
+import com.shishkin.itransition.databinding.FragmentNbaBinding
 import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
@@ -26,16 +26,15 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     lateinit var viewModelFactory: NbaViewModelFactory
     private lateinit var viewModel: NbaViewModel
     private lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
-
-    // TODO Evgeny убрать все findViewById() и разобраться во ViewBinding: https://developer.android.com/topic/libraries/view-binding
-
-    private var nbaPlayersRecyclerView: RecyclerView? = null
+    private lateinit var _binding: FragmentNbaBinding
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_nba, container, false)
+    ): View {
+        _binding = FragmentNbaBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,11 +52,11 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                             // А подключить либу: Timber.
                             Log.d("Retrofit", "NbaFragment: Loading")
                         },
-                        onSuccess = {
-                            if (it.isNullOrEmpty()) {
+                        onSuccess = { list ->
+                            if (list.isNullOrEmpty()) {
                                 Log.d("Retrofit", "NbaFragment: Empty")
                             } else {
-                                nbaPlayersListAdapter.submitList(NbaPlayersMapper().invoke(it))
+                                nbaPlayersListAdapter.submitList(NbaPlayersMapper().invoke(list))
                             }
                         },
                         onError = { throwable, message ->
@@ -70,28 +69,23 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     }
 
     private fun initNbaPlayersRecyclerView() {
-        nbaPlayersRecyclerView = view?.findViewById(R.id.rv_nba_players)!!
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        nbaPlayersRecyclerView?.layoutManager = linearLayoutManager
         nbaPlayersListAdapter = NbaPlayersListAdapter(this@NbaFragment)
-        nbaPlayersRecyclerView?.adapter = nbaPlayersListAdapter
-
+        binding.rvNbaPlayers.adapter = nbaPlayersListAdapter
 //        TODO какая есть альтернатива использования четырых! let?
-        context?.let { it ->
-            ContextCompat.getDrawable(it, R.drawable.divider_drawable)?.let {
-                nbaPlayersRecyclerView?.context?.let { it1 ->
-                    CustomViewTypeItemDecoration(
-                        it1, linearLayoutManager.orientation, it)
+        context?.let { context ->
+            ContextCompat.getDrawable(context, R.drawable.divider_drawable)?.let { drawable ->
+                binding.rvNbaPlayers.context?.let { context ->
+                    CustomViewTypeItemDecoration(context, DividerItemDecoration.VERTICAL, drawable)
                 }
-            }?.let {
-                nbaPlayersRecyclerView?.addItemDecoration(it)
+            }?.let { customViewTypeItemDecoration ->
+                binding.rvNbaPlayers.addItemDecoration(customViewTypeItemDecoration)
             }
         }
     }
 
     override fun onClickedNbaPlayer(nbaPlayerId: Int) {
         val bundle = Bundle()
-        bundle.putInt(getString(R.string.nba_player_id), nbaPlayerId)
+        bundle.putInt(getString(R.string.arg_nba_player_id), nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
     }
 }

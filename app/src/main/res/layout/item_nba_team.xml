@@ -5,12 +5,10 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
-    android:layout_margin="5dp"
-    >
+    android:layout_margin="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nba_player_adapter_ll_parent"
@@ -20,27 +18,26 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_nba_player_last_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
 
-
         <TextView
-            android:id="@+id/tv_team_full_name"
+            android:id="@+id/tv_item_nba_team_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="@string/team"
-            android:textColor="#F44336"
-            android:textSize="16sp"
+            android:text="@string/nba_team_full_name"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textsize_medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_nba_team_city"
+            android:id="@+id/tv_item_nba_team_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/games_details_city"
-            android:textColor="#000000"
-            android:textSize="16sp"
+            android:text="@string/nba_team_city"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

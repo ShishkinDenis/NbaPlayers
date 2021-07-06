@@ -8,9 +8,9 @@ class NbaPlayersMapper : Mapper<List<NbaPlayer>, List<ListItem>> {
 
     override fun invoke(input: List<NbaPlayer>): List<ListItem> {
         val listOfListItem = ArrayList<ListItem>()
-         input.forEach {
-            val nbaPlayerListItem = ListItem(it, VIEW_TYPE_NBA_PLAYER)
-            val nbaTeamListItem = ListItem(it.team, VIEW_TYPE_NBA_TEAM)
+         input.forEach { nbaPlayer ->
+             val nbaPlayerListItem = ListItem(nbaPlayer, VIEW_TYPE_NBA_PLAYER)
+            val nbaTeamListItem = ListItem(nbaPlayer.team, VIEW_TYPE_NBA_TEAM)
             listOfListItem.add(nbaPlayerListItem)
             listOfListItem.add(nbaTeamListItem)
         }

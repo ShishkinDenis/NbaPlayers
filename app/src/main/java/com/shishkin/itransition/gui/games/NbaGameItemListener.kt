@@ -4,5 +4,5 @@ import com.shishkin.itransition.network.entities.NbaGame
 
 interface NbaGameItemListener {
 
-    fun onClickedNbaGame(nbaGame: NbaGame)
+    fun onClickedNbaGame(nbaGame: NbaGame?)
 }

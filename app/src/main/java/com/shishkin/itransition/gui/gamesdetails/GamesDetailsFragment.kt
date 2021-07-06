@@ -11,7 +11,7 @@ import dagger.android.support.DaggerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val NBA_DATE_FORMAT  =  "yyyy-MM-dd"
+private const val NBA_DATE_FORMAT = "yyyy-MM-dd"
 
 class GamesDetailsFragment : DaggerFragment() {
 
@@ -19,8 +19,8 @@ class GamesDetailsFragment : DaggerFragment() {
     private val binding get() = _binding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGamesDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -28,19 +28,28 @@ class GamesDetailsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val nbaGame: NbaGame? = arguments?.getParcelable(getString(R.string.nba_game))
+        val nbaGame: NbaGame? = arguments?.getParcelable(getString(R.string.arg_nba_game))
 
         with(binding) {
-            tvGameSeason.text = getString(R.string.games_details_season,nbaGame?.season)
-            tvGameDate.text = getString(R.string.games_details_date,nbaGame?.date?.let { convertDate(it)})
+            tvGameDetailsGameSeason.text = getString(R.string.games_details_season, nbaGame?.season)
 
-            tvHomeTeamCity.text = getString(R.string.games_details_home_team_city,nbaGame?.homeTeam?.city)
-            tvHomeTeamFullName.text = nbaGame?.homeTeam?.fullName
-            tvHomeTeamDivision.text = getString(R.string.games_details_home_team_division,nbaGame?.homeTeam?.division)
+            tvGameDetailsGameDate.text = getString(R.string.games_details_date,
+                nbaGame?.date?.let { date -> convertDate(date) })
+            tvGameDetailsHomeTeamCity.text = getString(
+                R.string.games_details_home_team_city, nbaGame?.homeTeam?.city)
 
-            tvVisitorTeamCity.text = getString(R.string.games_details_visitor_team_city,nbaGame?.visitorTeam?.city)
-            tvVisitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
-            tvVisitorTeamDivision.text = getString(R.string.games_details_visitor_team_division,nbaGame?.visitorTeam?.division)
+            tvGameDetailsHomeTeamFullName.text = nbaGame?.homeTeam?.fullName
+
+            tvGameDetailsHomeTeamDivision.text =
+                getString(R.string.games_details_home_team_division, nbaGame?.homeTeam?.division)
+
+            tvGameDetailsVisitorTeamCity.text =
+                getString(R.string.games_details_visitor_team_city, nbaGame?.visitorTeam?.city)
+
+            tvGameDetailsVisitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
+
+            tvGameDetailsVisitorTeamDivision.text = getString(
+                R.string.games_details_visitor_team_division, nbaGame?.visitorTeam?.division)
         }
     }
 

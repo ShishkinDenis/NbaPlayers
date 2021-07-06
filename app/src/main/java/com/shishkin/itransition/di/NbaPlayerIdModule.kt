@@ -14,6 +14,6 @@ class NbaPlayerIdModule {
     @Provides
     @NbaPlayerId
     fun provideNbaPlayerId(nbaDetailsFragment: NbaDetailsFragment): Int? {
-        return nbaDetailsFragment.arguments?.getInt(nbaDetailsFragment.getString(R.string.nba_player_id))
+        return nbaDetailsFragment.arguments?.getInt(nbaDetailsFragment.getString(R.string.arg_nba_player_id))
     }
 }

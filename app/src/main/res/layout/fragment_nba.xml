@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".gui.nba.NbaFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
         android:id="@+id/rv_nba_players"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
