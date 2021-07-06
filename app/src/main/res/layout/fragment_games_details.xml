@@ -2,32 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout2"
+    android:id="@+id/ll_games_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".gui.gamesdetails.GamesDetailsFragment">
-
-    <!-- TODO Evgeny Все базовые размеры текста и отпуспы должны выноситься в dimens. -->
-    <!-- Реализовать для всех лайаутов -->
 
     <TextView
         android:id="@+id/tv_game_details_visitor_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_visitor_team"
         android:textColor="@color/red"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_game_details_home_team"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_game_details_home_team" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_game_date"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_game_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_details_game_date" />
 
     <TextView
         android:id="@+id/tv_game_details_game_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
+        android:layout_marginEnd="@dimen/text_view_margin_end_large"
         android:text="@string/games_details_date"
         android:textColor="@color/green"
         android:textSize="@dimen/textsize_medium"
@@ -38,96 +36,98 @@
         android:id="@+id/tv_game_details_home_team_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="233dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_home_team_city"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_home_team"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_home_team"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_details_home_team" />
 
     <TextView
         android:id="@+id/tv_game_details_home_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="78dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_home_team"
         android:textColor="@color/red"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintBottom_toTopOf="@+id/tv_game_details_home_team_city"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_game_details_game_season" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_game_season"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_game_season"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_details_game_season" />
 
     <TextView
         android:id="@+id/tv_game_details_home_team_full_name"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_home_team_name"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_home_team_city"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_home_team_city"
         app:layout_constraintTop_toBottomOf="@+id/tv_game_details_home_team_city" />
 
     <TextView
         android:id="@+id/tv_game_details_visitor_team_division"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
+
         android:text="@string/games_details_visitor_team_division"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_visitor_team_full_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_visitor_team_full_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_game_details_visitor_team_full_name" />
 
     <TextView
         android:id="@+id/tv_game_details_home_team_division"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_home_team_division"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_home_team_full_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_home_team_full_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_game_details_home_team_full_name" />
 
     <TextView
         android:id="@+id/tv_game_details_visitor_team_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_visitor_team_city"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_game_details_visitor_team_full_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_game_details_visitor_team" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_visitor_team"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_visitor_team"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_details_visitor_team" />
 
     <TextView
         android:id="@+id/tv_game_details_visitor_team_full_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="333dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_visitor_team_name"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_game_details_visitor_team_city"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_game_details_visitor_team_city"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_details_visitor_team_city" />
 
     <TextView
         android:id="@+id/tv_game_details_game_season"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="58dp"
+        android:layout_marginStart="@dimen/text_view_margin_start_large"
+        android:layout_marginTop="@dimen/text_view_margin_top_large"
         android:text="@string/games_details_season"
         android:textColor="@color/green"
         android:textSize="@dimen/textsize_medium"

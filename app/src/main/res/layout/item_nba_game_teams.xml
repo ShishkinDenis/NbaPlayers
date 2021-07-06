@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO Evgeny: названия .xml файлов для элементов адаптера должны быть такие: item_... аля item_nba_game_status.xml -->
-
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:elevation="4dp">
+    android:layout_margin="@dimen/layout_margin_small"
+    android:elevation="@dimen/layout_elevation_small">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nba_game_status_adapter_ll_parent"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="5dp"
+        android:layout_height="@dimen/layout_height_ultra_large"
+        android:layout_margin="@dimen/layout_margin_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_nba_player_last_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
 
@@ -34,7 +31,7 @@
             android:id="@+id/tv_item_nba_game_home_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="@dimen/text_view_margin_bottom_large"
             android:text="@string/nba_game_home_team"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_medium"
@@ -69,7 +66,7 @@
         <TextView
             android:id="@+id/tv_item_nba_game_teams_home_team_full_name"
             android:layout_width="wrap_content"
-            android:layout_height="23dp"
+            android:layout_height="wrap_content"
             android:text="@string/nba_game_full_name"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_medium"
@@ -118,7 +115,7 @@
             android:id="@+id/tv_item_nba_game_teams_visitor_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="@dimen/text_view_margin_end_large"
             android:text="@string/nba_game_visitor_team"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_medium"

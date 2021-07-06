@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO Evgeny: названия .xml файлов для элементов адаптера должны быть такие: item_... аля item_nba_game_status.xml -->
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:elevation="4dp">
+    android:layout_margin="@dimen/layout_margin_small"
+    android:elevation="@dimen/layout_elevation_small">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nba_game_status_adapter_ll_parent"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
+        android:layout_height="@dimen/layout_height_medium"
+        android:layout_margin="@dimen/layout_margin_small"
         app:layout_constraintBottom_toBottomOf="@+id/tv_nba_player_last_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_nba_player_last_name">
 
@@ -21,8 +19,8 @@
             android:id="@+id/tv_item_nba_game_status_game_season"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="@dimen/text_view_margin_start_small"
+            android:layout_marginTop="@dimen/text_view_margin_top_small"
             android:text="@string/nba_game_season"
             android:textColor="@color/green"
             android:textSize="@dimen/textsize_medium"
@@ -33,35 +31,30 @@
             android:id="@+id/tv_item_nba_game_status_game_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
+            android:layout_marginStart="@dimen/text_view_margin_start_large_68dp"
             android:text="@string/nba_game_date"
             android:textColor="@color/green"
             android:textSize="@dimen/textsize_medium"
             app:layout_constraintBottom_toBottomOf="@+id/tv_item_nba_game_status_game_season"
             app:layout_constraintStart_toEndOf="@+id/tv_item_nba_game_status_game_season"
-            app:layout_constraintTop_toTopOf="@+id/tv_item_nba_game_status_game_season"
-            />
-
-        <!-- TODO Evgeny: зачем тебе тут android:visibility="visible" -->
+            app:layout_constraintTop_toTopOf="@+id/tv_item_nba_game_status_game_season" />
 
         <TextView
             android:id="@+id/tv_item_nba_game_status_game_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/text_view_margin_start_small"
             android:text="@string/nba_game_status"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- TODO Evgeny: зачем тебе тут layout_constraintVertical_bias -->
-
         <TextView
             android:id="@+id/tv_item_nba_game_status_home_team_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="@dimen/text_view_margin_start_large_80dp"
             android:text="@string/nba_game_home_team_score"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize_medium"

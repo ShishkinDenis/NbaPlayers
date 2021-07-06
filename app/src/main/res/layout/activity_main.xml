@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".gui.activities.MainActivity">
 
-    <!-- TODO Evgeny Зачем тебе тут layout_editor_absoluteX и layout_editor_absoluteY-->
-    <!-- TODO Evgeny Забыл добавить пробел тут -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

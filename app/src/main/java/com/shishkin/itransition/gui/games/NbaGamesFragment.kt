@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentGamesBinding
+import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import com.shishkin.itransition.network.entities.NbaGame
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
@@ -47,13 +48,15 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     }
 
     private fun initNbaGamesRecyclerView() {
-        val itemDecor = DividerItemDecoration(binding.rvNbaGames.context, DividerItemDecoration.VERTICAL)
         context?.let { context ->
-            ContextCompat.getDrawable(context,R.drawable.divider_drawable)?.let { drawable ->
-                itemDecor.setDrawable(drawable)
+            ContextCompat.getDrawable(context, R.drawable.divider_drawable)?.let { drawable ->
+                binding.rvNbaGames.context?.let { context ->
+                    CustomViewTypeItemDecoration(context, DividerItemDecoration.VERTICAL, drawable)
+                }
+            }?.let { customViewTypeItemDecoration ->
+                binding.rvNbaGames.addItemDecoration(customViewTypeItemDecoration)
             }
         }
-        binding.rvNbaGames.addItemDecoration(itemDecor)
         nbaGamesAdapter = NbaGamesAdapter(this@NbaGamesFragment)
         binding.rvNbaGames.adapter = nbaGamesAdapter
     }
