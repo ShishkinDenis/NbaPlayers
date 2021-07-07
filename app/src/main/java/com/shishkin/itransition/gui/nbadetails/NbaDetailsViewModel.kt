@@ -2,7 +2,6 @@ package com.shishkin.itransition.gui.nbadetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.di.NbaPlayerId
 import com.shishkin.itransition.network.entities.NbaPlayer
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository

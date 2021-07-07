@@ -27,6 +27,7 @@ class NbaGameStatusViewHolder(
     }
 
     fun bind(nbaGame: NbaGame) {
+        this.nbaGame = nbaGame
         with(binding) {
             val context = root.context
             tvItemNbaGameStatusGameSeason.text =
