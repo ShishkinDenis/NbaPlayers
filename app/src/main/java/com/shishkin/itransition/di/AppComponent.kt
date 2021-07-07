@@ -7,13 +7,14 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-        modules = [
-            AndroidSupportInjectionModule::class,
-            RepositoryModule::class,
-            NbaAppModule::class,
-            ActivitiesModule::class,
-            NbaPlayerIdModule::class
-        ]
+    modules = [
+        AndroidSupportInjectionModule::class,
+        RepositoryModule::class,
+        NbaAppModule::class,
+        ActivitiesModule::class,
+        ApiServiceModule::class,
+        DatabaseModule::class
+    ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {
 
