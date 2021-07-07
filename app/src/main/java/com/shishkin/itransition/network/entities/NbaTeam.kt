@@ -1,6 +1,8 @@
 package com.shishkin.itransition.network.entities
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -17,8 +19,9 @@ Define one-to-many relationships
 https://developer.android.com/training/data-storage/room/relationships
  */
 @Parcelize
+@Entity(tableName = "teams")
 data class NbaTeam(
-        val id: Int,
+        @PrimaryKey val id: Int,
         val abbreviation: String,
         val city: String,
         val conference: String,
@@ -28,3 +31,16 @@ data class NbaTeam(
         @SerializedName("home_team_score") val homeTeamScore: Int,
         @SerializedName("visitor_team_score") val visitorTeamScore: Int
 ) : Parcelable
+
+//@Parcelize
+//data class NbaTeam(
+//        val id: Int,
+//        val abbreviation: String,
+//        val city: String,
+//        val conference: String,
+//        val division: String,
+//        @SerializedName("full_name") val fullName: String,
+//        val name: String,
+//        @SerializedName("home_team_score") val homeTeamScore: Int,
+//        @SerializedName("visitor_team_score") val visitorTeamScore: Int
+//) : Parcelable

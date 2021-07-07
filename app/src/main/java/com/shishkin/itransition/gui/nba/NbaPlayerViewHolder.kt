@@ -18,7 +18,7 @@ class NbaPlayerViewHolder(
     }
 
     override fun onClick(v: View?) {
-        nbaPlayer?.id?.let(listener::onClickedNbaPlayer)
+        nbaPlayer?.nbaPlayerId?.let(listener::onClickedNbaPlayer)
     }
 
     fun bind(nbaPlayer: NbaPlayer) {
