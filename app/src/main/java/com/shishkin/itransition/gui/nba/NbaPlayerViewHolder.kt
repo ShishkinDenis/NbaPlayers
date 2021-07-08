@@ -4,29 +4,29 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.ItemNbaPlayerBinding
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayerRemote
 
 class NbaPlayerViewHolder(
     private val binding: ItemNbaPlayerBinding,
     private val listener: NbaPlayerItemListener
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-    private var nbaPlayer: NbaPlayer? = null
+    private var nbaPlayerRemote: NbaPlayerRemote? = null
 
     init {
         binding.root.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        nbaPlayer?.nbaPlayerId?.let(listener::onClickedNbaPlayer)
+        nbaPlayerRemote?.id?.let(listener::onClickedNbaPlayer)
     }
 
-    fun bind(nbaPlayer: NbaPlayer) {
-        this.nbaPlayer = nbaPlayer
+    fun bind(nbaPlayerRemote: NbaPlayerRemote) {
+        this.nbaPlayerRemote = nbaPlayerRemote
         binding.tvItemNbaPlayerName.text = itemView.context.getString(
-            R.string.nba_player_name, nbaPlayer.firstName, nbaPlayer.lastName
+            R.string.nba_player_name, nbaPlayerRemote.firstName, nbaPlayerRemote.lastName
         )
         binding.tvItemNbaPlayerPosition.text =
-            itemView.context.getString(R.string.nba_player_position, nbaPlayer.position)
+            itemView.context.getString(R.string.nba_player_position, nbaPlayerRemote.position)
     }
 }

@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.shishkin.itransition.network.entities.NbaPlayer
-import com.shishkin.itransition.network.entities.NbaTeam
+import androidx.room.TypeConverters
 
-//@TypeConverters(TeamConverter::class)
-//@Database(entities = [NbaPlayer::class], version = 1)
-@Database(entities = [NbaPlayer::class, NbaTeam::class], version = 1)
+@TypeConverters(TeamConverter::class)
+@Database(entities = [NbaPlayerLocal::class], version = 1)
 abstract class NbaPlayerDataBase : RoomDatabase() {
 
     abstract fun nbaPlayerDao(): NbaPlayerDao
@@ -25,3 +23,4 @@ abstract class NbaPlayerDataBase : RoomDatabase() {
             ).build()
     }
 }
+

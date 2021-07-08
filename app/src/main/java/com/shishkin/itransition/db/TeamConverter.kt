@@ -1,15 +1,19 @@
 package com.shishkin.itransition.db
 
+import androidx.room.TypeConverter
+import com.google.gson.Gson
+
 // TODO Evgeny: смотри NbaTeam
-//class TeamConverter {
-//
-//    @TypeConverter
-//    fun fromNbaTeamToString(nbaTeam: NbaTeam): String {
-//        return Gson().toJson(nbaTeam)
-//    }
-//
-//    @TypeConverter
-//    fun toNbaTeamFromString(nbaTeam: String?): NbaTeam {
-//        return Gson().fromJson(nbaTeam, NbaTeam::class.java)
-//    }
-//}
+class TeamConverter {
+
+    @TypeConverter
+    fun fromNbaTeamLocalToString(nbaTeamLocal: NbaTeamLocal): String {
+        return Gson().toJson(nbaTeamLocal)
+    }
+
+    @TypeConverter
+    fun toNbaTeamLocalFromString(nbaTeamLocal: String?): NbaTeamLocal {
+        return Gson().fromJson(nbaTeamLocal, NbaTeamLocal::class.java)
+    }
+}
+

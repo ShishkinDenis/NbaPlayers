@@ -2,7 +2,7 @@ package com.shishkin.itransition.gui.nbadetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,10 +17,11 @@ class NbaDetailsViewModel @Inject constructor(
     @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 
-    private val _specificPlayerState: MutableStateFlow<ResultState<NbaPlayer>> =
+    private val _specificPlayerRemoteState: MutableStateFlow<ResultState<NbaPlayerRemote>> =
         MutableStateFlow(ResultState.loading())
 
-    val specificPlayerState: StateFlow<ResultState<NbaPlayer>> = _specificPlayerState
+    val specificPlayerRemoteState: StateFlow<ResultState<NbaPlayerRemote>> =
+        _specificPlayerRemoteState
 
     init {
         loadSpecificPlayer()
@@ -28,18 +29,19 @@ class NbaDetailsViewModel @Inject constructor(
 
     private fun loadSpecificPlayer() {
         viewModelScope.launch {
-            _specificPlayerState.value = ResultState.loading()
+            _specificPlayerRemoteState.value = ResultState.loading()
             nbaRepository.getSpecificPlayerDB(nbaPlayerId)
                 .catch { e ->
-                    _specificPlayerState.value = ResultState.error(e.message, e)
+                    _specificPlayerRemoteState.value = ResultState.error(e.message, e)
                 }
                 .collect { nbaPlayers ->
                     nbaPlayers.fold(
                         onSuccess = { list ->
-                            _specificPlayerState.value = ResultState.success(list)
+                            _specificPlayerRemoteState.value = ResultState.success(list)
                         },
                         onFailure = { error ->
-                            _specificPlayerState.value = ResultState.error(error.message, error)
+                            _specificPlayerRemoteState.value =
+                                ResultState.error(error.message, error)
                         }
                     )
                 }

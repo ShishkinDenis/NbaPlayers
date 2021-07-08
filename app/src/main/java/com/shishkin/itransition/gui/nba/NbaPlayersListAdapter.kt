@@ -8,8 +8,8 @@ import com.shishkin.itransition.databinding.ItemNbaPlayerBinding
 import com.shishkin.itransition.databinding.ItemNbaTeamBinding
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
-import com.shishkin.itransition.network.entities.NbaPlayer
-import com.shishkin.itransition.network.entities.NbaTeam
+import com.shishkin.itransition.network.entities.NbaPlayerRemote
+import com.shishkin.itransition.network.entities.NbaTeamRemote
 
 const val VIEW_TYPE_NBA_PLAYER = 1
 const val VIEW_TYPE_NBA_TEAM = 2
@@ -35,9 +35,17 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
-            (getItem(position)?.item as? NbaPlayer)?.let { (holder as? NbaPlayerViewHolder)?.bind(it) }
+            (getItem(position)?.item as? NbaPlayerRemote)?.let {
+                (holder as? NbaPlayerViewHolder)?.bind(
+                    it
+                )
+            }
         } else {
-            (getItem(position)?.item as? NbaTeam)?.let { (holder as? NbaTeamViewHolder)?.bind(it) }
+            (getItem(position)?.item as? NbaTeamRemote)?.let {
+                (holder as? NbaTeamViewHolder)?.bind(
+                    it
+                )
+            }
         }
     }
 }

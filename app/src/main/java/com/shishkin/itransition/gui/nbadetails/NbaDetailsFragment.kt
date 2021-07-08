@@ -43,7 +43,7 @@ class NbaDetailsFragment : DaggerFragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.specificPlayerState.collectLatest { uiState ->
+                viewModel.specificPlayerRemoteState.collectLatest { uiState ->
                     uiState.fold(
                         onLoading = {
                             Log.d("Retrofit", "NbaFragment: Loading")

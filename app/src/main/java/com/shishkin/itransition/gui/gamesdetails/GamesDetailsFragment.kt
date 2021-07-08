@@ -36,20 +36,28 @@ class GamesDetailsFragment : DaggerFragment() {
             tvGameDetailsGameDate.text = getString(R.string.games_details_date,
                 nbaGame?.date?.let { date -> convertDate(date) })
             tvGameDetailsHomeTeamCity.text = getString(
-                R.string.games_details_home_team_city, nbaGame?.homeTeam?.city)
+                R.string.games_details_home_team_city, nbaGame?.homeTeamRemote?.city
+            )
 
-            tvGameDetailsHomeTeamFullName.text = nbaGame?.homeTeam?.fullName
+            tvGameDetailsHomeTeamFullName.text = nbaGame?.homeTeamRemote?.fullName
 
             tvGameDetailsHomeTeamDivision.text =
-                getString(R.string.games_details_home_team_division, nbaGame?.homeTeam?.division)
+                getString(
+                    R.string.games_details_home_team_division,
+                    nbaGame?.homeTeamRemote?.division
+                )
 
             tvGameDetailsVisitorTeamCity.text =
-                getString(R.string.games_details_visitor_team_city, nbaGame?.visitorTeam?.city)
+                getString(
+                    R.string.games_details_visitor_team_city,
+                    nbaGame?.visitorTeamRemote?.city
+                )
 
-            tvGameDetailsVisitorTeamFullName.text = nbaGame?.visitorTeam?.fullName
+            tvGameDetailsVisitorTeamFullName.text = nbaGame?.visitorTeamRemote?.fullName
 
             tvGameDetailsVisitorTeamDivision.text = getString(
-                R.string.games_details_visitor_team_division, nbaGame?.visitorTeam?.division)
+                R.string.games_details_visitor_team_division, nbaGame?.visitorTeamRemote?.division
+            )
         }
     }
 

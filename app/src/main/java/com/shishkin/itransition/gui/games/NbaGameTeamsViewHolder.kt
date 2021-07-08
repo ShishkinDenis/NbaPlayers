@@ -12,32 +12,32 @@ class NbaGameTeamsViewHolder(private val binding: ItemNbaGameTeamsBinding) :
         with(binding) {
             val context = root.context
             tvItemNbaGameTeamsHomeTeamName.text = context.getString(
-                R.string.nba_game_home_team_name, nbaGame.homeTeam.name
+                R.string.nba_game_home_team_name, nbaGame.homeTeamRemote.name
             )
 
             tvItemNbaGameTeamsHomeTeamCity.text = context.getString(
-                R.string.nba_game_home_team_city, nbaGame.homeTeam.city
+                R.string.nba_game_home_team_city, nbaGame.homeTeamRemote.city
             )
 
             tvItemNbaGameTeamsHomeTeamAbbreviation.text = context.getString(
-                R.string.nba_game_home_team_abbreviation, nbaGame.homeTeam.abbreviation
+                R.string.nba_game_home_team_abbreviation, nbaGame.homeTeamRemote.abbreviation
             )
 
-            tvItemNbaGameTeamsHomeTeamFullName.text = nbaGame.homeTeam.fullName
+            tvItemNbaGameTeamsHomeTeamFullName.text = nbaGame.homeTeamRemote.fullName
 
             tvItemNbaGameTeamsVisitorTeamName.text = context.getString(
-                R.string.nba_game_visitor_team_name, nbaGame.visitorTeam.name
+                R.string.nba_game_visitor_team_name, nbaGame.visitorTeamRemote.name
             )
 
             tvItemNbaGamesTeamsVisitorTeamCity.text = context.getString(
-                R.string.nba_game_visitor_team_city, nbaGame.visitorTeam.city
+                R.string.nba_game_visitor_team_city, nbaGame.visitorTeamRemote.city
             )
 
             tvItemNbaGameTeamsVisitorTeamAbbreviation.text = context.getString(
-                R.string.nba_game_visitor_team_abbreviation, nbaGame.visitorTeam.abbreviation
+                R.string.nba_game_visitor_team_abbreviation, nbaGame.visitorTeamRemote.abbreviation
             )
 
-            tvItemNbaGameTeamsVisitorTeamFullName.text = nbaGame.visitorTeam.fullName
+            tvItemNbaGameTeamsVisitorTeamFullName.text = nbaGame.visitorTeamRemote.fullName
         }
 
     }

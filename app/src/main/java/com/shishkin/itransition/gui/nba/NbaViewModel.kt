@@ -2,7 +2,7 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.network.entities.NbaPlayer
+import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +14,10 @@ import javax.inject.Inject
 
 class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository) : ViewModel() {
 
-    private val _playersState: MutableStateFlow<ResultState<List<NbaPlayer>>> =
+    private val _playersState: MutableStateFlow<ResultState<List<NbaPlayerRemote>>> =
         MutableStateFlow(ResultState.loading())
 
-    val playersState: StateFlow<ResultState<List<NbaPlayer>>> = _playersState
+    val playersState: StateFlow<ResultState<List<NbaPlayerRemote>>> = _playersState
 
     init {
         loadPlayers()
