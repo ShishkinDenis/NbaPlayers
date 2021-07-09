@@ -4,14 +4,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.shishkin.itransition.db.NbaPlayerDao
+import com.shishkin.itransition.db.PlayerWithTeam
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToLocalMapper
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToNbaTeamLocalMapper
-import com.shishkin.itransition.gui.nba.mappers.PlayerWithTeamToNbaPlayerRemoteMapper
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.entities.KResult
-import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,7 +22,7 @@ class DefaultNbaRepository @Inject constructor(
     private val nbaApi: NbaApi?
 ) : NbaRepository {
 
-    override fun getNbaPlayersListDB(): Flow<KResult<List<NbaPlayerRemote>>> {
+    override fun getNbaPlayersListDB(): Flow<KResult<List<PlayerWithTeam>>> {
         return flow {
             try {
                 val apiData = nbaApi?.getAllNbaPlayers()
@@ -38,32 +37,23 @@ class DefaultNbaRepository @Inject constructor(
                 }
                 nbaPlayerLocalList?.let { nbaPlayerDao.insertAllPlayers(it) }
                 nbaTeamLocalList?.let { nbaPlayerDao.insertAllTeams(it) }
-                emit(KResult.success(apiList))
+                val cachedData = nbaPlayerDao.getPlayersWithTeams()
+                emit(KResult.success(cachedData))
             } catch (e: Exception) {
                 val cachedData = nbaPlayerDao.getPlayersWithTeams()
                 if (cachedData.isNullOrEmpty()) {
                     emit(KResult.failure(IllegalStateException("Data not found exception")))
                 } else {
-                    emit(KResult.success(PlayerWithTeamToNbaPlayerRemoteMapper().invoke(cachedData)))
+                    emit(KResult.success(cachedData))
                 }
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<NbaPlayerRemote?>> {
+    override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<PlayerWithTeam?>> {
         return flow {
-            try {
-                val flowData = nbaApi?.getSpecificPlayer(playerId)
-                emit(Result.success(flowData))
-            } catch (e: Exception) {
                 val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
-                emit(
-                    KResult.success(
-                        PlayerWithTeamToNbaPlayerRemoteMapper()
-                            .mapFromPlayerWithTeamToRemoteNbaPlayer(cashedData)
-                    )
-                )
-            }
+                emit(KResult.success(cashedData))
         }.flowOn(Dispatchers.IO)
     }
 

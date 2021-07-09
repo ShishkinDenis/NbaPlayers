@@ -2,20 +2,20 @@ package com.shishkin.itransition.gui.nba.mappers
 
 import com.shishkin.itransition.db.NbaTeamLocal
 import com.shishkin.itransition.db.PlayerWithTeam
+import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
+import com.shishkin.itransition.gui.nba.uientities.NbaTeamUi
 import com.shishkin.itransition.gui.utils.Mapper
-import com.shishkin.itransition.network.entities.NbaPlayerRemote
-import com.shishkin.itransition.network.entities.NbaTeamRemote
 
-class PlayerWithTeamToNbaPlayerRemoteMapper : Mapper<List<PlayerWithTeam>, List<NbaPlayerRemote>> {
+class PlayerWithTeamToNbaPlayerUiMapper : Mapper<List<PlayerWithTeam>, List<NbaPlayerUi>> {
 
-    override fun invoke(input: List<PlayerWithTeam>): List<NbaPlayerRemote> {
+    override fun invoke(input: List<PlayerWithTeam>): List<NbaPlayerUi> {
         return input.map { playerWithTeam ->
-            mapFromPlayerWithTeamToRemoteNbaPlayer(playerWithTeam)
+            mapFromPlayerWithTeamToNbaPlayerUi(playerWithTeam)
         }
     }
 
-    private fun mapFromLocalToRemoteNbaTeam(nbaTeamLocal: NbaTeamLocal): NbaTeamRemote {
-        return NbaTeamRemote(
+    private fun mapFromLocalToNbaTeamUi(nbaTeamLocal: NbaTeamLocal): NbaTeamUi {
+        return NbaTeamUi(
             id = nbaTeamLocal.id,
             abbreviation = nbaTeamLocal.abbreviation,
             city = nbaTeamLocal.city,
@@ -28,15 +28,15 @@ class PlayerWithTeamToNbaPlayerRemoteMapper : Mapper<List<PlayerWithTeam>, List<
         )
     }
 
-    fun mapFromPlayerWithTeamToRemoteNbaPlayer(playerWithTeam: PlayerWithTeam): NbaPlayerRemote {
-        return NbaPlayerRemote(
+    fun mapFromPlayerWithTeamToNbaPlayerUi(playerWithTeam: PlayerWithTeam): NbaPlayerUi {
+        return NbaPlayerUi(
             id = playerWithTeam.player.nbaPlayerId,
             firstName = playerWithTeam.player.firstName,
             heightFeet = playerWithTeam.player.heightFeet,
             heightInches = playerWithTeam.player.heightInches,
             lastName = playerWithTeam.player.lastName,
             position = playerWithTeam.player.position,
-            team = mapFromLocalToRemoteNbaTeam(playerWithTeam.team),
+            team = mapFromLocalToNbaTeamUi(playerWithTeam.team),
             weightPounds = playerWithTeam.player.weightPounds
         )
     }

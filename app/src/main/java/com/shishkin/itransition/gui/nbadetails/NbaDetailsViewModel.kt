@@ -2,7 +2,8 @@ package com.shishkin.itransition.gui.nbadetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.network.entities.NbaPlayerRemote
+import com.shishkin.itransition.gui.nba.mappers.PlayerWithTeamToNbaPlayerUiMapper
+import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,10 +18,10 @@ class NbaDetailsViewModel @Inject constructor(
     @NbaPlayerId var nbaPlayerId: Int?
 ) : ViewModel() {
 
-    private val _specificPlayerRemoteState: MutableStateFlow<ResultState<NbaPlayerRemote>> =
+    private val _specificPlayerRemoteState: MutableStateFlow<ResultState<NbaPlayerUi>> =
         MutableStateFlow(ResultState.loading())
 
-    val specificPlayerRemoteState: StateFlow<ResultState<NbaPlayerRemote>> =
+    val specificPlayerRemoteState: StateFlow<ResultState<NbaPlayerUi>> =
         _specificPlayerRemoteState
 
     init {
@@ -37,7 +38,12 @@ class NbaDetailsViewModel @Inject constructor(
                 .collect { nbaPlayers ->
                     nbaPlayers.fold(
                         onSuccess = { list ->
-                            _specificPlayerRemoteState.value = ResultState.success(list)
+                            _specificPlayerRemoteState.value = ResultState.success(
+                                list?.let {
+                                    PlayerWithTeamToNbaPlayerUiMapper()
+                                        .mapFromPlayerWithTeamToNbaPlayerUi(it)
+                                }
+                            )
                         },
                         onFailure = { error ->
                             _specificPlayerRemoteState.value =
