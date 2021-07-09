@@ -3,10 +3,7 @@ package com.shishkin.itransition.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.shishkin.itransition.db.NbaPlayerDao
-import com.shishkin.itransition.db.toNbaPlayerLocalList
-import com.shishkin.itransition.db.toNbaPlayerRemote
-import com.shishkin.itransition.db.toNbaPlayerRemoteList
+import com.shishkin.itransition.db.*
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.NbaApi
@@ -30,14 +27,16 @@ class DefaultNbaRepository @Inject constructor(
                 val apiList = apiData?.data
 
                 val nbaPlayerLocalList = apiList?.toNbaPlayerLocalList()
+                val nbaTeamLocalList = apiList?.toNbaTeamLocalList()
 
                 if (apiList.isNullOrEmpty()) {
                     throw IllegalStateException("Data not found exception")
                 }
                 nbaPlayerLocalList?.let { nbaPlayerDao.insertAllPlayers(it) }
+                nbaTeamLocalList?.let { nbaPlayerDao.insertAllTeams(it) }
                 emit(KResult.success(apiList))
             } catch (e: Exception) {
-                val cachedData = nbaPlayerDao.getAllPlayers()
+                val cachedData = nbaPlayerDao.getPlayersWithTeams()
                 if (cachedData.isNullOrEmpty()) {
                     emit(KResult.failure(IllegalStateException("Data not found exception")))
                 } else {

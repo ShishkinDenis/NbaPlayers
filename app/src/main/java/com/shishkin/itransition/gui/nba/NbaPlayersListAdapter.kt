@@ -35,16 +35,12 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
-            (getItem(position)?.item as? NbaPlayerRemote)?.let {
-                (holder as? NbaPlayerViewHolder)?.bind(
-                    it
-                )
+            (getItem(position)?.item as? NbaPlayerRemote)?.let { nbaPlayerRemote ->
+                (holder as? NbaPlayerViewHolder)?.bind(nbaPlayerRemote)
             }
         } else {
-            (getItem(position)?.item as? NbaTeamRemote)?.let {
-                (holder as? NbaTeamViewHolder)?.bind(
-                    it
-                )
+            (getItem(position)?.item as? NbaTeamRemote)?.let { nbaTeamRemote ->
+                (holder as? NbaTeamViewHolder)?.bind(nbaTeamRemote)
             }
         }
     }

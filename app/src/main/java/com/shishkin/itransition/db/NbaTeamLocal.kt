@@ -1,18 +1,19 @@
 package com.shishkin.itransition.db
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
+const val TEAM = "team"
+
+@Entity(tableName = TEAM)
 data class NbaTeamLocal(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val abbreviation: String,
     val city: String,
     val conference: String,
     val division: String,
-    @SerializedName("full_name") val fullName: String,
+    val fullName: String,
     val name: String,
-    @SerializedName("home_team_score") val homeTeamScore: Int,
-    @SerializedName("visitor_team_score") val visitorTeamScore: Int
-) : Parcelable
+    val homeTeamScore: Int,
+    val visitorTeamScore: Int
+)

@@ -3,31 +3,45 @@ package com.shishkin.itransition.db
 import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.NbaTeamRemote
 
-fun NbaPlayerRemote.toNbaPlayerLocal() = NbaPlayerLocal(
-    id = this.id,
-    firstName = this.firstName,
-    heightFeet = this.heightFeet,
-    heightInches = this.heightInches,
-    lastName = this.lastName,
-    position = this.position,
-    team = this.team.toNbaTeamLocal(),
-    weightPounds = this.weightPounds
+fun NbaPlayerRemote.toNbaTeamLocal() = NbaTeamLocal(
+    id = this.team.id,
+    abbreviation = this.team.abbreviation,
+    city = this.team.city,
+    conference = this.team.conference,
+    division = this.team.division,
+    fullName = this.team.fullName,
+    name = this.team.name,
+    homeTeamScore = this.team.homeTeamScore,
+    visitorTeamScore = this.team.visitorTeamScore
 )
 
-fun NbaPlayerLocal.toNbaPlayerRemote() = NbaPlayerRemote(
-    id = this.id,
+fun List<NbaPlayerRemote>.toNbaTeamLocalList() = this.map { it.toNbaTeamLocal() }
+
+fun PlayerWithTeam.toNbaPlayerRemote() = NbaPlayerRemote(
+    id = this.player.nbaPlayerId,
+    firstName = this.player.firstName,
+    heightFeet = this.player.heightFeet,
+    heightInches = this.player.heightInches,
+    lastName = this.player.lastName,
+    position = this.player.position,
+    team = this.team.toNbaTeamRemote(),
+    weightPounds = this.player.weightPounds
+)
+
+fun List<PlayerWithTeam>.toNbaPlayerRemoteList() = this.map { it.toNbaPlayerRemote() }
+
+fun NbaPlayerRemote.toNbaPlayerLocal() = NbaPlayerLocal(
+    nbaPlayerId = this.id,
     firstName = this.firstName,
     heightFeet = this.heightFeet,
     heightInches = this.heightInches,
     lastName = this.lastName,
     position = this.position,
-    team = this.team.toNbaTeamRemote(),
+    teamId = this.team.toNbaTeamLocal().id,
     weightPounds = this.weightPounds
 )
 
 fun List<NbaPlayerRemote>.toNbaPlayerLocalList() = this.map { it.toNbaPlayerLocal() }
-
-fun List<NbaPlayerLocal>.toNbaPlayerRemoteList() = this.map { it.toNbaPlayerRemote() }
 
 fun NbaTeamRemote.toNbaTeamLocal() = NbaTeamLocal(
     id = this.id,

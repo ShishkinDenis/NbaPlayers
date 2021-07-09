@@ -1,16 +1,13 @@
 package com.shishkin.itransition.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface NbaPlayerDao {
 
+    @Transaction
     @Query("SELECT * FROM $PLAYERS")
-    fun getAllPlayers(): List<NbaPlayerLocal>
-//    fun getAllPlayers(): List<PlayerWithTeam>
+    suspend fun getPlayersWithTeams(): List<PlayerWithTeam>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllPlayers(nbaPlayers: List<NbaPlayerLocal>): List<Long>
@@ -19,5 +16,8 @@ interface NbaPlayerDao {
     suspend fun clearAllPlayers(): Int
 
     @Query("SELECT * FROM $PLAYERS WHERE $ID = :playerId")
-    fun getSpecificPlayer(playerId: Int?): NbaPlayerLocal
+    fun getSpecificPlayer(playerId: Int?): PlayerWithTeam
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllTeams(nbaTeams: List<NbaTeamLocal>): List<Long>
 }
