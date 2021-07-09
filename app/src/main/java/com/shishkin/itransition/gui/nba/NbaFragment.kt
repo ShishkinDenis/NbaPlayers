@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentNbaBinding
+import com.shishkin.itransition.gui.nba.mappers.NbaPlayerUiToListItemMapper
 import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
@@ -56,7 +57,11 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                             if (list.isNullOrEmpty()) {
                                 Log.d("Retrofit", "NbaFragment: Empty")
                             } else {
-                                nbaPlayersListAdapter.submitList(NbaPlayersMapper().invoke(list))
+                                nbaPlayersListAdapter.submitList(
+                                    NbaPlayerUiToListItemMapper().invoke(
+                                        list
+                                    )
+                                )
                             }
                         },
                         onError = { throwable, message ->

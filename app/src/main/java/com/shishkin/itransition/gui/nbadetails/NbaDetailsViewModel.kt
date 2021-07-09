@@ -26,7 +26,7 @@ class NbaDetailsViewModel @Inject constructor(
     init {
         loadSpecificPlayer()
     }
-//
+
     private fun loadSpecificPlayer() {
         viewModelScope.launch {
             _specificPlayerRemoteState.value = ResultState.loading()

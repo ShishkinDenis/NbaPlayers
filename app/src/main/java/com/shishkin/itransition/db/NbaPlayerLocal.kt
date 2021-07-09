@@ -3,10 +3,10 @@ package com.shishkin.itransition.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val ID = "nbaPlayerId"
-const val PLAYERS = "players"
+const val PLAYER_ID_COLUMN = "nbaPlayerId"
+const val PLAYERS_TABLE = "players"
 
-@Entity(tableName = PLAYERS)
+@Entity(tableName = PLAYERS_TABLE)
 data class NbaPlayerLocal(
     @PrimaryKey val nbaPlayerId: Int,
     val firstName: String,

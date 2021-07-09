@@ -3,8 +3,11 @@ package com.shishkin.itransition.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.shishkin.itransition.db.*
+import com.shishkin.itransition.db.NbaPlayerDao
 import com.shishkin.itransition.gui.games.NbaGamesPagingDataSource
+import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToLocalMapper
+import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToNbaTeamLocalMapper
+import com.shishkin.itransition.gui.nba.mappers.PlayerWithTeamToNbaPlayerRemoteMapper
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.entities.KResult
@@ -25,9 +28,10 @@ class DefaultNbaRepository @Inject constructor(
             try {
                 val apiData = nbaApi?.getAllNbaPlayers()
                 val apiList = apiData?.data
-
-                val nbaPlayerLocalList = apiList?.toNbaPlayerLocalList()
-                val nbaTeamLocalList = apiList?.toNbaTeamLocalList()
+                val nbaPlayerLocalList = apiList?.let { NbaPlayerRemoteToLocalMapper().invoke(it) }
+                val nbaTeamLocalList = apiList?.let { list ->
+                    NbaPlayerRemoteToNbaTeamLocalMapper().invoke(list)
+                }
 
                 if (apiList.isNullOrEmpty()) {
                     throw IllegalStateException("Data not found exception")
@@ -40,7 +44,7 @@ class DefaultNbaRepository @Inject constructor(
                 if (cachedData.isNullOrEmpty()) {
                     emit(KResult.failure(IllegalStateException("Data not found exception")))
                 } else {
-                    emit(KResult.success(cachedData.toNbaPlayerRemoteList()))
+                    emit(KResult.success(PlayerWithTeamToNbaPlayerRemoteMapper().invoke(cachedData)))
                 }
             }
         }.flowOn(Dispatchers.IO)
@@ -53,7 +57,12 @@ class DefaultNbaRepository @Inject constructor(
                 emit(Result.success(flowData))
             } catch (e: Exception) {
                 val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
-                emit(KResult.success(cashedData.toNbaPlayerRemote()))
+                emit(
+                    KResult.success(
+                        PlayerWithTeamToNbaPlayerRemoteMapper()
+                            .mapFromPlayerWithTeamToRemoteNbaPlayer(cashedData)
+                    )
+                )
             }
         }.flowOn(Dispatchers.IO)
     }

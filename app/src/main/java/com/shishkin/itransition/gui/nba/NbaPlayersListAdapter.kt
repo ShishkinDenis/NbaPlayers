@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shishkin.itransition.databinding.ItemNbaPlayerBinding
 import com.shishkin.itransition.databinding.ItemNbaTeamBinding
+import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
+import com.shishkin.itransition.gui.nba.uientities.NbaTeamUi
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.NbaListItemDiffCallback
-import com.shishkin.itransition.network.entities.NbaPlayerRemote
-import com.shishkin.itransition.network.entities.NbaTeamRemote
 
 const val VIEW_TYPE_NBA_PLAYER = 1
 const val VIEW_TYPE_NBA_TEAM = 2
@@ -35,12 +35,12 @@ class NbaPlayersListAdapter(private val listener: NbaPlayerItemListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItem(position)?.viewType == VIEW_TYPE_NBA_PLAYER) {
-            (getItem(position)?.item as? NbaPlayerRemote)?.let { nbaPlayerRemote ->
-                (holder as? NbaPlayerViewHolder)?.bind(nbaPlayerRemote)
+            (getItem(position)?.item as? NbaPlayerUi)?.let { nbaPlayerUi ->
+                (holder as? NbaPlayerViewHolder)?.bind(nbaPlayerUi)
             }
         } else {
-            (getItem(position)?.item as? NbaTeamRemote)?.let { nbaTeamRemote ->
-                (holder as? NbaTeamViewHolder)?.bind(nbaTeamRemote)
+            (getItem(position)?.item as? NbaTeamUi)?.let { nbaTeamUi ->
+                (holder as? NbaTeamViewHolder)?.bind(nbaTeamUi)
             }
         }
     }

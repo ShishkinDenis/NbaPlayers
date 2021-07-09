@@ -2,7 +2,8 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shishkin.itransition.network.entities.NbaPlayerRemote
+import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToUiMapper
+import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +15,10 @@ import javax.inject.Inject
 
 class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository) : ViewModel() {
 
-    private val _playersState: MutableStateFlow<ResultState<List<NbaPlayerRemote>>> =
+    private val _playersState: MutableStateFlow<ResultState<List<NbaPlayerUi>>> =
         MutableStateFlow(ResultState.loading())
 
-    val playersState: StateFlow<ResultState<List<NbaPlayerRemote>>> = _playersState
+    val playersState: StateFlow<ResultState<List<NbaPlayerUi>>> = _playersState
 
     init {
         loadPlayers()
@@ -30,12 +31,14 @@ class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository)
                     .catch { e -> _playersState.value = ResultState.error(e.message, e) }
                     .collect { nbaPlayers ->
                         nbaPlayers.fold(
-                                onSuccess = { list ->
-                                    _playersState.value = ResultState.success(list)
-                                },
-                                onFailure = { error ->
-                                    _playersState.value = ResultState.error(error.message, error)
-                                }
+                            onSuccess = { list ->
+                                _playersState.value = ResultState.success(
+                                    NbaPlayerRemoteToUiMapper().invoke(list)
+                                )
+                            },
+                            onFailure = { error ->
+                                _playersState.value = ResultState.error(error.message, error)
+                            }
                         )
                     }
         }
