@@ -24,7 +24,6 @@ class NbaPlayerViewHolder(
     fun bind(nbaPlayerUi: NbaPlayerUi) {
         this.nbaPlayerUi = nbaPlayerUi
         binding.tvItemNbaPlayerName.text = itemView.context.getString(
-//            R.string.nba_player_name, nbaPlayerRemote.firstName, nbaPlayerRemote.lastName
             R.string.nba_player_name, nbaPlayerUi.firstName, nbaPlayerUi.lastName
         )
         binding.tvItemNbaPlayerPosition.text =

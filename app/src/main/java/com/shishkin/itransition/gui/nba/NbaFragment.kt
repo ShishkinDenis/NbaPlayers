@@ -58,9 +58,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                                 Log.d("Retrofit", "NbaFragment: Empty")
                             } else {
                                 nbaPlayersListAdapter.submitList(
-                                    NbaPlayerUiToListItemMapper().invoke(
-                                        list
-                                    )
+                                    NbaPlayerUiToListItemMapper().invoke(list)
                                 )
                             }
                         },
