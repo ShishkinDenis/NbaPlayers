@@ -19,17 +19,20 @@ import javax.inject.Inject
 
 class DefaultNbaRepository @Inject constructor(
     private val nbaPlayerDao: NbaPlayerDao,
-    private val nbaApi: NbaApi?
+    private val nbaApi: NbaApi?,
+    private val nbaPlayerRemoteToNbaTeamLocalMapper: NbaPlayerRemoteToNbaTeamLocalMapper,
+    private val nbaPlayerRemoteToLocalMapper: NbaPlayerRemoteToLocalMapper
 ) : NbaRepository {
+
 
     override fun getNbaPlayersListDB(): Flow<KResult<List<PlayerWithTeam>>> {
         return flow {
             try {
                 val apiData = nbaApi?.getAllNbaPlayers()
                 val apiList = apiData?.data
-                val nbaPlayerLocalList = apiList?.let { NbaPlayerRemoteToLocalMapper().invoke(it) }
+                val nbaPlayerLocalList = apiList?.let { nbaPlayerRemoteToLocalMapper.invoke(it) }
                 val nbaTeamLocalList = apiList?.let { list ->
-                    NbaPlayerRemoteToNbaTeamLocalMapper().invoke(list)
+                    nbaPlayerRemoteToNbaTeamLocalMapper.invoke(list)
                 }
 
                 if (apiList.isNullOrEmpty()) {
@@ -52,8 +55,8 @@ class DefaultNbaRepository @Inject constructor(
 
     override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<PlayerWithTeam?>> {
         return flow {
-                val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
-                emit(KResult.success(cashedData))
+            val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
+            emit(KResult.success(cashedData))
         }.flowOn(Dispatchers.IO)
     }
 

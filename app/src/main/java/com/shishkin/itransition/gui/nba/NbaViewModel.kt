@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository) : ViewModel() {
+class NbaViewModel @Inject constructor(
+    private val nbaRepository: NbaRepository,
+    private val playerWithTeamToNbaPlayerUiMapper: PlayerWithTeamToNbaPlayerUiMapper
+) : ViewModel() {
 
     private val _playersState: MutableStateFlow<ResultState<List<NbaPlayerUi>>> =
         MutableStateFlow(ResultState.loading())
@@ -33,7 +36,7 @@ class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository)
                     nbaPlayers.fold(
                         onSuccess = { list ->
                             _playersState.value = ResultState.success(
-                                PlayerWithTeamToNbaPlayerUiMapper().invoke(list)
+                                playerWithTeamToNbaPlayerUiMapper.invoke(list)
                             )
                         },
                         onFailure = { error ->
@@ -42,6 +45,5 @@ class NbaViewModel @Inject constructor(private val nbaRepository: NbaRepository)
                     )
                 }
         }
-
     }
 }

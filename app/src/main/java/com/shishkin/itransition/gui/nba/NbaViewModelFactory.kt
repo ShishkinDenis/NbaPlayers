@@ -2,25 +2,29 @@ package com.shishkin.itransition.gui.nba
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.shishkin.itransition.gui.nba.mappers.PlayerWithTeamToNbaPlayerUiMapper
 import com.shishkin.itransition.repository.NbaRepository
 import javax.inject.Inject
 
-class NbaViewModelFactory @Inject constructor(private val nbaRepository: NbaRepository) :
+class NbaViewModelFactory @Inject constructor(
+    private val nbaRepository: NbaRepository,
+    private val playerWithTeamToNbaPlayerUiMapper: PlayerWithTeamToNbaPlayerUiMapper
+) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NbaViewModel::class.java)) {
-            NbaViewModel(this.nbaRepository) as T
+            NbaViewModel(this.nbaRepository, this.playerWithTeamToNbaPlayerUiMapper) as T
         } else {
             throw IllegalArgumentException("ViewModel Not Found")
         }
     }
 
     // TODO Evgeny логика create сделать таким образом:
- /*   @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return  NbaViewModel(
-         nbaRepository=  nbaRepository
-        ) as T
-    }*/
+    /*   @Suppress("UNCHECKED_CAST")
+       override fun <T : ViewModel> create(modelClass: Class<T>): T {
+           return  NbaViewModel(
+            nbaRepository=  nbaRepository
+           ) as T
+       }*/
 }

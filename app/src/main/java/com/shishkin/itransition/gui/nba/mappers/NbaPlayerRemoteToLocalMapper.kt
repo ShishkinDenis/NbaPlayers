@@ -5,8 +5,10 @@ import com.shishkin.itransition.db.NbaTeamLocal
 import com.shishkin.itransition.gui.utils.Mapper
 import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.NbaTeamRemote
+import javax.inject.Inject
 
-class NbaPlayerRemoteToLocalMapper : Mapper<List<NbaPlayerRemote>, List<NbaPlayerLocal>> {
+class NbaPlayerRemoteToLocalMapper @Inject constructor() :
+    Mapper<List<NbaPlayerRemote>, List<NbaPlayerLocal>> {
 
     override fun invoke(input: List<NbaPlayerRemote>): List<NbaPlayerLocal> {
         return input.map { nbaPlayerRemote ->

@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 class NbaDetailsViewModel @Inject constructor(
     private val nbaRepository: NbaRepository,
-    @NbaPlayerId var nbaPlayerId: Int?
+    @NbaPlayerId var nbaPlayerId: Int?,
+    private val playerWithTeamToNbaPlayerUiMapper: PlayerWithTeamToNbaPlayerUiMapper
 ) : ViewModel() {
 
     private val _specificPlayerRemoteState: MutableStateFlow<ResultState<NbaPlayerUi>> =
@@ -40,7 +41,7 @@ class NbaDetailsViewModel @Inject constructor(
                         onSuccess = { list ->
                             _specificPlayerRemoteState.value = ResultState.success(
                                 list?.let {
-                                    PlayerWithTeamToNbaPlayerUiMapper()
+                                    playerWithTeamToNbaPlayerUiMapper
                                         .mapFromPlayerWithTeamToNbaPlayerUi(it)
                                 }
                             )

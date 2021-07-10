@@ -5,8 +5,10 @@ import com.shishkin.itransition.db.PlayerWithTeam
 import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
 import com.shishkin.itransition.gui.nba.uientities.NbaTeamUi
 import com.shishkin.itransition.gui.utils.Mapper
+import javax.inject.Inject
 
-class PlayerWithTeamToNbaPlayerUiMapper : Mapper<List<PlayerWithTeam>, List<NbaPlayerUi>> {
+class PlayerWithTeamToNbaPlayerUiMapper @Inject constructor() :
+    Mapper<List<PlayerWithTeam>, List<NbaPlayerUi>> {
 
     override fun invoke(input: List<PlayerWithTeam>): List<NbaPlayerUi> {
         return input.map { playerWithTeam ->

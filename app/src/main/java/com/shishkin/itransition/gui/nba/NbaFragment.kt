@@ -25,6 +25,9 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
     @Inject
     lateinit var viewModelFactory: NbaViewModelFactory
+
+    @Inject
+    lateinit var nbaPlayerUiToListItemMapper: NbaPlayerUiToListItemMapper
     private lateinit var viewModel: NbaViewModel
     private lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
     private lateinit var _binding: FragmentNbaBinding
@@ -58,7 +61,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                                 Log.d("Retrofit", "NbaFragment: Empty")
                             } else {
                                 nbaPlayersListAdapter.submitList(
-                                    NbaPlayerUiToListItemMapper().invoke(list)
+                                    nbaPlayerUiToListItemMapper.invoke(list)
                                 )
                             }
                         },

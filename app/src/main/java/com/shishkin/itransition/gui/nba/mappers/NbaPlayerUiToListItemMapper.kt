@@ -5,8 +5,10 @@ import com.shishkin.itransition.gui.nba.VIEW_TYPE_NBA_TEAM
 import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.gui.utils.Mapper
+import javax.inject.Inject
 
-class NbaPlayerUiToListItemMapper : Mapper<List<NbaPlayerUi>, List<ListItem>> {
+class NbaPlayerUiToListItemMapper @Inject constructor() :
+    Mapper<List<NbaPlayerUi>, List<ListItem>> {
 
     override fun invoke(input: List<NbaPlayerUi>): List<ListItem> {
         val listOfListItem = ArrayList<ListItem>()
