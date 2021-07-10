@@ -11,33 +11,36 @@ class NbaGameTeamsViewHolder(private val binding: ItemNbaGameTeamsBinding) :
     fun bind(nbaGame: NbaGame) {
         with(binding) {
             val context = root.context
+            val homeTeamRemote = nbaGame.homeTeamRemote
+            val visitorTeamRemote = nbaGame.visitorTeamRemote
+
             tvItemNbaGameTeamsHomeTeamName.text = context.getString(
-                R.string.nba_game_home_team_name, nbaGame.homeTeam.name
+                R.string.nba_game_home_team_name, homeTeamRemote.name
             )
 
             tvItemNbaGameTeamsHomeTeamCity.text = context.getString(
-                R.string.nba_game_home_team_city, nbaGame.homeTeam.city
+                R.string.nba_game_home_team_city, homeTeamRemote.city
             )
 
             tvItemNbaGameTeamsHomeTeamAbbreviation.text = context.getString(
-                R.string.nba_game_home_team_abbreviation, nbaGame.homeTeam.abbreviation
+                R.string.nba_game_home_team_abbreviation, homeTeamRemote.abbreviation
             )
 
-            tvItemNbaGameTeamsHomeTeamFullName.text = nbaGame.homeTeam.fullName
+            tvItemNbaGameTeamsHomeTeamFullName.text = homeTeamRemote.fullName
 
             tvItemNbaGameTeamsVisitorTeamName.text = context.getString(
-                R.string.nba_game_visitor_team_name, nbaGame.visitorTeam.name
+                R.string.nba_game_visitor_team_name, visitorTeamRemote.name
             )
 
             tvItemNbaGamesTeamsVisitorTeamCity.text = context.getString(
-                R.string.nba_game_visitor_team_city, nbaGame.visitorTeam.city
+                R.string.nba_game_visitor_team_city, visitorTeamRemote.city
             )
 
             tvItemNbaGameTeamsVisitorTeamAbbreviation.text = context.getString(
-                R.string.nba_game_visitor_team_abbreviation, nbaGame.visitorTeam.abbreviation
+                R.string.nba_game_visitor_team_abbreviation, visitorTeamRemote.abbreviation
             )
 
-            tvItemNbaGameTeamsVisitorTeamFullName.text = nbaGame.visitorTeam.fullName
+            tvItemNbaGameTeamsVisitorTeamFullName.text = visitorTeamRemote.fullName
         }
 
     }

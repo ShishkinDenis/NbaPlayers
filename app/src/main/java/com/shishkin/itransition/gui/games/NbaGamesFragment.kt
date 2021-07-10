@@ -27,8 +27,8 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     private val binding get() = _binding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGamesBinding.inflate(inflater, container, false)
         return binding.root
@@ -37,7 +37,7 @@ class NbaGamesFragment : DaggerFragment(), NbaGameItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel =
-                ViewModelProviders.of(this, viewModelFactory).get(NbaGamesViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(NbaGamesViewModel::class.java)
         initNbaGamesRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
