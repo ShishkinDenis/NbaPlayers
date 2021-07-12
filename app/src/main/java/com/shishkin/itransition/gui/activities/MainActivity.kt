@@ -9,6 +9,7 @@ import com.shishkin.itransition.db.NbaPlayerDao
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
+
 class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -27,4 +28,6 @@ class MainActivity : DaggerAppCompatActivity() {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
 }
+
+
 

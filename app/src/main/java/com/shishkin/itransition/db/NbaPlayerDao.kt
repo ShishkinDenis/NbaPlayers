@@ -15,6 +15,7 @@ interface NbaPlayerDao {
     @Query("DELETE FROM $PLAYERS_TABLE")
     suspend fun clearAllPlayers(): Int
 
+    @Transaction
     @Query("SELECT * FROM $PLAYERS_TABLE WHERE $PLAYER_ID_COLUMN = :playerId")
     fun getSpecificPlayer(playerId: Int?): PlayerWithTeam
 

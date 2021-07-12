@@ -2,6 +2,7 @@ package com.shishkin.itransition.di
 
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.NbaApiRequestInterceptor
+import com.shishkin.itransition.network.entities.NbaConfiguration
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -22,12 +23,20 @@ class ApiServiceModule {
         return interceptor
     }
 
+    @Provides
+    fun provideBaseRequestInterceptor(nbaConfiguration: NbaConfiguration): NbaApiRequestInterceptor {
+        return NbaApiRequestInterceptor(nbaConfiguration)
+    }
+
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        nbaApiRequestInterceptor: NbaApiRequestInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(NbaApiRequestInterceptor())
+            .addInterceptor(nbaApiRequestInterceptor)
             .build()
     }
 

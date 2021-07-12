@@ -13,7 +13,8 @@ import javax.inject.Singleton
         NbaAppModule::class,
         ActivitiesModule::class,
         ApiServiceModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        ConfigurationProviderModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {
