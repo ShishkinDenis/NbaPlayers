@@ -24,7 +24,7 @@ class ApiServiceModule {
     }
 
     @Provides
-    fun provideBaseRequestInterceptor(nbaConfiguration: NbaConfiguration): NbaApiRequestInterceptor {
+    fun provideBaseRequestInterceptor(nbaConfiguration: NbaConfiguration?): NbaApiRequestInterceptor {
         return NbaApiRequestInterceptor(nbaConfiguration)
     }
 
