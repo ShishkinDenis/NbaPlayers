@@ -1,13 +1,12 @@
 package com.shishkin.itransition.gui.nba
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -19,6 +18,7 @@ import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
@@ -28,7 +28,6 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
     @Inject
     lateinit var nbaPlayerUiToListItemMapper: NbaPlayerUiToListItemMapper
-    private lateinit var viewModel: NbaViewModel
     private lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
     private lateinit var _binding: FragmentNbaBinding
     private val binding get() = _binding
@@ -43,8 +42,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(NbaViewModel::class.java)
+        val viewModel: NbaViewModel by viewModels { viewModelFactory }
         initNbaPlayersRecyclerView()
 
         lifecycleScope.launch {
@@ -52,13 +50,11 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 viewModel.playersState.collectLatest { uiState ->
                     uiState.fold(
                         onLoading = {
-                            // TODO Evgeny Логирование лучше делать не через Log.d и прочие,
-                            // А подключить либу: Timber.
-                            Log.d("Retrofit", "NbaFragment: Loading")
+                            Timber.tag("Retrofit").d("NbaFragment: Loading")
                         },
                         onSuccess = { list ->
                             if (list.isNullOrEmpty()) {
-                                Log.d("Retrofit", "NbaFragment: Empty")
+                                Timber.tag("Retrofit").d("NbaFragment: Empty")
                             } else {
                                 nbaPlayersListAdapter.submitList(
                                     nbaPlayerUiToListItemMapper.invoke(list)
@@ -66,7 +62,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                             }
                         },
                         onError = { throwable, message ->
-                            Log.d("Retrofit", "NbaFragment: Error: " + message)
+                            Timber.tag("Retrofit").d("NbaFragment: Error: " + message)
                         }
                     )
                 }
@@ -77,7 +73,6 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     private fun initNbaPlayersRecyclerView() {
         nbaPlayersListAdapter = NbaPlayersListAdapter(this@NbaFragment)
         binding.rvNbaPlayers.adapter = nbaPlayersListAdapter
-//        TODO какая есть альтернатива использования четырых! let?
         context?.let { context ->
             ContextCompat.getDrawable(context, R.drawable.divider_drawable)?.let { drawable ->
                 binding.rvNbaPlayers.context?.let { context ->

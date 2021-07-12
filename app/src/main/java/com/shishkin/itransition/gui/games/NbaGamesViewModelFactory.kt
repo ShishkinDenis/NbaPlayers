@@ -8,11 +8,8 @@ import javax.inject.Inject
 class NbaGamesViewModelFactory @Inject constructor(private val nbaRepository: NbaRepository) :
     ViewModelProvider.Factory {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(NbaGamesViewModel::class.java)) {
-            NbaGamesViewModel(this.nbaRepository) as T
-        } else {
-            throw IllegalArgumentException("ViewModel Not Found")
-        }
+        return NbaGamesViewModel(this.nbaRepository) as T
     }
 }

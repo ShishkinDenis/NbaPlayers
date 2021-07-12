@@ -9,22 +9,13 @@ import javax.inject.Inject
 class NbaViewModelFactory @Inject constructor(
     private val nbaRepository: NbaRepository,
     private val playerWithTeamToNbaPlayerUiMapper: PlayerWithTeamToNbaPlayerUiMapper
-) :
-    ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(NbaViewModel::class.java)) {
-            NbaViewModel(this.nbaRepository, this.playerWithTeamToNbaPlayerUiMapper) as T
-        } else {
-            throw IllegalArgumentException("ViewModel Not Found")
-        }
+        return NbaViewModel(
+            nbaRepository = nbaRepository,
+            playerWithTeamToNbaPlayerUiMapper = playerWithTeamToNbaPlayerUiMapper
+        ) as T
     }
-
-    // TODO Evgeny логика create сделать таким образом:
-    /*   @Suppress("UNCHECKED_CAST")
-       override fun <T : ViewModel> create(modelClass: Class<T>): T {
-           return  NbaViewModel(
-            nbaRepository=  nbaRepository
-           ) as T
-       }*/
 }
