@@ -33,4 +33,9 @@
         android:name="com.shishkin.itransition.gui.gamesdetails.GamesDetailsFragment"
         android:label="fragment_games_details"
         tools:layout="@layout/fragment_games_details" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.shishkin.itransition.gui.userprofile.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>
