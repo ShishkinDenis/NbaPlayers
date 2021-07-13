@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class RawFileReader @Inject constructor(@Application val context: Context) {
 
-    fun loadJSONFromRaw(raw: Int) : String{
+    fun loadJSONFromRaw(raw: Int): String {
         return context.resources.openRawResource(raw)
             .bufferedReader().use { it.readText() }
     }
