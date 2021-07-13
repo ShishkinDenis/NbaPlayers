@@ -12,17 +12,14 @@ class NbaDetailsViewModelFactory @Inject constructor(
     private val playerWithTeamToNbaPlayerUiMapper: PlayerWithTeamToNbaPlayerUiMapper
 ) : ViewModelProvider.Factory {
 
-    // TODO Evgeny см NbaViewModelFactory
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(NbaDetailsViewModel::class.java)) {
-            NbaDetailsViewModel(
-                this.nbaRepository,
-                this.nbaPlayerId,
-                this.playerWithTeamToNbaPlayerUiMapper
-            ) as T
-        } else {
-            throw IllegalArgumentException("ViewModel Not Found")
-        }
+        return NbaDetailsViewModel(
+            nbaRepository = nbaRepository,
+            nbaPlayerId = nbaPlayerId,
+            playerWithTeamToNbaPlayerUiMapper = playerWithTeamToNbaPlayerUiMapper
+        ) as T
     }
 }
+
 

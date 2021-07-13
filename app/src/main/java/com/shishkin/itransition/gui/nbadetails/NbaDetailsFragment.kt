@@ -1,12 +1,11 @@
 package com.shishkin.itransition.gui.nbadetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.shishkin.itransition.R
@@ -14,13 +13,13 @@ import com.shishkin.itransition.databinding.FragmentNbaDetailsBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class NbaDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: NbaDetailsViewModelFactory
-    private lateinit var viewModel: NbaDetailsViewModel
     private lateinit var _binding: FragmentNbaDetailsBinding
     private val binding get() = _binding
 
@@ -34,19 +33,14 @@ class NbaDetailsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // TODO Evgeny: для получения viewModel ты можешь использовать специальный extension:
-        //  val nbaDetailsViewModel: NbaDetailsViewModel by viewModels { nbaDetailsViewModelFactory }
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(NbaDetailsViewModel::class.java)
+        val viewModel: NbaDetailsViewModel by viewModels { viewModelFactory }
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.specificPlayerRemoteState.collectLatest { uiState ->
                     uiState.fold(
                         onLoading = {
-                            Log.d("Retrofit", "NbaFragment: Loading")
+                            Timber.tag("Retrofit").d( "NbaDetailsFragment: Loading")
                         },
                         onSuccess = { nbaPlayer ->
                             with(binding) {
@@ -81,7 +75,7 @@ class NbaDetailsFragment : DaggerFragment() {
                             }
                         },
                         onError = { throwable, message ->
-                            Log.d("Retrofit", "NbaFragment: Error: " + message)
+                            Timber.tag("Retrofit").d( "NbaDeytailsFragment: Error: " + message)
                         }
                     )
                 }

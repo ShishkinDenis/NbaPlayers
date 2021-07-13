@@ -102,4 +102,7 @@ dependencies {
     implementation "androidx.room:room-runtime:2.3.0-beta01"
     kapt "androidx.room:room-compiler:2.3.0-beta01"
     implementation "androidx.room:room-ktx:2.3.0-beta01"
+
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

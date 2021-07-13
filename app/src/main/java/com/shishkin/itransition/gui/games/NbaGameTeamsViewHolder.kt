@@ -42,6 +42,5 @@ class NbaGameTeamsViewHolder(private val binding: ItemNbaGameTeamsBinding) :
 
             tvItemNbaGameTeamsVisitorTeamFullName.text = visitorTeamRemote.fullName
         }
-
     }
 }
