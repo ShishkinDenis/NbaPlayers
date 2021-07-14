@@ -5,13 +5,13 @@
         android:enabled="true"
         android:id="@+id/nbaFragment"
         android:title="@string/item_bottom_navigation_players"
-        android:icon="@drawable/ic_players_24" />
+        android:icon="@drawable/ic_players" />
     <item
         android:id="@+id/gamesFragment"
         android:title="@string/item_bottom_navigation_games"
-        android:icon="@drawable/ic_games_24" />
+        android:icon="@drawable/ic_games" />
     <item
         android:id="@+id/userProfileFragment"
         android:title="@string/item_bottom_navigation_user"
-        android:icon="@drawable/ic_baseline_user_box_24" />
+        android:icon="@drawable/ic_user_profile" />
 </menu>

@@ -13,6 +13,7 @@ class UserProfileFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: UserProfileViewModelFactory
+    val viewModel: UserProfileViewModel by viewModels { viewModelFactory }
 
     private lateinit var _binding: FragmentUserProfileBinding
     private val binding get() = _binding
@@ -27,6 +28,5 @@ class UserProfileFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel: UserProfileViewModel by viewModels { viewModelFactory }
     }
 }

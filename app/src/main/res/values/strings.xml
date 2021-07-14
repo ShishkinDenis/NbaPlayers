@@ -56,4 +56,7 @@
     <!--    UserProfileFragment-->
     <string name="user_profile_unknown">Unknown</string>
     <string name="user_profile_not_specified">Not Specified</string>
+
+    <string name="user_profile_name_test">John DoeDoeDoeDoeDoeDoe</string>
+    <string name="user_profile_date_test">01/01/2001</string>
 </resources>
