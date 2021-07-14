@@ -5,6 +5,7 @@ import com.shishkin.itransition.gui.games.NbaGamesFragmentModule
 import com.shishkin.itransition.gui.gamesdetails.NbaGamesDetailsFragmentModule
 import com.shishkin.itransition.gui.nba.NbaFragmentModule
 import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragmentModule
+import com.shishkin.itransition.gui.userprofile.UserProfileFragmentModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -16,7 +17,8 @@ abstract class ActivitiesModule {
             NbaFragmentModule::class,
             NbaDetailsFragmentModule::class,
             NbaGamesFragmentModule::class,
-            NbaGamesDetailsFragmentModule::class
+            NbaGamesDetailsFragmentModule::class,
+            UserProfileFragmentModule::class
         ]
     )
     abstract fun provideMainActivity(): MainActivity
