@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentUserProfileBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -28,5 +30,9 @@ class UserProfileFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.ivUserProfileEditButton.setOnClickListener {
+            findNavController().navigate(R.id.action_userProfileFragment_to_editUserProfileFragment)
+        }
     }
 }

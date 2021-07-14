@@ -59,4 +59,9 @@
 
     <string name="user_profile_name_test">John DoeDoeDoeDoeDoeDoe</string>
     <string name="user_profile_date_test">01/01/2001</string>
+
+    <!--    EditUserProfileFragment-->
+    <string name="edit_user_profile_apply">Apply</string>
+    <string name="edit_user_profile_name_hint">Name</string>
+    <string name="edit_user_profile_date_hint">Date</string>
 </resources>

@@ -37,5 +37,22 @@
         android:id="@+id/userProfileFragment"
         android:name="com.shishkin.itransition.gui.userprofile.UserProfileFragment"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_editUserProfileActivity"
+            app:destination="@id/editUserProfileActivity" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_editUserProfileFragment"
+            app:destination="@id/editUserProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.shishkin.itransition.gui.edituserprofile.EditUserProfileFragment"
+        android:label="fragment_edit_user_profile"
+        tools:layout="@layout/fragment_edit_user_profile" />
+    <activity
+        android:id="@+id/editUserProfileActivity"
+        android:name="com.shishkin.itransition.gui.edituserprofile.EditUserProfileActivity"
+        android:label="activity_edit_user_profile"
+        tools:layout="@layout/activity_edit_user_profile" />
 </navigation>
