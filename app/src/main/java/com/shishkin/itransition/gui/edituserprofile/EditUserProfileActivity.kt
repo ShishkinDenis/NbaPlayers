@@ -1,10 +1,10 @@
 package com.shishkin.itransition.gui.edituserprofile
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.shishkin.itransition.databinding.ActivityEditUserProfileBinding
+import dagger.android.support.DaggerAppCompatActivity
 
-class EditUserProfileActivity : AppCompatActivity() {
+class EditUserProfileActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserProfileBinding
 

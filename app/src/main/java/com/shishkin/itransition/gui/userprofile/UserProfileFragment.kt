@@ -30,9 +30,8 @@ class UserProfileFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.ivUserProfileEditButton.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_editUserProfileFragment)
+        binding.ivUserProfileEditProfileButton.setOnClickListener {
+            findNavController().navigate(R.id.action_userProfileFragment_to_editUserProfileActivity)
         }
     }
 }
