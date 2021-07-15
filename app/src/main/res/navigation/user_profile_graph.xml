@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_profile_graph"
+    app:startDestination="@id/editUserProfileFragment">
+
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.shishkin.itransition.gui.edituserprofile.EditUserProfileFragment"
+        android:label="fragment_edit_user_profile"
+        tools:layout="@layout/fragment_edit_user_profile" />
+</navigation>

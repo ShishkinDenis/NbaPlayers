@@ -33,8 +33,8 @@
 
     <!--UserProfileFragment-->
     <dimen name="image_view_user_profile_edit_profile_button_margin_start">152dp</dimen>
-    <dimen name="image_view_user_profile_edit_profile_button_layout_width">28dp</dimen>
-    <dimen name="image_view_user_profile_edit_profile_button_layout_height">28dp</dimen>
+    <dimen name="image_view_user_profile_edit_profile_button_layout_width">72dp</dimen>
+    <dimen name="image_view_user_profile_edit_profile_button_layout_height">48dp</dimen>
 
     <dimen name="image_view_user_profile_user_image_layout_width">148dp</dimen>
     <dimen name="image_view_user_profile_user_image_layout_height">148dp</dimen>

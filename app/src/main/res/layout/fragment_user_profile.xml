@@ -5,8 +5,20 @@
     android:id="@+id/iv_user_profile_edit_button"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
     tools:context=".gui.userprofile.UserProfileFragment">
+
+    <ImageButton
+        android:id="@+id/iv_user_profile_edit_profile_button"
+        android:layout_width="@dimen/image_view_user_profile_edit_profile_button_layout_width"
+        android:layout_height="@dimen/image_view_user_profile_edit_profile_button_layout_height"
+        android:layout_marginStart="@dimen/image_view_user_profile_edit_profile_button_margin_start"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_user_profile_user_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_profile_user_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_user_profile_user_image"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_user_profile_user_image"
@@ -45,25 +57,13 @@
         android:id="@+id/tv_user_profile_birth_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:text="@string/user_profile_not_specified"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_medium"
-        android:gravity="end"
         app:layout_constraintEnd_toStartOf="@+id/iv_user_profile_edit_profile_button"
         app:layout_constraintStart_toStartOf="@+id/tv_user_profile_user_name"
         app:layout_constraintTop_toBottomOf="@+id/iv_user_profile_user_image"
         tools:text="@string/user_profile_date_test" />
-
-    <ImageView
-        android:id="@+id/iv_user_profile_edit_profile_button"
-        android:layout_width="@dimen/image_view_user_profile_edit_profile_button_layout_width"
-        android:layout_height="@dimen/image_view_user_profile_edit_profile_button_layout_height"
-        android:layout_marginStart="@dimen/image_view_user_profile_edit_profile_button_margin_start"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_user_profile_user_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_profile_user_image"
-        app:layout_constraintTop_toTopOf="@+id/iv_user_profile_user_image"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

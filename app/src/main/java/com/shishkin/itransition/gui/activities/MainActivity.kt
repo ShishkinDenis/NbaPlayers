@@ -5,17 +5,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.ActivityMainBinding
-import com.shishkin.itransition.db.NbaPlayerDao
 import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
 
 
 class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    @Inject
-    lateinit var nbaPlayerDao: NbaPlayerDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
