@@ -25,10 +25,10 @@
         android:id="@+id/til_edit_user_profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@null"
         android:layout_marginStart="@dimen/margin_start_large"
         android:layout_marginTop="@dimen/margin_top_large"
         android:layout_marginEnd="@dimen/margin_end_large"
+        app:boxBackgroundColor="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -59,9 +59,9 @@
         android:id="@+id/til_edit_user_profile_date_chooser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@null"
         android:layout_marginStart="@dimen/margin_start_large"
         android:layout_marginEnd="@dimen/margin_end_large"
+        app:boxBackgroundColor="@null"
         app:layout_constraintBottom_toBottomOf="@+id/iv_edit_user_profile_user_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_edit_user_profile_user_image"
@@ -76,4 +76,5 @@
             android:hint="@string/edit_user_profile_date_hint"
             android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
