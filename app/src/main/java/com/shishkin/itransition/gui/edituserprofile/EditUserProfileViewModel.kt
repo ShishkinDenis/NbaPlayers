@@ -1,11 +1,11 @@
 package com.shishkin.itransition.gui.edituserprofile
 
-import android.icu.text.SimpleDateFormat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
 import com.shishkin.itransition.extensions.getDateAsConfig
 import com.shishkin.itransition.extensions.mapToTimestamp
+import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
 import com.shishkin.itransition.repository.UserRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,9 +13,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-private const val USER_BIRTH_DATE_FORMAT = "dd/MM/yyyy"
-
-class EditUserProfileViewModel @Inject constructor(private val userRepository: UserRepository) :
+class EditUserProfileViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val dateToStringMapper: DateToStringMapper
+) :
     ViewModel() {
 
     private val _toast = MutableSharedFlow<Int>()
@@ -48,12 +49,9 @@ class EditUserProfileViewModel @Inject constructor(private val userRepository: U
     fun setUserDate(
         config: DatePickerConfig
     ) {
-        val sdf = SimpleDateFormat(USER_BIRTH_DATE_FORMAT, Locale.US)
-
         val chosenDate = config.mapToTimestamp()
-
         val currentDate = Date()
-        val chosenConvertedDate = sdf.format(chosenDate)
+        val chosenConvertedDate = dateToStringMapper.invoke(chosenDate)
 
         if (chosenDate.before(currentDate)) {
             emitDate(chosenConvertedDate)
