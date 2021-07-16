@@ -14,65 +14,78 @@ import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 class EditUserProfileFragment : DaggerFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: EditUserProfileViewModelFactory
-    private val viewModel: EditUserProfileViewModel by viewModels { viewModelFactory }
+  @Inject
+  lateinit var viewModelFactory: EditUserProfileViewModelFactory
+  private val viewModel: EditUserProfileViewModel by viewModels { viewModelFactory }
 
-    private lateinit var _binding: FragmentEditUserProfileBinding
-    private val binding get() = _binding
+  private lateinit var _binding: FragmentEditUserProfileBinding
+  private val binding get() = _binding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEditUserProfileBinding.inflate(inflater, container, false)
-        return binding.root
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentEditUserProfileBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?
+  ) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.etEditUserProfileDateChooser.setOnClickListener {
+      showDatePickerDialog()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.etEditUserProfileDateChooser.setOnClickListener {
-            showDatePickerDialog()
+    lifecycleScope.launch {
+      viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.date.collect { date ->
+          binding.etEditUserProfileDateChooser.setText(date)
         }
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.date.collect { date ->
-                    binding.etEditUserProfileDateChooser.setText(date)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.toast.collect { toastMessage ->
-                    showToast(toastMessage)
-                }
-            }
-        }
+      }
     }
-
-    private fun showDatePickerDialog() {
-        context?.let { context ->
-            DatePickerDialog(
-                context, viewModel.setDateListener(),
-                viewModel.calendar.get(Calendar.YEAR),
-                viewModel.calendar.get(Calendar.MONTH),
-                viewModel.calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+    lifecycleScope.launch {
+      viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.toast.collect { toastMessage ->
+          showToast(toastMessage)
         }
+      }
     }
+  }
 
-    private fun showToast(toastMessage: Int) {
-        Toast.makeText(
-            context,
-            toastMessage,
-            Toast.LENGTH_LONG
-        ).show()
+  private fun showDatePickerDialog() {
+    val config = viewModel.getUserDate()
+    context?.let { context ->
+      DatePickerDialog(
+        context,
+        { _, year, monthOfYear, dayOfMonth ->
+          viewModel.setUserDate(
+            DatePickerConfig(
+              day = dayOfMonth,
+              month = monthOfYear,
+              year = year
+            )
+          )
+        },
+        config.year,
+        config.month,
+        config.day
+      ).show()
     }
+  }
+
+  private fun showToast(toastMessage: Int) {
+    Toast.makeText(
+      context,
+      toastMessage,
+      Toast.LENGTH_LONG
+    ).show()
+  }
 }
