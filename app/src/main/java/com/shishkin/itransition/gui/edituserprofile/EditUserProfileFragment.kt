@@ -14,7 +14,6 @@ import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 class EditUserProfileFragment : DaggerFragment() {
@@ -27,14 +26,18 @@ class EditUserProfileFragment : DaggerFragment() {
     private val binding get() = _binding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEditUserProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.etEditUserProfileDateChooser.setOnClickListener {
@@ -58,12 +61,22 @@ class EditUserProfileFragment : DaggerFragment() {
     }
 
     private fun showDatePickerDialog() {
+        val config = viewModel.getUserDate()
         context?.let { context ->
             DatePickerDialog(
-                context, viewModel.setDateListener(),
-                viewModel.calendar.get(Calendar.YEAR),
-                viewModel.calendar.get(Calendar.MONTH),
-                viewModel.calendar.get(Calendar.DAY_OF_MONTH)
+                context,
+                { _, year, monthOfYear, dayOfMonth ->
+                    viewModel.setUserDate(
+                        DatePickerConfig(
+                            day = dayOfMonth,
+                            month = monthOfYear,
+                            year = year
+                        )
+                    )
+                },
+                config.year,
+                config.month,
+                config.day
             ).show()
         }
     }

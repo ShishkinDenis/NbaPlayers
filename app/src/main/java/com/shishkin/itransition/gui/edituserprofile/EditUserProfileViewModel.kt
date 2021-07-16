@@ -1,11 +1,11 @@
 package com.shishkin.itransition.gui.edituserprofile
 
-import android.app.DatePickerDialog
 import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
+import com.shishkin.itransition.extensions.getDateAsConfig
+import com.shishkin.itransition.extensions.mapToTimestamp
 import com.shishkin.itransition.repository.UserRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,13 +18,20 @@ private const val USER_BIRTH_DATE_FORMAT = "dd/MM/yyyy"
 class EditUserProfileViewModel @Inject constructor(private val userRepository: UserRepository) :
     ViewModel() {
 
-    val calendar: Calendar = Calendar.getInstance()
-
     private val _toast = MutableSharedFlow<Int>()
     val toast = _toast.asSharedFlow()
 
-    private val _date = MutableSharedFlow<String>()
+    private val _date = MutableSharedFlow<String>(replay = 1)
     val date = _date.asSharedFlow()
+
+    fun getUserDate(): DatePickerConfig {
+        return if (date.replayCache.isEmpty()) {
+            getDateAsConfig()
+        } else {
+            val time = Date().time
+            getDateAsConfig(time)
+        }
+    }
 
     private fun emitToastMessage(toastMessage: Int) {
         viewModelScope.launch {
@@ -38,9 +45,13 @@ class EditUserProfileViewModel @Inject constructor(private val userRepository: U
         }
     }
 
-    private fun setUserDate() {
+    fun setUserDate(
+        config: DatePickerConfig
+    ) {
         val sdf = SimpleDateFormat(USER_BIRTH_DATE_FORMAT, Locale.US)
-        val chosenDate = calendar.time
+
+        val chosenDate = config.mapToTimestamp()
+
         val currentDate = Date()
         val chosenConvertedDate = sdf.format(chosenDate)
 
@@ -50,17 +61,7 @@ class EditUserProfileViewModel @Inject constructor(private val userRepository: U
             emitToastMessage(R.string.edit_user_profile_not_valid_date_toast_message)
         }
     }
-
-    fun setDateListener(): DatePickerDialog.OnDateSetListener {
-        return DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            with(calendar) {
-                set(Calendar.YEAR, year)
-                set(Calendar.MONTH, monthOfYear)
-                set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            }
-            setUserDate()
-        }
-    }
 }
+
 
 
