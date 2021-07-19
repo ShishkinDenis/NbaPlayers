@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
@@ -44,6 +46,10 @@ class EditUserProfileFragment : DaggerFragment() {
             showDatePickerDialog()
         }
 
+        binding.ivEditUserProfileUserImage.setOnClickListener {
+            showBottomSheetDialogImagePath()
+        }
+
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.date.collect { date ->
@@ -58,6 +64,13 @@ class EditUserProfileFragment : DaggerFragment() {
                 }
             }
         }
+    }
+
+    private fun showBottomSheetDialogImagePath() {
+        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet_dialog_image_path, null)
+        val bottomSheetDialog = BottomSheetDialog(this.requireContext())
+        bottomSheetDialog.setContentView(bottomSheet)
+        bottomSheetDialog.show()
     }
 
     private fun showDatePickerDialog() {

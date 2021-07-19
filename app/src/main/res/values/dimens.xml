@@ -41,4 +41,7 @@
     <dimen name="image_view_user_profile_user_image_padding">6dp</dimen>
     <dimen name="image_view_user_profile_user_image_content_padding">6dp</dimen>
     <dimen name="image_view_user_profile_user_image_stroke_width">2dp</dimen>
+
+    <!--    BottomSheetDialogImagePath-->
+    <dimen name="bottom_sheet_dialog_image_path_padding">16dp</dimen>
 </resources>
