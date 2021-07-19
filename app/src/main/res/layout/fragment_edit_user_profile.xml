@@ -23,12 +23,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_edit_user_profile_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_large"
         android:layout_marginTop="@dimen/margin_top_large"
         android:layout_marginEnd="@dimen/margin_end_large"
-        app:boxBackgroundColor="@null"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -57,11 +58,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_edit_user_profile_date_chooser"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_start_large"
         android:layout_marginEnd="@dimen/margin_end_large"
-        app:boxBackgroundColor="@null"
         app:layout_constraintBottom_toBottomOf="@+id/iv_edit_user_profile_user_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_edit_user_profile_user_image"

@@ -66,4 +66,5 @@
     <string name="edit_user_profile_date_hint">Date</string>
     <string name="edit_user_profile_not_specified">Not Specified</string>
     <string name="edit_user_profile_not_valid_date_toast_message">Not valid date</string>
+    <string name="edit_user_profile_at_least_three_chars_but_digits_required_error">At least three chars but digits required</string>
 </resources>

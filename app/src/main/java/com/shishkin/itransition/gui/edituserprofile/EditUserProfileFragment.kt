@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
@@ -40,6 +41,8 @@ class EditUserProfileFragment : DaggerFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tilEditUserProfileName.error =
+            getString(R.string.edit_user_profile_at_least_three_chars_but_digits_required_error)
         binding.etEditUserProfileDateChooser.setOnClickListener {
             showDatePickerDialog()
         }
@@ -56,6 +59,14 @@ class EditUserProfileFragment : DaggerFragment() {
                 viewModel.toast.collect { toastMessage ->
                     showToast(toastMessage)
                 }
+            }
+        }
+//TODO will be reworked
+        binding.btnEditUserProfileApply.isEnabled = true
+        binding.btnEditUserProfileApply.setOnClickListener {
+            val regexAtLeastThreeAnyCharsButDigits = "^[^0-9]{3,}+\$".toRegex()
+            if (binding.etEditUserProfileName.text?.matches(regexAtLeastThreeAnyCharsButDigits) == true) {
+                binding.tilEditUserProfileName.error = null
             }
         }
     }
@@ -88,4 +99,5 @@ class EditUserProfileFragment : DaggerFragment() {
             Toast.LENGTH_LONG
         ).show()
     }
+
 }

@@ -59,6 +59,7 @@ class EditUserProfileViewModel @Inject constructor(
             emitToastMessage(R.string.edit_user_profile_not_valid_date_toast_message)
         }
     }
+
 }
 
 
