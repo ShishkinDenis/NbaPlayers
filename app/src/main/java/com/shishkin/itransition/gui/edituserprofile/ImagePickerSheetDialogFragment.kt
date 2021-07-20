@@ -16,7 +16,7 @@ import com.shishkin.itransition.databinding.FragmentImagePickerSheetDialogBindin
 import timber.log.Timber
 
 private const val BOTTOM_SHEET_DIALOG = "BottomSheetDialog"
-private const val CAMERA_PERMISSION_ID = 1
+private const val CAMERA_PERMISSION_ID = 200
 
 class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -49,6 +49,10 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
                 .d(getString(R.string.image_picker_bottom_sheet_dialog_image_from_gallery))
             openGallery()
         }
+    }
+
+    companion object {
+        fun createNewInstance() = ImagePickerSheetDialogFragment()
     }
 
     private fun requestCameraPermission() {

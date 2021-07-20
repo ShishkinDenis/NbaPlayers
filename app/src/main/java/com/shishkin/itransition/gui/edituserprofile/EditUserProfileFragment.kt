@@ -67,7 +67,7 @@ class EditUserProfileFragment : DaggerFragment() {
     }
 
     private fun showImagePickerBottomSheetDialog() {
-        val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment()
+        val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
         imagePickerSheetDialogFragment.show(parentFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
     }
 
