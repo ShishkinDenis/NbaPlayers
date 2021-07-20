@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
+
 class EditUserProfileFragment : DaggerFragment() {
 
     @Inject
@@ -44,6 +46,10 @@ class EditUserProfileFragment : DaggerFragment() {
             showDatePickerDialog()
         }
 
+        binding.ivEditUserProfileUserImage.setOnClickListener {
+            showImagePickerBottomSheetDialog()
+        }
+
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.date.collect { date ->
@@ -60,12 +66,17 @@ class EditUserProfileFragment : DaggerFragment() {
         }
     }
 
+    private fun showImagePickerBottomSheetDialog() {
+        val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
+        imagePickerSheetDialogFragment.show(parentFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
+    }
+
+
     private fun showDatePickerDialog() {
         val config = viewModel.getUserDate()
         context?.let { context ->
             DatePickerDialog(
-                context,
-                { _, year, monthOfYear, dayOfMonth ->
+                context, { _, year, monthOfYear, dayOfMonth ->
                     viewModel.setUserDate(
                         DatePickerConfig(
                             day = dayOfMonth,

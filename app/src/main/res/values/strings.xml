@@ -66,4 +66,9 @@
     <string name="edit_user_profile_date_hint">Date</string>
     <string name="edit_user_profile_not_specified">Not Specified</string>
     <string name="edit_user_profile_not_valid_date_toast_message">Not valid date</string>
+
+    <!--    ImagePickerSheetDialogFragment-->
+    <string name="image_picker_bottom_sheet_dialog_choose_image_path">CHOOSE IMAGE PATH</string>
+    <string name="image_picker_bottom_sheet_dialog_image_from_camera">Image from Camera</string>
+    <string name="image_picker_bottom_sheet_dialog_image_from_gallery">Image from Gallery</string>
 </resources>
