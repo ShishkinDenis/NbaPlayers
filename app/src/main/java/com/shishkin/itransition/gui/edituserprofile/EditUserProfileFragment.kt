@@ -1,6 +1,7 @@
 package com.shishkin.itransition.gui.edituserprofile
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class EditUserProfileFragment : DaggerFragment() {
 
     private lateinit var _binding: FragmentEditUserProfileBinding
     private val binding get() = _binding
+
+    private lateinit var imagePickerSheetDialogFragment: ImagePickerSheetDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,10 +70,15 @@ class EditUserProfileFragment : DaggerFragment() {
     }
 
     private fun showImagePickerBottomSheetDialog() {
-        val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
-        imagePickerSheetDialogFragment.show(parentFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
+        val fragment = parentFragmentManager.findFragmentByTag(IMAGE_PICKER_SHEET_DIALOG_TAG)
+//        TODO не совсем понятна разница в поведении,если нет проверки
+        if (fragment == null) {
+            imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance(
+                IMAGE_PICKER_SHEET_DIALOG_TAG
+            )
+            imagePickerSheetDialogFragment.show(childFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
+        }
     }
-
 
     private fun showDatePickerDialog() {
         val config = viewModel.getUserDate()
@@ -98,5 +106,10 @@ class EditUserProfileFragment : DaggerFragment() {
             toastMessage,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    fun displayImage(imageUri: Uri?) {
+        binding.ivEditUserProfileUserImage.setImageURI(imageUri)
+        imagePickerSheetDialogFragment.dismiss()
     }
 }

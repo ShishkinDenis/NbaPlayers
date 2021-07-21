@@ -71,4 +71,5 @@
     <string name="image_picker_bottom_sheet_dialog_choose_image_path">CHOOSE IMAGE PATH</string>
     <string name="image_picker_bottom_sheet_dialog_image_from_camera">Image from Camera</string>
     <string name="image_picker_bottom_sheet_dialog_image_from_gallery">Image from Gallery</string>
+    <string name="image_picker_sheet_dialog_new_picture">New Picture</string>
 </resources>
