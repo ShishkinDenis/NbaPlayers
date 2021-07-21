@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -19,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentImagePickerSheetDialogBinding
+import com.shishkin.itransition.extensions.makeVisible
 
 private const val CAMERA_PERMISSION_ID = 200
 
@@ -53,7 +53,7 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        (parentFragment as? ImageProvider)?.provideImageUri(imageUri)
+        (parentFragment as? ImageRetriever)?.onRetrieveImage(imageUri)
     }
 
     companion object {
@@ -118,8 +118,10 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun displayPreview() {
-        binding.tvImagePickerBottomSheetDialogChosenImageTitle.visibility = VISIBLE
-        binding.ivImagePickerBottomSheetDialogChosenImage.visibility = VISIBLE
-        binding.ivImagePickerBottomSheetDialogChosenImage.setImageURI(imageUri)
+        with(binding) {
+            tvImagePickerBottomSheetDialogChosenImageTitle.makeVisible()
+            ivImagePickerBottomSheetDialogChosenImage.makeVisible()
+            ivImagePickerBottomSheetDialogChosenImage.setImageURI(imageUri)
+        }
     }
 }

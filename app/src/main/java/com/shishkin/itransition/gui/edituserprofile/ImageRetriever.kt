@@ -2,7 +2,7 @@ package com.shishkin.itransition.gui.edituserprofile
 
 import android.net.Uri
 
-interface ImageProvider {
+interface ImageRetriever {
 
-    fun provideImageUri(imageUri: Uri?)
+    fun onRetrieveImage(imageUri: Uri?)
 }

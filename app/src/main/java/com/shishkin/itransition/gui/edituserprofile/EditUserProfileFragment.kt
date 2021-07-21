@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
 
-class EditUserProfileFragment : DaggerFragment(), ImageProvider {
+class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
 
     @Inject
     lateinit var viewModelFactory: EditUserProfileViewModelFactory
@@ -103,7 +103,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageProvider {
         ).show()
     }
 
-    override fun provideImageUri(imageUri: Uri?) {
+    override fun onRetrieveImage(imageUri: Uri?) {
         binding.ivEditUserProfileUserImage.setImageURI(imageUri)
     }
 }
