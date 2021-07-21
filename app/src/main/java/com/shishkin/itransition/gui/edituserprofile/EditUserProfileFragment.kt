@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
 
-class EditUserProfileFragment : DaggerFragment() {
+class EditUserProfileFragment : DaggerFragment(), ImageProvider {
 
     @Inject
     lateinit var viewModelFactory: EditUserProfileViewModelFactory
@@ -27,8 +27,6 @@ class EditUserProfileFragment : DaggerFragment() {
 
     private lateinit var _binding: FragmentEditUserProfileBinding
     private val binding get() = _binding
-
-    private lateinit var imagePickerSheetDialogFragment: ImagePickerSheetDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,12 +68,9 @@ class EditUserProfileFragment : DaggerFragment() {
     }
 
     private fun showImagePickerBottomSheetDialog() {
-        val fragment = parentFragmentManager.findFragmentByTag(IMAGE_PICKER_SHEET_DIALOG_TAG)
-//        TODO не совсем понятна разница в поведении,если нет проверки
+        val fragment = childFragmentManager.findFragmentByTag(IMAGE_PICKER_SHEET_DIALOG_TAG)
         if (fragment == null) {
-            imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance(
-                IMAGE_PICKER_SHEET_DIALOG_TAG
-            )
+            val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
             imagePickerSheetDialogFragment.show(childFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
         }
     }
@@ -108,8 +103,7 @@ class EditUserProfileFragment : DaggerFragment() {
         ).show()
     }
 
-    fun displayImage(imageUri: Uri?) {
+    override fun provideImageUri(imageUri: Uri?) {
         binding.ivEditUserProfileUserImage.setImageURI(imageUri)
-        imagePickerSheetDialogFragment.dismiss()
     }
 }
