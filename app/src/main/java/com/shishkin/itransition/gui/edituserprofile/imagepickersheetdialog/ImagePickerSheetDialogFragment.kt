@@ -1,4 +1,4 @@
-package com.shishkin.itransition.gui.edituserprofile
+package com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog
 
 import android.Manifest
 import android.app.Activity
@@ -15,19 +15,30 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.work.WorkInfo
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentImagePickerSheetDialogBinding
 import com.shishkin.itransition.extensions.makeVisible
+import com.shishkin.itransition.gui.edituserprofile.ImageRetriever
 
 private const val CAMERA_PERMISSION_ID = 200
+const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
+const val WORK_MANAGER_TAG_OUTPUT = "OUTPUT"
+const val COMPRESSED_IMAGE_OUTPUT_PATH = "compressed_outputs"
 
 class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var _binding: FragmentImagePickerSheetDialogBinding
     private val binding get() = _binding
 
+    private lateinit var viewModel: ImagePickerSheetDialogViewModel
+
     private var imageUri: Uri? = null
+    private var outputImageUri: String? = null
+    private lateinit var galleryIntent: Intent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +50,7 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ImagePickerSheetDialogViewModel::class.java)
         binding.tvImagePickerBottomSheetDialogImageFromCamera.setOnClickListener {
             if (checkIfCameraPermissionIsGranted()) {
                 openCamera()
@@ -49,11 +61,28 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         binding.tvImagePickerBottomSheetDialogImageFromGallery.setOnClickListener {
             openGallery()
         }
+        viewModel.outputWorkInfos.observe(this, workInfosObserver())
+    }
+
+    private fun workInfosObserver(): Observer<List<WorkInfo>> {
+        return Observer { listOfWorkInfo ->
+
+            if (listOfWorkInfo.isNullOrEmpty()) {
+                return@Observer
+            } else {
+                val workInfo = listOfWorkInfo[0]
+                outputImageUri = workInfo.outputData.getString(KEY_IMAGE_URI)
+
+                if (!outputImageUri.isNullOrEmpty()) {
+                    viewModel.setOutputUri(outputImageUri)
+                }
+            }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        (parentFragment as? ImageRetriever)?.onRetrieveImage(imageUri)
+        (parentFragment as? ImageRetriever)?.onRetrieveImage(viewModel.outputUri)
     }
 
     companion object {
@@ -92,6 +121,8 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
             context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        viewModel.setImageUri(imageUri.toString())
+        viewModel.compressImageWithWorker()
         cameraLauncher.launch(cameraIntent)
     }
 
@@ -99,12 +130,15 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 imageUri = result.data?.data
+                viewModel.setImageUri(imageUri.toString())
+                viewModel.compressImageWithWorker()
+//                TODO cначала срабатывает displayPreview - затем worker
                 displayPreview()
             }
         }
 
     private fun openGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(galleryIntent)
     }
 
@@ -121,7 +155,7 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         with(binding) {
             tvImagePickerBottomSheetDialogChosenImageTitle.makeVisible()
             ivImagePickerBottomSheetDialogChosenImage.makeVisible()
-            ivImagePickerBottomSheetDialogChosenImage.setImageURI(imageUri)
+            ivImagePickerBottomSheetDialogChosenImage.setImageURI(viewModel.outputUri)
         }
     }
 }

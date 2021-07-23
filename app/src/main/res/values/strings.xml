@@ -73,4 +73,8 @@
     <string name="image_picker_bottom_sheet_dialog_image_from_gallery">Image from Gallery</string>
     <string name="image_picker_bottom_sheet_dialog_new_picture">New Picture</string>
     <string name="image_picker_bottom_sheet_dialog_chosen_image_title">CHOSEN IMAGE</string>
+
+    <!--    ImageCompressionWorker-->
+    <string name="image_compression_worker_error_applying_compression">Error applying compression</string>
+    <string name="image_compression_worker_invalid_input_uri">Invalid input uri</string>
 </resources>
