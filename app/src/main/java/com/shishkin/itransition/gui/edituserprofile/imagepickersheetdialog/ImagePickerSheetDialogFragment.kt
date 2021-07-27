@@ -82,23 +82,10 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvImagePickerBottomSheetDialogImageFromCamera.setOnClickListener {
-            if (checkIfCameraPermissionIsGranted() and checkIfStoragePermissionIsGranted()) {
-                openCamera()
-            } else {
-                if (!checkIfCameraPermissionIsGranted()) {
-                    permissionLauncher.launch(Manifest.permission.CAMERA)
-                }
-                if (!checkIfStoragePermissionIsGranted()) {
-                    permissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }
+            openCameraIfPermissionsAreGranted()
         }
         binding.tvImagePickerBottomSheetDialogImageFromGallery.setOnClickListener {
-            if (checkIfStoragePermissionIsGranted()) {
-                openGallery()
-            } else {
-                permissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
+            openGalleryIfPermissionIsGranted()
         }
 
         subscribeOnWorkInfo()
@@ -106,6 +93,31 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.outputUri.collect { uri ->
                 displayPreview(uri)
             }
+        }
+    }
+
+    private fun openCameraIfPermissionsAreGranted() {
+        if (checkIfCameraPermissionIsGranted() and checkIfStoragePermissionIsGranted()) {
+            openCamera()
+        } else {
+            requestPermissionsForFetchingImageFromCamera()
+        }
+    }
+
+    private fun requestPermissionsForFetchingImageFromCamera() {
+        if (!checkIfCameraPermissionIsGranted()) {
+            permissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+        if (!checkIfStoragePermissionIsGranted()) {
+            permissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun openGalleryIfPermissionIsGranted() {
+        if (checkIfStoragePermissionIsGranted()) {
+            openGallery()
+        } else {
+            permissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 
