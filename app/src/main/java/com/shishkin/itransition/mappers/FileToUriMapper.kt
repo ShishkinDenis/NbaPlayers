@@ -2,9 +2,8 @@ package com.shishkin.itransition.mappers
 
 import android.net.Uri
 import java.io.File
-import javax.inject.Inject
 
-class FileToUriMapper @Inject constructor() {
+class FileToUriMapper {
 
     fun convertFileToUri(file: File): Uri {
         return Uri.fromFile(file)

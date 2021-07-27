@@ -1,9 +1,8 @@
 package com.shishkin.itransition.processors
 
 import android.graphics.Bitmap
-import javax.inject.Inject
 
-class BitmapProcessor @Inject constructor() {
+class BitmapProcessor {
 
     fun processBitmap(bitmap: Bitmap?, vararg strategies: ProcessBitmapStrategy): Bitmap? {
         if (bitmap == null) return null
