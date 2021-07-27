@@ -31,6 +31,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 private const val CAMERA_PERMISSION_ID = 200
+private const val STORAGE_PERMISSION_ID = 210
 const val WORK_MANAGER_TAG_OUTPUT = "OUTPUT"
 const val COMPRESSED_IMAGE_OUTPUT_PATH = "compressed_outputs"
 const val OUTPUT_FILE_NAME = "compressed_user_profile_image.png"
@@ -58,6 +59,11 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!checkIfStoragePermissionIsGranted()) {
+            requestStoragePermission()
+        }
+
         binding.tvImagePickerBottomSheetDialogImageFromCamera.setOnClickListener {
             if (checkIfCameraPermissionIsGranted()) {
                 openCamera()
@@ -66,7 +72,7 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
             }
         }
         binding.tvImagePickerBottomSheetDialogImageFromGallery.setOnClickListener {
-            openGallery()
+                openGallery()
         }
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -126,6 +132,7 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, inputImageUri)
         cameraLauncher.launch(cameraIntent)
+//        TODO передать во viewModel.compressImageWithWorker(inputImageUri) - где?
     }
 
     private val galleryLauncher =
@@ -146,6 +153,23 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         return context?.let { context ->
             ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
         } == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun checkIfStoragePermissionIsGranted(): Boolean {
+        return context?.let { context ->
+            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestStoragePermission() {
+        activity?.let { fragmentActivity ->
+            ActivityCompat.requestPermissions(
+                fragmentActivity, arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), STORAGE_PERMISSION_ID
+            )
+        }
     }
 
     private fun displayPreview() {
