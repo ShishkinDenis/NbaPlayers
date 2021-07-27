@@ -1,6 +1,7 @@
 package com.shishkin.itransition.gui.edituserprofile
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
+import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.ImagePickerSheetDialogFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
 
-class EditUserProfileFragment : DaggerFragment() {
+class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
 
     @Inject
     lateinit var viewModelFactory: EditUserProfileViewModelFactory
@@ -67,10 +69,12 @@ class EditUserProfileFragment : DaggerFragment() {
     }
 
     private fun showImagePickerBottomSheetDialog() {
-        val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
-        imagePickerSheetDialogFragment.show(parentFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
+        val fragment = childFragmentManager.findFragmentByTag(IMAGE_PICKER_SHEET_DIALOG_TAG)
+        if (fragment == null) {
+            val imagePickerSheetDialogFragment = ImagePickerSheetDialogFragment.createNewInstance()
+            imagePickerSheetDialogFragment.show(childFragmentManager, IMAGE_PICKER_SHEET_DIALOG_TAG)
+        }
     }
-
 
     private fun showDatePickerDialog() {
         val config = viewModel.getUserDate()
@@ -98,5 +102,9 @@ class EditUserProfileFragment : DaggerFragment() {
             toastMessage,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    override fun onRetrieveImage(imageUri: Uri?) {
+        binding.ivEditUserProfileUserImage.setImageURI(imageUri)
     }
 }

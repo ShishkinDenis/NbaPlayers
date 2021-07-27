@@ -39,7 +39,7 @@
     <dimen name="image_view_user_profile_user_image_layout_width">148dp</dimen>
     <dimen name="image_view_user_profile_user_image_layout_height">148dp</dimen>
     <dimen name="image_view_user_profile_user_image_padding">6dp</dimen>
-    <dimen name="image_view_user_profile_user_image_content_padding">6dp</dimen>
+    <dimen name="image_view_user_profile_user_image_content_padding">1dp</dimen>
     <dimen name="image_view_user_profile_user_image_stroke_width">2dp</dimen>
 
     <!--    BottomSheetDialogImagePath-->
