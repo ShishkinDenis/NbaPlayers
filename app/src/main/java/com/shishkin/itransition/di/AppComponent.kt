@@ -14,7 +14,8 @@ import javax.inject.Singleton
         ActivitiesModule::class,
         ApiServiceModule::class,
         DatabaseModule::class,
-        ConfigurationProviderModule::class
+        ConfigurationProviderModule::class,
+        WorkManagerModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {

@@ -1,39 +1,77 @@
 package com.shishkin.itransition.workers
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.text.TextUtils
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.shishkin.itransition.R
-import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.COMPRESSED_IMAGE_OUTPUT_PATH
-import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.KEY_IMAGE_URI
+import com.shishkin.itransition.mappers.FileToUriMapper
+import com.shishkin.itransition.mappers.StringUriToBitmapMapper
+import com.shishkin.itransition.processors.BitmapProcessor
+import com.shishkin.itransition.processors.FileProcessor
+import com.shishkin.itransition.processors.ReduceBitmapSizeStrategy
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.*
+import javax.inject.Inject
 
-private const val COMPRESSED_IMAGE_NAME = "compressed-output-%s.jpg"
+private const val DEFAULT_QUALITY_VALUE = 0
+const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
+const val KEY_OUTPUT_FILE_NAME = "KEY_OUTPUT_FILE_NAME"
+const val KEY_COMPRESSED_IMAGE_OUTPUT_PATH = "KEY_COMPRESSED_IMAGE_OUTPUT_PATH"
+const val KEY_IMAGE_QUALITY = "KEY_IMAGE_QUALITY"
 
-class ImageCompressionWorker(context: Context, workerParams: WorkerParameters) :
-    Worker(context, workerParams) {
+class ImageCompressionWorker @Inject constructor(
+    context: Context,
+    workerParams: WorkerParameters
+//    var stringUriToBitmapMapper: StringUriToBitmapMapper,
+//    var bitmapProcessor: BitmapProcessor,
+//    val reduceBitmapSizeStrategy: ReduceBitmapSizeStrategy,
+//    var fileProcessor: FileProcessor,
+//    var fileToUriMapper: FileToUriMapper
+) :
+    CoroutineWorker(context, workerParams) {
 
-    override fun doWork(): Result {
-        val resourceUri = inputData.getString(KEY_IMAGE_URI)
+    override suspend fun doWork(): Result {
+        val inputImageUri = inputData.getString(KEY_IMAGE_URI)
+        val fileName = inputData.getString(KEY_OUTPUT_FILE_NAME)
+        val filePath = inputData.getString(KEY_COMPRESSED_IMAGE_OUTPUT_PATH)
+        val imageQuality = inputData.getInt(KEY_IMAGE_QUALITY, DEFAULT_QUALITY_VALUE)
         return try {
-            if (TextUtils.isEmpty(resourceUri)) {
-                Timber.e(applicationContext.getString(R.string.image_compression_worker_invalid_input_uri))
-                throw IllegalArgumentException(applicationContext.getString(R.string.image_compression_worker_invalid_input_uri))
+
+            val stringUriToBitmapMapper = StringUriToBitmapMapper()
+
+            val convertedToBitmapPicture =
+                inputImageUri?.let { stringUri ->
+                    stringUriToBitmapMapper.convertUriToBitmap(
+                        applicationContext.contentResolver,
+                        stringUri
+                    )
+                }
+
+//            TODO use di
+            val bitmapProcessor = BitmapProcessor()
+
+            val reduceBitmapSizeStrategy = ReduceBitmapSizeStrategy()
+            val compressedBitmap =
+                bitmapProcessor.processBitmap(convertedToBitmapPicture, reduceBitmapSizeStrategy)
+
+            val fileProcessor = FileProcessor()
+
+            val outputFile = compressedBitmap?.let { bitmap ->
+                fileName?.let { fileName ->
+                    filePath?.let { filePath ->
+                        fileProcessor.saveBitmapToFile(
+                            applicationContext,
+                            bitmap, fileName, filePath, imageQuality
+                        )
+                    }
+                }
             }
-            val resolver = applicationContext.contentResolver
-            val picture =
-                BitmapFactory.decodeStream(resolver.openInputStream(Uri.parse(resourceUri)))
-            val outputUri = writeBitmapToFile(picture)
+
+            val fileToUriMapper = FileToUriMapper()
+
+            val outputUri = outputFile?.let { file -> fileToUriMapper.convertFileToUri(file) }
             val outputData = workDataOf(KEY_IMAGE_URI to outputUri.toString())
+            Timber.tag("OUTPUT_URI").d("From Worker" + outputData.toString())
             return Result.success(outputData)
         } catch (throwable: Throwable) {
             Timber.e(
@@ -42,28 +80,5 @@ class ImageCompressionWorker(context: Context, workerParams: WorkerParameters) :
             )
             Result.failure()
         }
-    }
-
-    private fun writeBitmapToFile(bitmap: Bitmap): Uri {
-        val fileName = String.format(COMPRESSED_IMAGE_NAME, UUID.randomUUID().toString())
-        val outputDir = File(applicationContext.filesDir, COMPRESSED_IMAGE_OUTPUT_PATH)
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
-        }
-        val outputFile = File(outputDir, fileName)
-        var out: FileOutputStream? = null
-        try {
-            out = FileOutputStream(outputFile)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out)
-        } finally {
-            out?.let { fileOutputStream ->
-                try {
-                    fileOutputStream.close()
-                } catch (ignore: IOException) {
-                    Timber.e(ignore)
-                }
-            }
-        }
-        return Uri.fromFile(outputFile)
     }
 }

@@ -3,6 +3,7 @@ package com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,30 +16,37 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
 import androidx.work.WorkInfo
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentImagePickerSheetDialogBinding
 import com.shishkin.itransition.extensions.makeVisible
 import com.shishkin.itransition.gui.edituserprofile.ImageRetriever
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
 private const val CAMERA_PERMISSION_ID = 200
-const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
 const val WORK_MANAGER_TAG_OUTPUT = "OUTPUT"
 const val COMPRESSED_IMAGE_OUTPUT_PATH = "compressed_outputs"
+const val OUTPUT_FILE_NAME = "compressed_user_profile_image.png"
+const val IMAGE_QUALITY = 0
 
 class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var _binding: FragmentImagePickerSheetDialogBinding
     private val binding get() = _binding
 
-    private lateinit var viewModel: ImagePickerSheetDialogViewModel
+    @Inject
+    lateinit var viewModelFactory: ImagePickerSheetDialogViewModelFactory
 
-    private var imageUri: Uri? = null
-    private var outputImageUri: String? = null
-    private lateinit var galleryIntent: Intent
+    private val viewModel: ImagePickerSheetDialogViewModel by viewModels { viewModelFactory }
+
+    private var inputImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +58,6 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ImagePickerSheetDialogViewModel::class.java)
         binding.tvImagePickerBottomSheetDialogImageFromCamera.setOnClickListener {
             if (checkIfCameraPermissionIsGranted()) {
                 openCamera()
@@ -61,32 +68,29 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         binding.tvImagePickerBottomSheetDialogImageFromGallery.setOnClickListener {
             openGallery()
         }
-        viewModel.outputWorkInfos.observe(this, workInfosObserver())
-    }
-
-    private fun workInfosObserver(): Observer<List<WorkInfo>> {
-        return Observer { listOfWorkInfo ->
-
-            if (listOfWorkInfo.isNullOrEmpty()) {
-                return@Observer
-            } else {
-                val workInfo = listOfWorkInfo[0]
-                outputImageUri = workInfo.outputData.getString(KEY_IMAGE_URI)
-
-                if (!outputImageUri.isNullOrEmpty()) {
-                    viewModel.setOutputUri(outputImageUri)
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.outputWorkInfos.asFlow().collect {
+                    Timber.tag("outputWorkInfos").d(it.get(0).toString())
                 }
             }
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        (parentFragment as? ImageRetriever)?.onRetrieveImage(viewModel.outputUri)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
-    companion object {
-        fun createNewInstance() = ImagePickerSheetDialogFragment()
+    private fun customWorkInfosObserver(): Observer<List<WorkInfo>> {
+        return Observer { listOfWorkInfo ->
+            viewModel.processWorkInfos(listOfWorkInfo)
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        (parentFragment as? ImageRetriever)?.onRetrieveImage(inputImageUri)
     }
 
     private fun requestCameraPermission() {
@@ -117,37 +121,30 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
             MediaStore.Images.Media.DESCRIPTION,
             getString(R.string.image_picker_bottom_sheet_dialog_image_from_camera)
         )
-        imageUri =
+        inputImageUri =
             context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        viewModel.setImageUri(imageUri.toString())
-        viewModel.compressImageWithWorker()
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, inputImageUri)
         cameraLauncher.launch(cameraIntent)
     }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                imageUri = result.data?.data
-                viewModel.setImageUri(imageUri.toString())
-                viewModel.compressImageWithWorker()
-//                TODO cначала срабатывает displayPreview - затем worker
+                inputImageUri = result.data?.data
+                inputImageUri?.let { viewModel.compressImageWithWorker(it) }
                 displayPreview()
             }
         }
 
     private fun openGallery() {
-        galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(galleryIntent)
     }
 
     private fun checkIfCameraPermissionIsGranted(): Boolean {
         return context?.let { context ->
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            )
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
         } == PackageManager.PERMISSION_GRANTED
     }
 
@@ -155,7 +152,11 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         with(binding) {
             tvImagePickerBottomSheetDialogChosenImageTitle.makeVisible()
             ivImagePickerBottomSheetDialogChosenImage.makeVisible()
-            ivImagePickerBottomSheetDialogChosenImage.setImageURI(viewModel.outputUri)
+            ivImagePickerBottomSheetDialogChosenImage.setImageURI(inputImageUri)
         }
+    }
+
+    companion object {
+        fun createNewInstance() = ImagePickerSheetDialogFragment()
     }
 }
