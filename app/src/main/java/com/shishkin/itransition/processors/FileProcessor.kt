@@ -5,8 +5,9 @@ import android.graphics.Bitmap
 import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
+import javax.inject.Inject
 
-class FileProcessor {
+class FileProcessor @Inject constructor() {
 
     fun saveBitmapToFile(
         context: Context,

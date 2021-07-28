@@ -4,8 +4,9 @@ import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import javax.inject.Inject
 
-class StringUriToBitmapMapper {
+class StringUriToBitmapMapper @Inject constructor() {
 
     fun convertUriToBitmap(
         contentResolver: ContentResolver,
