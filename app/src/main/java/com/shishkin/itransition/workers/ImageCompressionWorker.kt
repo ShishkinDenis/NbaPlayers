@@ -27,8 +27,7 @@ class ImageCompressionWorker @Inject constructor(
     private val reduceBitmapSizeStrategy: ReduceBitmapSizeStrategy,
     private val fileProcessor: FileProcessor,
     private val fileToUriMapper: FileToUriMapper
-) :
-    CoroutineWorker(context, workerParams) {
+) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result = coroutineScope {
         val inputImageUri = inputData.getString(KEY_IMAGE_URI)

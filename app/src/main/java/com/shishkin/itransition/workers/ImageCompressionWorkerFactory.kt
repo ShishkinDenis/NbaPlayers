@@ -17,8 +17,7 @@ class ImageCompressionWorkerFactory @Inject constructor(
     private val reduceBitmapSizeStrategy: ReduceBitmapSizeStrategy,
     private val fileProcessor: FileProcessor,
     private val fileToUriMapper: FileToUriMapper
-) :
-    WorkerFactory() {
+) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,

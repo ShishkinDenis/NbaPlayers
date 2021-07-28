@@ -2,6 +2,7 @@ package com.shishkin.itransition.di
 
 import androidx.work.Configuration
 import androidx.work.DelegatingWorkerFactory
+import com.shishkin.itransition.BuildConfig
 import com.shishkin.itransition.workers.ImageCompressionWorkerFactory
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -17,7 +18,7 @@ class MyApplication : DaggerApplication(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        if (com.shishkin.itransition.BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
     }
