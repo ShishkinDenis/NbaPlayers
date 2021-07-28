@@ -31,6 +31,7 @@ class ImageCompressionWorker @Inject constructor(
     CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result = coroutineScope {
+        Timber.tag("TestLogger").d("This is ImageCompressionWorker")
         val inputImageUri = inputData.getString(KEY_IMAGE_URI)
         val fileName = inputData.getString(KEY_OUTPUT_FILE_NAME)
         val imageQuality = inputData.getInt(KEY_IMAGE_QUALITY, DEFAULT_QUALITY_VALUE)

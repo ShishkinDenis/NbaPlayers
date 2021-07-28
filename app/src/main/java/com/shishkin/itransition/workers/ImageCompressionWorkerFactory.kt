@@ -23,15 +23,20 @@ class ImageCompressionWorkerFactory @Inject constructor(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
-    ): ListenableWorker {
-        return ImageCompressionWorker(
-            appContext,
-            workerParameters,
-            stringUriToBitmapMapper,
-            bitmapProcessor,
-            reduceBitmapSizeStrategy,
-            fileProcessor,
-            fileToUriMapper
-        )
+    ): ListenableWorker? {
+        return when (workerClassName) {
+            ImageCompressionWorker::class.java.name ->
+                ImageCompressionWorker(
+                    appContext,
+                    workerParameters,
+                    stringUriToBitmapMapper,
+                    bitmapProcessor,
+                    reduceBitmapSizeStrategy,
+                    fileProcessor,
+                    fileToUriMapper
+                )
+            else ->
+                null
+        }
     }
 }

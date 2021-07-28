@@ -11,10 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentNbaBinding
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerUiToListItemMapper
 import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
+import com.shishkin.itransition.workers.TestWorker
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -68,6 +71,12 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 }
             }
         }
+
+//        TODO delete
+        val myWorkRequest = OneTimeWorkRequest
+            .Builder(TestWorker::class.java)
+            .build()
+        context?.let { WorkManager.getInstance(it).enqueue(myWorkRequest) }
     }
 
     private fun initNbaPlayersRecyclerView() {
