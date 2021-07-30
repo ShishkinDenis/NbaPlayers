@@ -80,12 +80,6 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 }
             }
         }
-//        TODO delete, UserProfileFragment не запустится,если бд еще пуста
-        GlobalScope.launch {
-            val userLocal = UserLocal(1,"John", "31/12/1999","some uri")
-            userDao.insertUser(userLocal)
-            Timber.tag("UserDao").d(userDao.getUser().name)
-        }
     }
 
     private fun initNbaPlayersRecyclerView() {

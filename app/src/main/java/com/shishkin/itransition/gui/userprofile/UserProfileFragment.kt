@@ -43,29 +43,28 @@ class UserProfileFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivUserProfileEditProfileButton.setOnClickListener {
+            // TODO: viewModel.navigateToUserProfileActivity() а код ниже убрать
             findNavController().navigate(R.id.action_userProfileFragment_to_editUserProfileActivity)
         }
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userState.collectLatest { uiState ->
-                    uiState.fold(
-                        onLoading = {
-                            Timber.tag(USER_UI_TAG).d(getString(R.string.user_profile_loading))
-                        },
-                        onSuccess = { userUi ->
-                            userUi?.let {
-                                updateUi(userUi)
-                            }
-                        },
-                        onError = { _, message ->
-                            Timber.tag(USER_UI_TAG).e(
-                                getString(R.string.user_profile_error),
-                                message
-                            )
-                        }
-                    )
-                }
+        lifecycleScope.launchWhenStarted {
+            viewModel.userState.collectLatest { uiState ->
+                uiState.fold(
+                  onLoading = {
+                      Timber.tag(USER_UI_TAG).d(getString(R.string.user_profile_loading))
+                  },
+                  onSuccess = { userUi ->
+                      userUi?.let {
+                          updateUi(userUi)
+                      }
+                  },
+                  onError = { _, message ->
+                      Timber.tag(USER_UI_TAG).e(
+                        getString(R.string.user_profile_error),
+                        message
+                      )
+                  }
+                )
             }
         }
     }

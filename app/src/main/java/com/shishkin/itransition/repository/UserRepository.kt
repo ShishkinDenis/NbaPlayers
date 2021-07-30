@@ -8,5 +8,5 @@ interface UserRepository {
 
     fun getUserFromDb(): Flow<KResult<UserLocal>>
 
-    suspend fun insertUserToDb(userLocal: UserLocal)
+    fun insertUserToDb(userLocal: UserLocal): Flow<KResult<Long>>
 }

@@ -3,6 +3,7 @@ package com.shishkin.itransition.gui.edituserprofile
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
@@ -34,6 +36,10 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     private val binding get() = _binding
 
     lateinit var profileImageUri: Uri
+
+    private val navigationEmitter: NavigationEmitter by lazy {
+        BaseNavigationEmitter(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,27 +64,31 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
             showImagePickerBottomSheetDialog()
         }
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.date.collect { date ->
-                    binding.etEditUserProfileDateChooser.setText(date)
-                }
+        lifecycleScope.launchWhenStarted {
+            viewModel.date.collect { date ->
+                binding.etEditUserProfileDateChooser.setText(date)
             }
         }
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.toast.collect { toastMessage ->
-                    showToast(toastMessage)
-                }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.navigation.collect { navigation ->
+                navigationEmitter.navigateTo(navigation)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.toast.collect { toastMessage ->
+                showToast(toastMessage)
             }
         }
 
         binding.btnEditUserProfileApply.setOnClickListener {
-            val userUi = createUserUi()
-            insertUserData(userUi)
-            findNavController().navigate(R.id.action_editUserProfileFragment_to_userProfileFragment2)
-//            activity?.finish()
-//            TODO приходится нажать еще раз на табу User, чтобы обновились textView
+            try {
+                val userUi = createUserUi()
+                insertUserData(userUi)
+            } catch (e: Exception) {
+                Log.e("JEKA", "Error: "+e)
+            }
         }
     }
 
@@ -90,9 +100,8 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     }
 
     private fun insertUserData(userUi: UserUi) {
-        lifecycleScope.launch {
-            viewModel.insertUser(userUi)
-        }
+            Log.e("JEKA", "Inser user: "+userUi)
+        viewModel.insertUser(userUi)
     }
 
     private fun showImagePickerBottomSheetDialog() {

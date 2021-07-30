@@ -49,7 +49,6 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 inputImageUri = result.data?.data
-                inputImageUri?.let { viewModel.compressImageWithWorker(it) }
                 processImageUri()
             }
         }
