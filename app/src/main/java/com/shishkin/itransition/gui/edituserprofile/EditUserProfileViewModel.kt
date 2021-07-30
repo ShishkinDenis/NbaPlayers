@@ -6,18 +6,21 @@ import com.shishkin.itransition.R
 import com.shishkin.itransition.extensions.getDateAsConfig
 import com.shishkin.itransition.extensions.mapToTimestamp
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
+import com.shishkin.itransition.gui.userprofile.mappers.UserUiToUserLocalMapper
 import com.shishkin.itransition.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
 class EditUserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val dateToStringMapper: DateToStringMapper
-) :
-    ViewModel() {
+    private val dateToStringMapper: DateToStringMapper,
+    private val userUiToUserLocalMapper: UserUiToUserLocalMapper
+) : ViewModel() {
 
     private val _toast = MutableSharedFlow<Int>()
     val toast = _toast.asSharedFlow()
@@ -58,6 +61,11 @@ class EditUserProfileViewModel @Inject constructor(
         } else {
             emitToastMessage(R.string.edit_user_profile_not_valid_date_toast_message)
         }
+    }
+
+    suspend fun insertUser(userUi: UserUi) = withContext(Dispatchers.IO) {
+        val userLocal = userUiToUserLocalMapper.invoke(userUi)
+        userRepository.insertUserToDb(userLocal)
     }
 }
 

@@ -27,7 +27,8 @@ abstract class ActivitiesModule {
 
     @ContributesAndroidInjector(
         modules = [
-            EditUserProfileFragmentModule::class
+            EditUserProfileFragmentModule::class,
+            UserProfileFragmentModule::class
         ]
     )
     abstract fun provideEditUserProfileActivity(): EditUserProfileActivity

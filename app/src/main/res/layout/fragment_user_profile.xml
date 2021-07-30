@@ -29,6 +29,8 @@
         android:padding="@dimen/image_view_user_profile_user_image_padding"
         android:src="@drawable/ic_user_profile"
         app:contentPadding="@dimen/image_view_user_profile_user_image_content_padding"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/Theme.Itransition.CornerSize50Percent"

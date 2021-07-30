@@ -14,8 +14,7 @@
         android:layout_marginStart="@dimen/margin_start_large"
         android:layout_marginEnd="@dimen/margin_end_large"
         android:layout_marginBottom="@dimen/margin_bottom_large"
-        android:checkable="false"
-        android:enabled="false"
+
         android:text="@string/edit_user_profile_apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

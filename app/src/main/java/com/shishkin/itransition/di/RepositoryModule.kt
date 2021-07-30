@@ -1,6 +1,7 @@
 package com.shishkin.itransition.di
 
 import com.shishkin.itransition.db.NbaPlayerDao
+import com.shishkin.itransition.db.UserDao
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToLocalMapper
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToNbaTeamLocalMapper
 import com.shishkin.itransition.network.NbaApi
@@ -28,7 +29,7 @@ class RepositoryModule {
     }
 
     @Provides
-    fun provideUserRepository(): UserRepository {
-        return DefaultUserRepository()
+    fun provideUserRepository(userDao: UserDao): UserRepository {
+        return DefaultUserRepository(userDao)
     }
 }

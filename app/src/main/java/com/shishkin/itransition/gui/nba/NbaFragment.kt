@@ -13,15 +13,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentNbaBinding
+import com.shishkin.itransition.db.UserDao
+import com.shishkin.itransition.db.UserLocal
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerUiToListItemMapper
 import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+private const val NBA_PLAYERS_LIST_TAG = "NbaPLayersList"
+
 class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
+
+//    TODO delete, UserProfileFragment не запустится,если бд еще пуста
+    @Inject
+    lateinit var userDao: UserDao
 
     @Inject
     lateinit var viewModelFactory: NbaViewModelFactory
@@ -50,23 +59,32 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 viewModel.playersState.collectLatest { uiState ->
                     uiState.fold(
                         onLoading = {
-                            Timber.tag("Retrofit").d("NbaFragment: Loading")
+                            Timber.tag(NBA_PLAYERS_LIST_TAG)
+                                .d(getString(R.string.nba_fragment_loading))
                         },
                         onSuccess = { list ->
                             if (list.isNullOrEmpty()) {
-                                Timber.tag("Retrofit").d("NbaFragment: Empty")
+                                Timber.tag(NBA_PLAYERS_LIST_TAG)
+                                    .d(getString(R.string.nba_fragment_empty))
                             } else {
                                 nbaPlayersListAdapter.submitList(
                                     nbaPlayerUiToListItemMapper.invoke(list)
                                 )
                             }
                         },
-                        onError = { throwable, message ->
-                            Timber.tag("Retrofit").d("NbaFragment: Error: " + message)
+                        onError = { _, message ->
+                            Timber.tag(NBA_PLAYERS_LIST_TAG)
+                                .e(getString(R.string.nba_fragment_error), message)
                         }
                     )
                 }
             }
+        }
+//        TODO delete, UserProfileFragment не запустится,если бд еще пуста
+        GlobalScope.launch {
+            val userLocal = UserLocal(1,"John", "31/12/1999","some uri")
+            userDao.insertUser(userLocal)
+            Timber.tag("UserDao").d(userDao.getUser().name)
         }
     }
 

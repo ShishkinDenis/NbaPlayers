@@ -9,5 +9,14 @@
         android:id="@+id/editUserProfileFragment"
         android:name="com.shishkin.itransition.gui.edituserprofile.EditUserProfileFragment"
         android:label="fragment_edit_user_profile"
-        tools:layout="@layout/fragment_edit_user_profile" />
+        tools:layout="@layout/fragment_edit_user_profile" >
+        <action
+            android:id="@+id/action_editUserProfileFragment_to_userProfileFragment2"
+            app:destination="@id/userProfileFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment2"
+        android:name="com.shishkin.itransition.gui.userprofile.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>
