@@ -17,8 +17,6 @@ abstract class NbaPlayerDataBase : RoomDatabase() {
 
         fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, NbaPlayerDataBase::class.java, PLAYER_DB)
-//                    TODO delete
-                .fallbackToDestructiveMigration()
                 .build()
     }
 }

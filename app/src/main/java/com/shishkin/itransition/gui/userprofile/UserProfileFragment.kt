@@ -9,19 +9,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentUserProfileBinding
 import com.shishkin.itransition.gui.edituserprofile.UserUi
+import com.shishkin.itransition.navigation.BaseNavigationEmitter
+import com.shishkin.itransition.navigation.NavigationEmitter
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-
-private const val USER_UI_TAG = "UserUi"
+const val USER_UI_TAG = "UserUi"
 
 class UserProfileFragment : DaggerFragment() {
 
@@ -31,6 +32,10 @@ class UserProfileFragment : DaggerFragment() {
 
     private lateinit var _binding: FragmentUserProfileBinding
     private val binding get() = _binding
+
+    private val navigationEmitter: NavigationEmitter by lazy {
+        BaseNavigationEmitter(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +47,6 @@ class UserProfileFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivUserProfileEditProfileButton.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_editUserProfileActivity)
-        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -68,13 +70,22 @@ class UserProfileFragment : DaggerFragment() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.navigation.collect { navigation ->
+                navigationEmitter.navigateTo(navigation)
+            }
+        }
+
+        binding.ivUserProfileEditProfileButton.setOnClickListener {
+            viewModel.navigateToEditUserProfileActivity()
+        }
     }
 
     private fun updateUi(userUi: UserUi?) {
         binding.tvUserProfileUserName.text = userUi?.name
         binding.tvUserProfileBirthDate.text = userUi?.birthDate
         val profileImageUri = Uri.parse(userUi?.profileImageUri)
-        Timber.tag(USER_UI_TAG).d("Got Uri: %s", profileImageUri.toString())
         context?.let { context ->
             Glide
                 .with(context)
