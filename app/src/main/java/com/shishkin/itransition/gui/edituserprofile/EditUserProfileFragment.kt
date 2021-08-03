@@ -3,6 +3,7 @@ package com.shishkin.itransition.gui.edituserprofile
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
-import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.ImagePickerSheetDialogFragment
-import com.shishkin.itransition.gui.userprofile.USER_UI_TAG
 import com.shishkin.itransition.navigation.BaseNavigationEmitter
 import com.shishkin.itransition.navigation.NavigationEmitter
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 private const val IMAGE_PICKER_SHEET_DIALOG_TAG = "ImagePickerSheetDialogFragmentDialog"
@@ -56,6 +53,40 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+     setClickListeners()
+        initEditTextListeners()
+
+
+        collectData()
+        enableApplyButtonIfValid()
+    }
+
+    private fun collectData() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    viewModel.toast.collect { toastMessage ->
+                        showToast(toastMessage)
+                    }
+                }
+
+                launch {
+                    viewModel.navigation.collect { navigation ->
+                        navigationEmitter.navigateTo(navigation)
+                    }
+                }
+
+                launch {
+                    viewModel.userState.collect { uiState ->
+                        updateUi(uiState)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setClickListeners() {
         binding.etEditUserProfileDateChooser.setOnClickListener {
             showDatePickerDialog()
         }
@@ -63,62 +94,8 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
             showImagePickerBottomSheetDialog()
         }
         binding.btnEditUserProfileApply.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.user.collect {
-                    insertUserData(it)
-                }
-            }
+            viewModel.insertUser()
         }
-        initEditTextListeners()
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.date.collect { date ->
-                    binding.etEditUserProfileDateChooser.setText(date)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.toast.collect { toastMessage ->
-                    showToast(toastMessage)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigation.collect { navigation ->
-                    navigationEmitter.navigateTo(navigation)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userState.collectLatest { uiState ->
-                    uiState.fold(
-                        onLoading = {
-                            Timber.tag(USER_UI_TAG).d(getString(R.string.edit_user_profile_loading))
-                        },
-                        onSuccess = { userUi ->
-                            userUi?.let {
-                                updateUi(userUi)
-                            }
-                        },
-                        onError = { _, message ->
-                            Timber.tag(USER_UI_TAG).e(
-                                getString(R.string.edit_user_profile_error),
-                                message
-                            )
-                        }
-                    )
-                }
-            }
-        }
-        enableApplyButtonIfValid()
-    }
-
-    private fun insertUserData(userUi: UserUi) {
-        viewModel.insertUser(userUi)
     }
 
     private fun showImagePickerBottomSheetDialog() {
@@ -158,21 +135,24 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     }
 
     override fun onRetrieveImage(imageUri: Uri?) {
-        binding.ivEditUserProfileUserImage.setImageURI(imageUri)
         if (imageUri != null) {
-            viewModel.setProfileImageUri(imageUri.toString())
+            viewModel.setProfileImageUri(imageUri)
         }
     }
 
     private fun updateUi(userUi: UserUi?) {
-        binding.etEditUserProfileName.setText(userUi?.name)
+        if(binding.etEditUserProfileName.text.toString() != userUi?.name) {
+            binding.etEditUserProfileName.setText(userUi?.name ?: "")
+        }
         binding.etEditUserProfileDateChooser.setText(userUi?.birthDate)
-        val profileImageUri = Uri.parse(userUi?.profileImageUri)
-        context?.let { context ->
-            Glide
-                .with(context)
-                .load(profileImageUri)
-                .into(binding.ivEditUserProfileUserImage)
+
+        userUi?.profileImageUri?.let {
+            context?.let { context ->
+                Glide
+                  .with(context)
+                  .load(it)
+                  .into(binding.ivEditUserProfileUserImage)
+            }
         }
     }
 
@@ -186,11 +166,10 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     }
 
     private fun enableApplyButtonIfValid() {
+        binding.btnEditUserProfileApply.isEnabled = true
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isApplyButtonEnabled.collect { value ->
-                    binding.btnEditUserProfileApply.isEnabled = value
-                }
+               // TODO Validation
             }
         }
     }

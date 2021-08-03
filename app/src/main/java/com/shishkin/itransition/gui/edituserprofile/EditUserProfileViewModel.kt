@@ -1,5 +1,6 @@
 package com.shishkin.itransition.gui.edituserprofile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
@@ -34,51 +35,59 @@ class EditUserProfileViewModel @Inject constructor(
     private val _toast = MutableSharedFlow<Int>()
     val toast = _toast.asSharedFlow()
 
-    private val _date = MutableSharedFlow<String>(replay = 1)
-    val date = _date.asSharedFlow()
-
     private val _navigation = MutableSharedFlow<Navigation>()
     val navigation = _navigation.asSharedFlow()
 
-    private val _userState: MutableStateFlow<ResultState<UserUi>> =
-        MutableStateFlow(ResultState.loading())
-    val userState: StateFlow<ResultState<UserUi>> = _userState
+    private val _userState: MutableStateFlow<UserUi> = MutableStateFlow(getEmptyUser())
+    val userState: StateFlow<UserUi> = _userState
 
-    private val _userName = MutableStateFlow("")
-    private val _userBirthDate = MutableStateFlow("")
-    private val _profileImageUri = MutableStateFlow("")
+    // TODO Добавить прогресс
 
     //    TODO реализовать валидацию согласно требованиям
-    val isApplyButtonEnabled: Flow<Boolean> =
+/*    val isApplyButtonEnabled: Flow<Boolean> =
         combine(_userName, _userBirthDate) { userName, userBirthDate ->
             val isUserNameCorrect = userName.length > 3
             val userBirthDateCorrect = userBirthDate.length > 3
             return@combine isUserNameCorrect and userBirthDateCorrect
-        }
-
-    val user: Flow<UserUi> = combine(_userName, _userBirthDate, _profileImageUri)
-    { userName, userBirthDate, profileImageUri ->
-        return@combine UserUi(USER_ID, userName, userBirthDate, profileImageUri)
-    }
+        }*/
 
     init {
         loadUser()
     }
 
+    private fun getEmptyUser() : UserUi = UserUi(
+      id = 0,
+      name = "",
+      birthDate = "",
+      profileImageUri = null
+    )
+
     fun setUserName(name: String) {
-        _userName.value = name
+       _userState.tryEmit(
+         _userState.value.copy(
+           name = name
+         )
+       )
     }
 
     fun setUserBirthDate(userBirthDate: String) {
-        _userBirthDate.value = userBirthDate
+        _userState.tryEmit(
+          _userState.value.copy(
+            birthDate = userBirthDate
+          )
+        )
     }
 
-    fun setProfileImageUri(profileImageUri: String) {
-        _profileImageUri.value = profileImageUri
+    fun setProfileImageUri(uri: Uri) {
+        _userState.tryEmit(
+          _userState.value.copy(
+            profileImageUri = uri
+          )
+        )
     }
 
     fun getUserDate(): DatePickerConfig {
-        return if (date.replayCache.isEmpty()) {
+        return if (userState.value.birthDate.isEmpty()) {
             getDateAsConfig()
         } else {
             val time = Date().time
@@ -93,9 +102,11 @@ class EditUserProfileViewModel @Inject constructor(
     }
 
     private fun emitDate(date: String) {
-        viewModelScope.launch {
-            _date.emit(date)
-        }
+        _userState.tryEmit(
+          _userState.value.copy(
+            birthDate = date
+          )
+        )
     }
 
     fun setUserDate(
@@ -112,10 +123,9 @@ class EditUserProfileViewModel @Inject constructor(
         }
     }
 
-    fun insertUser(userUi: UserUi) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val userLocal = userUiToUserLocalMapper.invoke(userUi)
+    fun insertUser() {
+        viewModelScope.launch (Dispatchers.IO) {
+                val userLocal = userUiToUserLocalMapper.invoke(_userState.value)
                 userRepository.insertUserToDb(userLocal).collect { result ->
                     result.fold(
                         onSuccess = {
@@ -129,30 +139,24 @@ class EditUserProfileViewModel @Inject constructor(
                     )
                 }
             }
-        }
     }
 
     private fun loadUser() {
-        viewModelScope.launch {
-            _userState.value = ResultState.loading()
-            withContext(Dispatchers.IO) {
+        viewModelScope.launch (Dispatchers.IO) {
                 userRepository.getUserFromDb()
                     .collect { result ->
                         result.fold(
                             onSuccess = { userLocal ->
                                 withContext(Dispatchers.Main) {
-                                    _profileImageUri.value = userLocal.profileImageUri
-                                    _userState.value = ResultState.success(
-                                        userLocalToUserUiMapper.invoke(userLocal)
-                                    )
+                                    val mapped = userLocalToUserUiMapper.invoke(userLocal)
+                                    _userState.value = mapped
                                 }
                             },
                             onFailure = { error ->
-                                _userState.value = ResultState.error(error.message, error)
+                                // do nothing
                             }
                         )
                     }
-            }
         }
     }
 }
