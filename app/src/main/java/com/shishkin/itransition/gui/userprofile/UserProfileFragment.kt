@@ -1,6 +1,5 @@
 package com.shishkin.itransition.gui.userprofile
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -88,11 +87,10 @@ class UserProfileFragment : DaggerFragment() {
         userUi?.profileImageUri?.let { uri ->
             context?.let { context ->
                 Glide
-                  .with(context)
-                  .load(uri)
-                  .into(binding.ivUserProfileUserImage)
+                    .with(context)
+                    .load(uri)
+                    .into(binding.ivUserProfileUserImage)
             }
         }
-
     }
 }

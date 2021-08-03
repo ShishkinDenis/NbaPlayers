@@ -20,14 +20,14 @@ class UserProfileViewModel @Inject constructor(
     private val userLocalToUserUiMapper: UserLocalToUserUiMapper
 ) : ViewModel() {
 
-    private val _userState: MutableStateFlow<ResultState<UserUi>> =
+    private val userStateData: MutableStateFlow<ResultState<UserUi>> =
         MutableStateFlow(ResultState.loading())
 
-    val userState: StateFlow<ResultState<UserUi>> = _userState
+    val userState: StateFlow<ResultState<UserUi>> = userStateData
 
-    private val _navigation =
+    private val navigationData =
         MutableSharedFlow<Navigation>()
-    val navigation = _navigation.asSharedFlow()
+    val navigation = navigationData.asSharedFlow()
 
     init {
         loadUser()
@@ -35,20 +35,20 @@ class UserProfileViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch {
-            _userState.value = ResultState.loading()
+            userStateData.value = ResultState.loading()
             withContext(Dispatchers.IO) {
                 userRepository.getUserFromDb()
                     .collect { result ->
                         result.fold(
                             onSuccess = { userLocal ->
                                 withContext(Dispatchers.Main) {
-                                    _userState.value = ResultState.success(
+                                    userStateData.value = ResultState.success(
                                         userLocalToUserUiMapper.invoke(userLocal)
                                     )
                                 }
                             },
                             onFailure = { error ->
-                                _userState.value = ResultState.error(error.message, error)
+                                userStateData.value = ResultState.error(error.message, error)
                             }
                         )
                     }
@@ -59,7 +59,7 @@ class UserProfileViewModel @Inject constructor(
     fun navigateToEditUserProfileActivity() {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                _navigation.emit(ActivityNavigation(R.id.action_userProfileFragment_to_editUserProfileActivity))
+                navigationData.emit(ActivityNavigation(R.id.action_userProfileFragment_to_editUserProfileActivity))
             }
         }
     }

@@ -3,7 +3,6 @@ package com.shishkin.itransition.gui.edituserprofile
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
+import com.shishkin.itransition.extensions.makeGone
+import com.shishkin.itransition.extensions.makeVisible
 import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.ImagePickerSheetDialogFragment
 import com.shishkin.itransition.navigation.BaseNavigationEmitter
 import com.shishkin.itransition.navigation.NavigationEmitter
@@ -52,11 +53,8 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-     setClickListeners()
+        setClickListeners()
         initEditTextListeners()
-
-
         collectData()
         enableApplyButtonIfValid()
     }
@@ -82,7 +80,21 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
                         updateUi(uiState)
                     }
                 }
+
+                launch {
+                    viewModel.progress.collect {
+                        showProgressBar(it)
+                    }
+                }
             }
+        }
+    }
+
+    private fun showProgressBar(progressBarState: Boolean) {
+        if (progressBarState) {
+            binding.pbEditUserProfile.makeVisible()
+        } else {
+            binding.pbEditUserProfile.makeGone()
         }
     }
 
@@ -141,7 +153,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
     }
 
     private fun updateUi(userUi: UserUi?) {
-        if(binding.etEditUserProfileName.text.toString() != userUi?.name) {
+        if (binding.etEditUserProfileName.text.toString() != userUi?.name) {
             binding.etEditUserProfileName.setText(userUi?.name ?: "")
         }
         binding.etEditUserProfileDateChooser.setText(userUi?.birthDate)
@@ -149,9 +161,9 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         userUi?.profileImageUri?.let {
             context?.let { context ->
                 Glide
-                  .with(context)
-                  .load(it)
-                  .into(binding.ivEditUserProfileUserImage)
+                    .with(context)
+                    .load(it)
+                    .into(binding.ivEditUserProfileUserImage)
             }
         }
     }
@@ -169,7 +181,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         binding.btnEditUserProfileApply.isEnabled = true
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-               // TODO Validation
+                // TODO Validation
             }
         }
     }

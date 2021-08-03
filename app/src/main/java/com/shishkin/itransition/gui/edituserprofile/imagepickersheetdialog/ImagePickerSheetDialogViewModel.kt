@@ -20,8 +20,8 @@ import javax.inject.Inject
 class ImagePickerSheetDialogViewModel @Inject constructor(private val workManager: WorkManager) :
     ViewModel() {
 
-    private val _outputUri = MutableStateFlow<Uri?>(null)
-    val outputUri = _outputUri.asStateFlow()
+    private val outputUriData = MutableStateFlow<Uri?>(null)
+    val outputUri = outputUriData.asStateFlow()
 
     val outputWorkInfos: LiveData<List<WorkInfo>> =
         workManager.getWorkInfosByTagLiveData(WORK_MANAGER_TAG_OUTPUT)
@@ -34,7 +34,7 @@ class ImagePickerSheetDialogViewModel @Inject constructor(private val workManage
                 if (info.state == WorkInfo.State.SUCCEEDED) {
                     val outputImageUri = info.outputData.getString(KEY_IMAGE_URI)
                     if (!outputImageUri.isNullOrEmpty()) {
-                        _outputUri.emit(Uri.parse(outputImageUri))
+                        outputUriData.emit(Uri.parse(outputImageUri))
                     }
                     workManager.pruneWork()
                 }
