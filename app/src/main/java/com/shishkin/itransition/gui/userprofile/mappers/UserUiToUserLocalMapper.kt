@@ -12,7 +12,7 @@ class UserUiToUserLocalMapper @Inject constructor() : Mapper<UserUi, UserLocal> 
             id = input.id,
             name = input.name,
             birthDate = input.birthDate,
-            profileImageUri = input.profileImageUri
+            profileImageUri = input.profileImageUri?.toString() ?: ""
         )
     }
 }

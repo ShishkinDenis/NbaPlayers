@@ -85,12 +85,14 @@ class UserProfileFragment : DaggerFragment() {
     private fun updateUi(userUi: UserUi?) {
         binding.tvUserProfileUserName.text = userUi?.name
         binding.tvUserProfileBirthDate.text = userUi?.birthDate
-        val profileImageUri = Uri.parse(userUi?.profileImageUri)
-        context?.let { context ->
-            Glide
-                .with(context)
-                .load(profileImageUri)
-                .into(binding.ivUserProfileUserImage)
+        userUi?.profileImageUri?.let { uri ->
+            context?.let { context ->
+                Glide
+                  .with(context)
+                  .load(uri)
+                  .into(binding.ivUserProfileUserImage)
+            }
         }
+
     }
 }
