@@ -16,8 +16,10 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentImagePickerSheetDialogBinding
@@ -25,6 +27,7 @@ import com.shishkin.itransition.extensions.makeVisibleOrGone
 import com.shishkin.itransition.gui.edituserprofile.ImageRetriever
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -49,7 +52,6 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 inputImageUri = result.data?.data
-                inputImageUri?.let { viewModel.compressImageWithWorker(it) }
                 processImageUri()
             }
         }
@@ -89,12 +91,16 @@ class ImagePickerSheetDialogFragment : BottomSheetDialogFragment() {
         }
 
         subscribeOnWorkInfo()
-        lifecycleScope.launchWhenStarted {
-            viewModel.outputUri.collect { uri ->
-                displayPreview(uri)
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.outputUri.collect { uri ->
+                    displayPreview(uri)
+                }
             }
         }
     }
+
 
     private fun openCameraIfPermissionsAreGranted() {
         if (checkIfCameraPermissionIsGranted() and checkIfStoragePermissionIsGranted()) {

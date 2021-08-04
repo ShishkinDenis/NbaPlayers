@@ -24,6 +24,11 @@
     <string name="nba_details_height_inches">Height inches: %1$d</string>
     <string name="nba_details_weight_pounds">Weight pounds: %1$d</string>
 
+    <!--    NbaFragment-->
+    <string name="nba_fragment_loading">NbaFragment: Loading</string>
+    <string name="nba_fragment_empty">NbaFragment: Empty</string>
+    <string name="nba_fragment_error">NbaFragment: Error: %s</string>
+
     <!--    GamesDetailsFragment-->
     <string name="games_details_home_team">Home team</string>
     <string name="games_details_visitor_team">Visitor team</string>
@@ -56,9 +61,10 @@
     <!--    UserProfileFragment-->
     <string name="user_profile_unknown">Unknown</string>
     <string name="user_profile_not_specified">Not Specified</string>
-
     <string name="user_profile_name_test">John DoeDoeDoeDoeDoeDoe</string>
     <string name="user_profile_date_test">01/01/2001</string>
+    <string name="user_profile_loading">UserProfileFragment: Loading</string>
+    <string name="user_profile_error">UserProfileFragment:%s</string>
 
     <!--    EditUserProfileFragment-->
     <string name="edit_user_profile_apply">Apply</string>
@@ -66,6 +72,8 @@
     <string name="edit_user_profile_date_hint">Date</string>
     <string name="edit_user_profile_not_specified">Not Specified</string>
     <string name="edit_user_profile_not_valid_date_toast_message">Not valid date</string>
+    <string name="edit_user_profile_loading">EditUserProfileFragment: Loading</string>
+    <string name="edit_user_profile_error">EditUserProfileFragment:%s</string>
 
     <!--    ImagePickerSheetDialogFragment-->
     <string name="image_picker_bottom_sheet_dialog_choose_image_path">CHOOSE IMAGE PATH</string>
