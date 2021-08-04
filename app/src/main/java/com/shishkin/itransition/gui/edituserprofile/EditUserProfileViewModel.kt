@@ -43,8 +43,48 @@ class EditUserProfileViewModel @Inject constructor(
     private val progressData = MutableStateFlow(false)
     val progress = progressData.asStateFlow()
 
+    private val userNameErrorData = MutableStateFlow(false)
+    val userNameError = userNameErrorData.asStateFlow()
+
+    private val userBirthDateErrorData = MutableStateFlow(false)
+    val userBirthDateError = userBirthDateErrorData.asStateFlow()
+
+    private val userNameData = MutableStateFlow("")
+    private val userDateOfBirthData = MutableStateFlow("")
+
+    val applyButtonData: Flow<Boolean> =
+        combine(userNameData, userDateOfBirthData) { userName, userBirthDate ->
+            val isUserNameCorrect = checkIfNameIsValid(userName)
+            val isUserBirthDateCorrect = userBirthDate.isNotEmpty()
+            return@combine isUserNameCorrect and isUserBirthDateCorrect
+        }
+
     init {
         loadUser()
+        setErrorIfNameIsInvalid()
+        setErrorIfBirthDateIsInvalid()
+    }
+
+    private fun setErrorIfNameIsInvalid() {
+        viewModelScope.launch(Dispatchers.IO) {
+            userNameData.collect { userName ->
+                userNameErrorData.value = checkIfNameIsValid(userName)
+            }
+        }
+    }
+
+    private fun checkIfNameIsValid(userName: String): Boolean {
+        val regexPatternMoreThanThreeAnyCharsButDigits = "^.([^0-9]{3,})$".toRegex()
+        return regexPatternMoreThanThreeAnyCharsButDigits.matches(userName)
+    }
+
+    private fun setErrorIfBirthDateIsInvalid() {
+        viewModelScope.launch(Dispatchers.IO) {
+            userDateOfBirthData.collect { birthDate ->
+                val userBirthDateCorrect = birthDate.isNotEmpty()
+                userBirthDateErrorData.value = userBirthDateCorrect
+            }
+        }
     }
 
     private fun getEmptyUser(): UserUi = UserUi(
@@ -60,6 +100,7 @@ class EditUserProfileViewModel @Inject constructor(
                 name = name
             )
         )
+        userNameData.value = name
     }
 
     fun setUserBirthDate(userBirthDate: String) {
@@ -68,6 +109,7 @@ class EditUserProfileViewModel @Inject constructor(
                 birthDate = userBirthDate
             )
         )
+        userDateOfBirthData.value = userBirthDate
     }
 
     fun setProfileImageUri(uri: Uri) {
@@ -148,6 +190,7 @@ class EditUserProfileViewModel @Inject constructor(
                             }
                         },
                         onFailure = {
+                            progressData.value = false
                         }
                     )
                 }

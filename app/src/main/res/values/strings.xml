@@ -74,6 +74,9 @@
     <string name="edit_user_profile_not_valid_date_toast_message">Not valid date</string>
     <string name="edit_user_profile_loading">EditUserProfileFragment: Loading</string>
     <string name="edit_user_profile_error">EditUserProfileFragment:%s</string>
+    <string name="edit_user_profile_name_should_contain_at_least_four_characters_error">
+        Name should contain at least 4 characters (digits are forbidden)</string>
+    <string name="edit_user_profile_please_input_birth_date_error">Please input birth date</string>
 
     <!--    ImagePickerSheetDialogFragment-->
     <string name="image_picker_bottom_sheet_dialog_choose_image_path">CHOOSE IMAGE PATH</string>

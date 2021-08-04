@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import com.shishkin.itransition.extensions.makeGone
 import com.shishkin.itransition.extensions.makeVisible
@@ -82,8 +83,20 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
                 }
 
                 launch {
-                    viewModel.progress.collect {
-                        showProgressBar(it)
+                    viewModel.progress.collect { progressBarState ->
+                        showProgressBar(progressBarState)
+                    }
+                }
+
+                launch {
+                    viewModel.userNameError.collect { nameState ->
+                        showErrorInUserProfileNameField(nameState)
+                    }
+                }
+
+                launch {
+                    viewModel.userBirthDateError.collect { birthDateState ->
+                        showErrorInUserBirthDateField(birthDateState)
                     }
                 }
             }
@@ -95,6 +108,24 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
             binding.pbEditUserProfile.makeVisible()
         } else {
             binding.pbEditUserProfile.makeGone()
+        }
+    }
+
+    private fun showErrorInUserProfileNameField(nameIsValid: Boolean) {
+        if (nameIsValid) {
+            binding.tilEditUserProfileName.error = null
+        } else {
+            binding.tilEditUserProfileName.error =
+                getString(R.string.edit_user_profile_name_should_contain_at_least_four_characters_error)
+        }
+    }
+
+    private fun showErrorInUserBirthDateField(birthDateIsValid: Boolean) {
+        if (birthDateIsValid) {
+            binding.tilEditUserProfileDateChooser.error = null
+        } else {
+            binding.tilEditUserProfileDateChooser.error =
+                getString(R.string.edit_user_profile_please_input_birth_date_error)
         }
     }
 
@@ -181,7 +212,9 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         binding.btnEditUserProfileApply.isEnabled = true
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // TODO Validation
+                viewModel.applyButtonData.collect { value ->
+                    binding.btnEditUserProfileApply.isEnabled = value
+                }
             }
         }
     }
