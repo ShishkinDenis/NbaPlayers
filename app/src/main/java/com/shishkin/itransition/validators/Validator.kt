@@ -4,11 +4,10 @@ import com.shishkin.itransition.validators.rules.Rule
 
 class Validator<T> {
 
-    lateinit var rules: List<Rule<T>>
+    var rules: List<Rule<T>> = emptyList()
 
-    fun addRules(rules: List<Rule<T>>): Validator<T> {
+    fun addRules(rules: List<Rule<T>>) {
         this.rules = rules
-        return this
     }
 
     fun validate(text: T): Boolean {

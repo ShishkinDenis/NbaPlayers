@@ -24,8 +24,7 @@ class EditUserProfileViewModelFactory @Inject constructor(
     @BirthDateValidator private val birthDateValidator: Validator<Date?>,
     @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
     private val stringToDateMapper: StringToDateMapper
-) :
-    ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
