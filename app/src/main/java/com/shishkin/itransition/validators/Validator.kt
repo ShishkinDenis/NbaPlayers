@@ -4,10 +4,12 @@ import com.shishkin.itransition.validators.rules.Rule
 
 class Validator<T> {
 
-    var rules: List<Rule<T>> = emptyList()
+    private val rules: MutableSet<Rule<T>> = mutableSetOf()
 
-    fun addRules(rules: List<Rule<T>>) {
-        this.rules = rules
+    fun addRules(rules: Set<Rule<T>>) {
+        rules.forEach { rule ->
+            this.rules.add(rule)
+        }
     }
 
     fun validate(text: T): Boolean {

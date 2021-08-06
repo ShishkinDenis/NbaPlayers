@@ -13,23 +13,23 @@ class ValidatorModule {
     @Provides
     @UserNameValidator
     fun provideUserNameValidator(): Validator<String> {
-        val rules: List<Rule<String>> =
-            listOf(TextMinLengthRule(4), TextWithoutDigitsRule())
+        val rules: Set<Rule<String>> =
+            setOf(TextMinLengthRule(4), TextWithoutDigitsRule())
         return Validator<String>().apply { addRules(rules) }
     }
 
     @Provides
     @BirthDateValidator
     fun provideBirthDateValidator(): Validator<Date?> {
-        val rules: List<Rule<Date?>> =
-            listOf(ChosenDateBeforeCurrentDateRule(), DateIsNotEmptyRule())
+        val rules: Set<Rule<Date?>> =
+            setOf(ChosenDateBeforeCurrentDateRule(), DateIsNotEmptyRule())
         return Validator<Date?>().apply { addRules(rules) }
     }
 
     @Provides
     @ImageUriValidator
     fun provideImageUriValidator(): Validator<Uri?> {
-        val rules: List<Rule<Uri?>> = listOf(UriIsNotNullRule())
+        val rules: Set<Rule<Uri?>> = setOf(UriIsNotNullRule())
         return Validator<Uri?>().apply { addRules(rules) }
     }
 }
