@@ -4,14 +4,19 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
+import com.shishkin.itransition.di.BirthDateValidator
+import com.shishkin.itransition.di.ImageUriValidator
+import com.shishkin.itransition.di.UserNameValidator
 import com.shishkin.itransition.extensions.getDateAsConfig
 import com.shishkin.itransition.extensions.mapToTimestamp
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
+import com.shishkin.itransition.gui.edituserprofile.mappers.StringToDateMapper
 import com.shishkin.itransition.gui.userprofile.mappers.UserLocalToUserUiMapper
 import com.shishkin.itransition.gui.userprofile.mappers.UserUiToUserLocalMapper
 import com.shishkin.itransition.navigation.FinishActivityNavigation
 import com.shishkin.itransition.navigation.Navigation
 import com.shishkin.itransition.repository.UserRepository
+import com.shishkin.itransition.validators.Validator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -28,7 +33,11 @@ class EditUserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val dateToStringMapper: DateToStringMapper,
     private val userUiToUserLocalMapper: UserUiToUserLocalMapper,
-    private val userLocalToUserUiMapper: UserLocalToUserUiMapper
+    private val userLocalToUserUiMapper: UserLocalToUserUiMapper,
+    @UserNameValidator private val userNameValidator: Validator<String>,
+    @BirthDateValidator private val birthDateValidator: Validator<Date?>,
+    @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
+    private val stringToDateMapper: StringToDateMapper
 ) : ViewModel() {
 
     private val toastData = MutableSharedFlow<Int>()
@@ -49,40 +58,29 @@ class EditUserProfileViewModel @Inject constructor(
     private val userBirthDateErrorData = MutableStateFlow(false)
     val userBirthDateError = userBirthDateErrorData.asStateFlow()
 
-    private val userNameData = MutableStateFlow("")
-    private val userDateOfBirthData = MutableStateFlow("")
+    private val userImageUriErrorData = MutableStateFlow(false)
 
-    val applyButtonData: Flow<Boolean> =
-        combine(userNameData, userDateOfBirthData) { userName, userBirthDate ->
-            val isUserNameCorrect = checkIfNameIsValid(userName)
-            val isUserBirthDateCorrect = userBirthDate.isNotEmpty()
-            return@combine isUserNameCorrect and isUserBirthDateCorrect
+    val applyButton: Flow<Boolean> =
+        combine(
+            userNameErrorData,
+            userBirthDateErrorData,
+            userImageUriErrorData
+        ) { userName, userBirthDate, userImageError ->
+            return@combine userName and userBirthDate and userImageError
         }
 
     init {
         loadUser()
-        setErrorIfNameIsInvalid()
-        setErrorIfBirthDateIsInvalid()
+        setErrorIfInvalid()
     }
 
-    private fun setErrorIfNameIsInvalid() {
+    private fun setErrorIfInvalid() {
         viewModelScope.launch(Dispatchers.IO) {
-            userNameData.collect { userName ->
-                userNameErrorData.value = checkIfNameIsValid(userName)
-            }
-        }
-    }
-
-    private fun checkIfNameIsValid(userName: String): Boolean {
-        val regexPatternMoreThanThreeAnyCharsButDigits = "^.([^0-9]{3,})$".toRegex()
-        return regexPatternMoreThanThreeAnyCharsButDigits.matches(userName)
-    }
-
-    private fun setErrorIfBirthDateIsInvalid() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userDateOfBirthData.collect { birthDate ->
-                val userBirthDateCorrect = birthDate.isNotEmpty()
-                userBirthDateErrorData.value = userBirthDateCorrect
+            userStateData.collect { userUi ->
+                userNameErrorData.value = userNameValidator.validate(userUi.name)
+                userBirthDateErrorData.value =
+                    birthDateValidator.validate(stringToDateMapper.invoke(userUi.birthDate))
+                userImageUriErrorData.value = imageUriValidator.validate(userUi.profileImageUri)
             }
         }
     }
@@ -100,7 +98,6 @@ class EditUserProfileViewModel @Inject constructor(
                 name = name
             )
         )
-        userNameData.value = name
     }
 
     fun setUserBirthDate(userBirthDate: String) {
@@ -109,7 +106,6 @@ class EditUserProfileViewModel @Inject constructor(
                 birthDate = userBirthDate
             )
         )
-        userDateOfBirthData.value = userBirthDate
     }
 
     fun setProfileImageUri(uri: Uri) {
@@ -147,10 +143,8 @@ class EditUserProfileViewModel @Inject constructor(
         config: DatePickerConfig
     ) {
         val chosenDate = config.mapToTimestamp()
-        val currentDate = Date()
         val chosenConvertedDate = dateToStringMapper.invoke(chosenDate)
-
-        if (chosenDate.before(currentDate)) {
+        if (birthDateValidator.validate(chosenDate)) {
             emitDate(chosenConvertedDate)
         } else {
             emitToastMessage(R.string.edit_user_profile_not_valid_date_toast_message)

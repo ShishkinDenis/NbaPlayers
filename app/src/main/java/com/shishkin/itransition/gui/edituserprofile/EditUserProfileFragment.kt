@@ -212,7 +212,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         binding.btnEditUserProfileApply.isEnabled = true
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.applyButtonData.collect { value ->
+                viewModel.applyButton.collect { value ->
                     binding.btnEditUserProfileApply.isEnabled = value
                 }
             }
