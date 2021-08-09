@@ -10,7 +10,7 @@ import java.util.*
 
 class DateIsNotNullRuleTest {
 
-    lateinit var validator: Validator<Date?>
+    private lateinit var validator: Validator<Date?>
 
     @Before
     fun setUp() {

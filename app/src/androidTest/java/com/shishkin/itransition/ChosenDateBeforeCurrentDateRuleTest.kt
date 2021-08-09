@@ -14,7 +14,7 @@ private const val PAST_DATE = "01/01/2001"
 
 class ChosenDateBeforeCurrentDateRuleTest {
 
-    lateinit var validator: Validator<Date?>
+    private lateinit var validator: Validator<Date?>
 
     @Before
     fun setUp() {

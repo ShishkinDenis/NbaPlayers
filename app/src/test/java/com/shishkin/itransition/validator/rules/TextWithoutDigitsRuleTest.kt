@@ -9,7 +9,7 @@ import org.junit.Test
 
 class TextWithoutDigitsRuleTest {
 
-    lateinit var validator: Validator<String>
+    private lateinit var validator: Validator<String>
 
     @Before
     fun setUp() {

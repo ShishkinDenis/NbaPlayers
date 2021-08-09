@@ -11,7 +11,7 @@ private const val MINIMUM_CHARACTERS_AMOUNT = 4
 
 class TextMinLengthRuleTest {
 
-    lateinit var validator: Validator<String>
+    private lateinit var validator: Validator<String>
 
     @Before
     fun setUp() {
@@ -21,7 +21,7 @@ class TextMinLengthRuleTest {
     }
 
     @Test
-    fun inputWithMinimumCharactersAmountReturnsTrue() {
+    fun inputEqualsMinimumCharactersAmountReturnsTrue() {
         val input = "1aБ!"
         assertThat(validator.validate(input)).isTrue()
     }

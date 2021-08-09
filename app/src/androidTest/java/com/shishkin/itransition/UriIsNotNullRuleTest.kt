@@ -10,7 +10,7 @@ import org.junit.Test
 
 class UriIsNotNullRuleTest {
 
-    lateinit var validator: Validator<Uri?>
+    private lateinit var validator: Validator<Uri?>
 
     @Before
     fun setUp() {

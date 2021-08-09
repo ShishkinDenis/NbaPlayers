@@ -8,7 +8,7 @@ import org.junit.Test
 
 class ValidatorTest {
 
-    lateinit var validator: Validator<String>
+    private lateinit var validator: Validator<String>
 
     @Before
     fun setUp() {
@@ -16,7 +16,7 @@ class ValidatorTest {
     }
 
     @Test
-    fun ifAnyRuleIsFalseValidateFunctionReturnFalse() {
+    fun ifAnyRuleIsFalseValidateFunctionReturnsFalse() {
         val rules: Set<Rule<String>> = setOf(TestRule(true), TestRule(false))
         validator.addRules(rules)
         val input = "abc"
@@ -24,7 +24,7 @@ class ValidatorTest {
     }
 
     @Test
-    fun ifAllRulesAreTrueValidateFunctionReturnTrue() {
+    fun ifAllRulesAreTrueValidateFunctionReturnsTrue() {
         val rules: Set<Rule<String>> = setOf(TestRule(true), TestRule(true))
         validator.addRules(rules)
         val input = "abc"
