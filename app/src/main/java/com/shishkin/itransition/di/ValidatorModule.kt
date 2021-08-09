@@ -22,7 +22,7 @@ class ValidatorModule {
     @BirthDateValidator
     fun provideBirthDateValidator(): Validator<Date?> {
         val rules: Set<Rule<Date?>> =
-            setOf(ChosenDateBeforeCurrentDateRule(), DateIsNotEmptyRule())
+            setOf(ChosenDateBeforeCurrentDateRule(), DateIsNotNullRule())
         return Validator<Date?>().apply { addRules(rules) }
     }
 
