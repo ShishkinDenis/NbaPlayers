@@ -25,8 +25,8 @@ class DefaultNbaRepository @Inject constructor(
 ) : NbaRepository {
 
 
-    override fun getNbaPlayersListDB(): Flow<KResult<List<PlayerWithTeam>>> {
-        return flow {
+    override fun getNbaPlayersList(): Flow<KResult<List<PlayerWithTeam>>> {
+        return flow<KResult<List<PlayerWithTeam>>> {
             try {
                 val apiData = nbaApi?.getAllNbaPlayers()
                 val apiList = apiData?.data
@@ -53,7 +53,7 @@ class DefaultNbaRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<PlayerWithTeam?>> {
+    override fun getSpecificPlayer(playerId: Int?): Flow<KResult<PlayerWithTeam?>> {
         return flow {
             val cashedData = nbaPlayerDao.getSpecificPlayer(playerId)
             emit(KResult.success(cashedData))

@@ -10,7 +10,6 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
-
 class MyApplication : DaggerApplication(), Configuration.Provider {
 
     @Inject

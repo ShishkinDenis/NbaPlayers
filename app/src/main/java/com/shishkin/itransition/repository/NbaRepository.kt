@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface NbaRepository {
 
-    fun getNbaPlayersListDB(): Flow<KResult<List<PlayerWithTeam>>>
+    fun getNbaPlayersList(): Flow<KResult<List<PlayerWithTeam>>>
 
-    fun getSpecificPlayerDB(playerId: Int?): Flow<KResult<PlayerWithTeam?>>
+    fun getSpecificPlayer(playerId: Int?): Flow<KResult<PlayerWithTeam?>>
 
     fun getNbaGamesListPagination(): Flow<PagingData<ListItem>?>
 }

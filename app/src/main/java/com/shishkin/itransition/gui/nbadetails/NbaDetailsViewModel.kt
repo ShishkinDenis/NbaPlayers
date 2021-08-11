@@ -32,7 +32,7 @@ class NbaDetailsViewModel @Inject constructor(
     private fun loadSpecificPlayer() {
         viewModelScope.launch {
             _specificPlayerRemoteState.value = ResultState.loading()
-            nbaRepository.getSpecificPlayerDB(nbaPlayerId)
+            nbaRepository.getSpecificPlayer(nbaPlayerId)
                 .catch { e ->
                     _specificPlayerRemoteState.value = ResultState.error(e.message, e)
                 }
