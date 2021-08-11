@@ -12,7 +12,7 @@ import javax.inject.Inject
 class DefaultUserRepository @Inject constructor(private val userDao: UserDao) : UserRepository {
 
     override fun getUserFromDb(): Flow<KResult<UserLocal>> {
-        return flow {
+        return flow<KResult<UserLocal>> {
             userDao.getUser().collect {
                 if (it == null) {
                     emit(Result.failure(Resources.NotFoundException()))
