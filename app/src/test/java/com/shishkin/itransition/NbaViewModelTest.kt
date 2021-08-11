@@ -1,6 +1,7 @@
 package com.shishkin.itransition
 
 import com.google.common.truth.Truth.assertThat
+import com.shishkin.itransition.db.PlayerWithTeam
 import com.shishkin.itransition.gui.nba.NbaViewModel
 import com.shishkin.itransition.gui.nba.mappers.PlayerWithTeamToNbaPlayerUiMapper
 import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
@@ -43,9 +44,10 @@ class NbaViewModelTest {
 
     @Test
     fun playersStateEmitsSuccess() = runBlockingTest {
-        whenever(nbaRepository.getNbaPlayersList()).thenReturn(flowOf(KResult.success(listOf())))
+        val fakePlayers = listOf<PlayerWithTeam>()
+        whenever(nbaRepository.getNbaPlayersList()).thenReturn(flowOf(KResult.success(fakePlayers)))
         viewModel.loadPlayers()
-        assertThat(viewModel.playersState.value.status).isEqualTo(ResultState.success(Any()).status)
+        assertThat(viewModel.playersState.value.status).isEqualTo(ResultState.success(fakePlayers).status)
     }
 
     @Test
