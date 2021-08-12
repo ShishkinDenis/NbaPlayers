@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
 import com.shishkin.itransition.di.BirthDateValidator
+import com.shishkin.itransition.di.CoroutineContextProvider
 import com.shishkin.itransition.di.ImageUriValidator
 import com.shishkin.itransition.di.UserNameValidator
 import com.shishkin.itransition.extensions.getDateAsConfig
@@ -37,7 +38,8 @@ class EditUserProfileViewModel @Inject constructor(
     @UserNameValidator private val userNameValidator: Validator<String>,
     @BirthDateValidator private val birthDateValidator: Validator<Date?>,
     @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
-    private val stringToDateMapper: StringToDateMapper
+    private val stringToDateMapper: StringToDateMapper,
+    private val contextProvider: CoroutineContextProvider
 ) : ViewModel() {
 
     private val toastData = MutableSharedFlow<Int>()
@@ -52,13 +54,13 @@ class EditUserProfileViewModel @Inject constructor(
     private val progressData = MutableStateFlow(false)
     val progress = progressData.asStateFlow()
 
-    private val userNameErrorData = MutableStateFlow(false)
+    val userNameErrorData = MutableStateFlow(false)
     val userNameError = userNameErrorData.asStateFlow()
 
-    private val userBirthDateErrorData = MutableStateFlow(false)
+    val userBirthDateErrorData = MutableStateFlow(false)
     val userBirthDateError = userBirthDateErrorData.asStateFlow()
 
-    private val userImageUriErrorData = MutableStateFlow(false)
+    val userImageUriErrorData = MutableStateFlow(false)
 
     val applyButton: Flow<Boolean> =
         combine(
@@ -74,8 +76,8 @@ class EditUserProfileViewModel @Inject constructor(
         setErrorIfInvalid()
     }
 
-    private fun setErrorIfInvalid() {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun setErrorIfInvalid() {
+        viewModelScope.launch(contextProvider.io) {
             userStateData.collect { userUi ->
                 userNameErrorData.value = userNameValidator.validate(userUi.name)
                 userBirthDateErrorData.value =
@@ -152,7 +154,7 @@ class EditUserProfileViewModel @Inject constructor(
     }
 
     fun insertUser() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(contextProvider.io) {
             val userLocal = userUiToUserLocalMapper.invoke(userStateData.value)
             userRepository.insertUserToDb(userLocal).collect { result ->
                 result.fold(
@@ -169,8 +171,8 @@ class EditUserProfileViewModel @Inject constructor(
         }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun loadUser() {
+        viewModelScope.launch(contextProvider.io) {
             progressData.value = true
             delay(1000L)
             userRepository.getUserFromDb()
@@ -178,8 +180,8 @@ class EditUserProfileViewModel @Inject constructor(
                     result.fold(
                         onSuccess = { userLocal ->
                             withContext(Dispatchers.Main) {
-                                val mapped = userLocalToUserUiMapper.invoke(userLocal)
-                                userStateData.value = mapped
+                                val userUi = userLocalToUserUiMapper.invoke(userLocal)
+                                userStateData.value = userUi
                                 progressData.value = false
                             }
                         },

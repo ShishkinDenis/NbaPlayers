@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.shishkin.itransition.di.BirthDateValidator
+import com.shishkin.itransition.di.CoroutineContextProvider
 import com.shishkin.itransition.di.ImageUriValidator
 import com.shishkin.itransition.di.UserNameValidator
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
@@ -23,7 +24,8 @@ class EditUserProfileViewModelFactory @Inject constructor(
     @UserNameValidator private val userNameValidator: Validator<String>,
     @BirthDateValidator private val birthDateValidator: Validator<Date?>,
     @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
-    private val stringToDateMapper: StringToDateMapper
+    private val stringToDateMapper: StringToDateMapper,
+    private val contextProvider: CoroutineContextProvider
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -36,7 +38,8 @@ class EditUserProfileViewModelFactory @Inject constructor(
             userNameValidator = userNameValidator,
             birthDateValidator = birthDateValidator,
             imageUriValidator = imageUriValidator,
-            stringToDateMapper = stringToDateMapper
+            stringToDateMapper = stringToDateMapper,
+            contextProvider = contextProvider
         ) as T
     }
 }
