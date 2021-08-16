@@ -1,7 +1,8 @@
 package com.shishkin.itransition.gui.edituserprofile.mappers
 
-import android.icu.text.SimpleDateFormat
+
 import com.shishkin.itransition.gui.utils.Mapper
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 

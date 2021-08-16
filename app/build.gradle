@@ -35,6 +35,10 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi"
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -122,6 +126,7 @@ dependencies {
 
     //Mockito
     testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
+    testImplementation "org.mockito:mockito-inline:3.2.0"
 
     // Coroutines test
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
