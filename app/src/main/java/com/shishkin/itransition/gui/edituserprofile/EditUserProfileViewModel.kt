@@ -54,13 +54,14 @@ class EditUserProfileViewModel @Inject constructor(
     private val progressData = MutableStateFlow(false)
     val progress = progressData.asStateFlow()
 
-    val userNameErrorData = MutableStateFlow(false)
+    private val userNameErrorData = MutableStateFlow(false)
     val userNameError = userNameErrorData.asStateFlow()
 
-    val userBirthDateErrorData = MutableStateFlow(false)
+    private val userBirthDateErrorData = MutableStateFlow(false)
     val userBirthDateError = userBirthDateErrorData.asStateFlow()
 
-    val userImageUriErrorData = MutableStateFlow(false)
+    private val userImageUriErrorData = MutableStateFlow(false)
+    val userImageUriError = userImageUriErrorData.asStateFlow()
 
     val applyButton: Flow<Boolean> =
         combine(
@@ -76,7 +77,7 @@ class EditUserProfileViewModel @Inject constructor(
         setErrorIfInvalid()
     }
 
-    fun setErrorIfInvalid() {
+    private fun setErrorIfInvalid() {
         viewModelScope.launch(contextProvider.io) {
             userStateData.collect { userUi ->
                 userNameErrorData.value = userNameValidator.validate(userUi.name)
@@ -110,7 +111,7 @@ class EditUserProfileViewModel @Inject constructor(
         )
     }
 
-    fun setProfileImageUri(uri: Uri) {
+    fun setProfileImageUri(uri: Uri?) {
         userStateData.tryEmit(
             userStateData.value.copy(
                 profileImageUri = uri
@@ -171,7 +172,7 @@ class EditUserProfileViewModel @Inject constructor(
         }
     }
 
-    fun loadUser() {
+    private fun loadUser() {
         viewModelScope.launch(contextProvider.io) {
             progressData.value = true
             delay(1000L)

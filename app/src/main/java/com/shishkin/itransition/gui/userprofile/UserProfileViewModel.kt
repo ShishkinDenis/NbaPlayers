@@ -3,13 +3,13 @@ package com.shishkin.itransition.gui.userprofile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
+import com.shishkin.itransition.di.CoroutineContextProvider
 import com.shishkin.itransition.gui.edituserprofile.UserUi
 import com.shishkin.itransition.gui.userprofile.mappers.UserLocalToUserUiMapper
 import com.shishkin.itransition.navigation.ActivityNavigation
 import com.shishkin.itransition.navigation.Navigation
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val userLocalToUserUiMapper: UserLocalToUserUiMapper
+    private val userLocalToUserUiMapper: UserLocalToUserUiMapper,
+    private val contextProvider: CoroutineContextProvider
 ) : ViewModel() {
 
     private val userStateData: MutableStateFlow<ResultState<UserUi>> =
@@ -33,15 +34,15 @@ class UserProfileViewModel @Inject constructor(
         loadUser()
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
+    fun loadUser() {
+        viewModelScope.launch(contextProvider.io) {
             userStateData.value = ResultState.loading()
-            withContext(Dispatchers.IO) {
+            withContext(contextProvider.io) {
                 userRepository.getUserFromDb()
                     .collect { result ->
                         result.fold(
                             onSuccess = { userLocal ->
-                                withContext(Dispatchers.Main) {
+                                withContext(contextProvider.main) {
                                     userStateData.value = ResultState.success(
                                         userLocalToUserUiMapper.invoke(userLocal)
                                     )
@@ -57,10 +58,8 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun navigateToEditUserProfileActivity() {
-        viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                navigationData.emit(ActivityNavigation(R.id.action_userProfileFragment_to_editUserProfileActivity))
-            }
+        viewModelScope.launch(contextProvider.main) {
+            navigationData.emit(ActivityNavigation(R.id.action_userProfileFragment_to_editUserProfileActivity))
         }
     }
 }
