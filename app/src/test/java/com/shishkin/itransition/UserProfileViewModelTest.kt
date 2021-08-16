@@ -1,7 +1,7 @@
 package com.shishkin.itransition
 
 import android.net.Uri
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.shishkin.itransition.base.BaseTest
 import com.shishkin.itransition.db.UserLocal
 import com.shishkin.itransition.gui.edituserprofile.UserUi
@@ -12,15 +12,13 @@ import com.shishkin.itransition.network.entities.KResult
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.verify
@@ -44,7 +42,7 @@ class UserProfileViewModelTest : BaseTest() {
 
     @Before
     fun setUp() {
-        `when`(userRepository.getUserFromDb()).thenReturn(
+        whenever(userRepository.getUserFromDb()).thenReturn(
             flowOf(KResult.success(UserLocal(FAKE_INT, FAKE_STRING, FAKE_DATE, FAKE_STRING)))
         )
         testContextProvider = TestContextProvider()
@@ -69,7 +67,7 @@ class UserProfileViewModelTest : BaseTest() {
             val fakeUserUi = UserUi(FAKE_INT, FAKE_STRING, FAKE_DATE, uri)
             whenever(userLocalToUserUiMapper.invoke(anyOrNull())).thenReturn(fakeUserUi)
             viewModel.loadUser()
-            Truth.assertThat(viewModel.userState.value.status)
+            assertThat(viewModel.userState.value.status)
                 .isEqualTo(ResultState.success(fakeUserUi).status)
         }
     }
@@ -80,17 +78,20 @@ class UserProfileViewModelTest : BaseTest() {
             val error = NullPointerException()
             whenever(userRepository.getUserFromDb()).thenReturn(flowOf(KResult.failure(error)))
             viewModel.loadUser()
-            Truth.assertThat(viewModel.userState.value.status)
+            assertThat(viewModel.userState.value.status)
                 .isEqualTo(ResultState.error<UserUi>(error.message, error).status)
         }
     }
 
     @Test
-    fun navigationEmitsActivityNavigation() = runBlockingTest {
-        launch {
+    fun navigationEmitsActivityNavigation() {
+        testCoroutineRule.runBlockingTest {
+            val navValue = async {
+                viewModel.navigation.first()
+            }
             viewModel.navigateToEditUserProfileActivity()
-            Truth.assertThat(viewModel.navigation.first())
+            assertThat(navValue.await())
                 .isEqualTo(ActivityNavigation(R.id.action_userProfileFragment_to_editUserProfileActivity))
-        }.cancel()
+        }
     }
 }

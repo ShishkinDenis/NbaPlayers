@@ -19,18 +19,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
 import java.util.*
-
-private const val NOT_VALID_DATE = "Not valid date"
 
 const val FAKE_INT = 1
 const val FAKE_STRING = "a"
@@ -51,7 +47,7 @@ class EditUserProfileViewModelTest : BaseTest() {
 
     @Before
     fun setUp() {
-        `when`(userRepository.getUserFromDb()).thenReturn(
+        whenever(userRepository.getUserFromDb()).thenReturn(
             flowOf(KResult.success(UserLocal(FAKE_INT, FAKE_STRING, FAKE_DATE, FAKE_STRING)))
         )
         testContextProvider = TestContextProvider()
@@ -221,14 +217,15 @@ class EditUserProfileViewModelTest : BaseTest() {
     @Test
     fun toastSharedFlowEmitsToastMessageWhenDateIsInvalid() {
         testCoroutineRule.runBlockingTest {
-            launch {
-                val invalidDay = 1
-                val invalidMonth = 0
-                val invalidYear = 2052
-                val invalidConfig = DatePickerConfig(invalidDay, invalidMonth, invalidYear)
-                viewModel.setUserDate(invalidConfig)
-                assertThat(viewModel.toast.first()).isEqualTo(NOT_VALID_DATE)
-            }.cancel()
+            val invalidDay = 1
+            val invalidMonth = 0
+            val invalidYear = 2052
+            val invalidConfig = DatePickerConfig(invalidDay, invalidMonth, invalidYear)
+            val toastValue = async {
+                viewModel.toast.first()
+            }
+            viewModel.setUserDate(invalidConfig)
+            assertThat(toastValue.await()).isEqualTo(R.string.edit_user_profile_not_valid_date_toast_message)
         }
     }
 
@@ -248,19 +245,17 @@ class EditUserProfileViewModelTest : BaseTest() {
     }
 
     @Test
-    fun activityWasNotFinishedWhenInsertionWasNotSuccessful() {
+    fun toastSharedFlowEmitsToastMessageWhenInsertionFailed() {
         testCoroutineRule.runBlockingTest {
-            launch {
-                val error = NullPointerException()
-                whenever(userRepository.insertUserToDb(anyOrNull())).thenReturn(
-                    flowOf((KResult.failure(error)))
-                )
-                val navValue = async {
-                    viewModel.navigation.first()
-                }
-                viewModel.insertUser()
-                assertThat(navValue.await()).isNotEqualTo(FinishActivityNavigation)
-            }.cancel()
+            val error = NullPointerException()
+            whenever(userRepository.insertUserToDb(anyOrNull())).thenReturn(
+                flowOf((KResult.failure(error)))
+            )
+            val toastValue = async {
+                viewModel.toast.first()
+            }
+            viewModel.insertUser()
+            assertThat(toastValue.await()).isEqualTo(R.string.edit_user_profile_insertion_failed_toast_message)
         }
     }
 }

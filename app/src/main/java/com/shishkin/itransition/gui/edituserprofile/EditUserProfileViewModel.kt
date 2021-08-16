@@ -23,12 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-
-private const val EDIT_USER_PROFILE_VIEW_MODEL_TAG = "EditUserProfileViewModel"
-private const val USER_INSERTION_ERROR = "User insertion error: %s"
 
 class EditUserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
@@ -74,10 +70,10 @@ class EditUserProfileViewModel @Inject constructor(
 
     init {
         loadUser()
-        setErrorIfInvalid()
+        subscribeOnUserUiAndValidate()
     }
 
-    private fun setErrorIfInvalid() {
+    private fun subscribeOnUserUiAndValidate() {
         viewModelScope.launch(contextProvider.io) {
             userStateData.collect { userUi ->
                 userNameErrorData.emit(
@@ -171,7 +167,7 @@ class EditUserProfileViewModel @Inject constructor(
                         }
                     },
                     onFailure = {
-                        Timber.tag(EDIT_USER_PROFILE_VIEW_MODEL_TAG).e(USER_INSERTION_ERROR, it)
+                        emitToastMessage(R.string.edit_user_profile_insertion_failed_toast_message)
                     }
                 )
             }
