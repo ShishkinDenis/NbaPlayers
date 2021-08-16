@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
+import com.shishkin.itransition.db.UserLocal
 import com.shishkin.itransition.di.BirthDateValidator
 import com.shishkin.itransition.di.CoroutineContextProvider
 import com.shishkin.itransition.di.ImageUriValidator
@@ -12,14 +13,13 @@ import com.shishkin.itransition.extensions.getDateAsConfig
 import com.shishkin.itransition.extensions.mapToTimestamp
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
 import com.shishkin.itransition.gui.edituserprofile.mappers.StringToDateMapper
-import com.shishkin.itransition.gui.userprofile.mappers.UserLocalToUserUiMapper
 import com.shishkin.itransition.gui.userprofile.mappers.UserUiToUserLocalMapper
+import com.shishkin.itransition.gui.utils.Mapper
 import com.shishkin.itransition.navigation.FinishActivityNavigation
 import com.shishkin.itransition.navigation.Navigation
 import com.shishkin.itransition.repository.UserRepository
 import com.shishkin.itransition.validators.Validator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ class EditUserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val dateToStringMapper: DateToStringMapper,
     private val userUiToUserLocalMapper: UserUiToUserLocalMapper,
-    private val userLocalToUserUiMapper: UserLocalToUserUiMapper,
+    private val userLocalToUserUiMapper: Mapper<UserLocal, UserUi>,
     @UserNameValidator private val userNameValidator: Validator<String>,
     @BirthDateValidator private val birthDateValidator: Validator<Date?>,
     @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
@@ -80,10 +80,16 @@ class EditUserProfileViewModel @Inject constructor(
     private fun setErrorIfInvalid() {
         viewModelScope.launch(contextProvider.io) {
             userStateData.collect { userUi ->
+                userNameErrorData.emit(
+                    userNameValidator.validate(userUi.name)
+                )
                 userNameErrorData.value = userNameValidator.validate(userUi.name)
-                userBirthDateErrorData.value =
+                userBirthDateErrorData.emit(
                     birthDateValidator.validate(stringToDateMapper.invoke(userUi.birthDate))
-                userImageUriErrorData.value = imageUriValidator.validate(userUi.profileImageUri)
+                )
+                userImageUriErrorData.emit(
+                    imageUriValidator.validate(userUi.profileImageUri)
+                )
             }
         }
     }
@@ -160,7 +166,7 @@ class EditUserProfileViewModel @Inject constructor(
             userRepository.insertUserToDb(userLocal).collect { result ->
                 result.fold(
                     onSuccess = {
-                        withContext(Dispatchers.Main) {
+                        withContext(contextProvider.main) {
                             navigationData.emit(FinishActivityNavigation)
                         }
                     },
@@ -174,20 +180,19 @@ class EditUserProfileViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch(contextProvider.io) {
-            progressData.value = true
-            delay(1000L)
+            progressData.emit(true)
             userRepository.getUserFromDb()
                 .collect { result ->
                     result.fold(
                         onSuccess = { userLocal ->
                             withContext(Dispatchers.Main) {
                                 val userUi = userLocalToUserUiMapper.invoke(userLocal)
-                                userStateData.value = userUi
-                                progressData.value = false
+                                userStateData.emit(userUi)
+                                progressData.emit(false)
                             }
                         },
                         onFailure = {
-                            progressData.value = false
+                            progressData.emit(false)
                         }
                     )
                 }

@@ -2,6 +2,7 @@ package com.shishkin.itransition
 
 import android.net.Uri
 import com.google.common.truth.Truth
+import com.shishkin.itransition.base.BaseTest
 import com.shishkin.itransition.db.UserLocal
 import com.shishkin.itransition.gui.edituserprofile.UserUi
 import com.shishkin.itransition.gui.userprofile.UserProfileViewModel
@@ -19,13 +20,15 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class UserProfileViewModelTest {
+class UserProfileViewModelTest : BaseTest() {
 
     private lateinit var testContextProvider: TestContextProvider
     private lateinit var viewModel: UserProfileViewModel
@@ -41,42 +44,45 @@ class UserProfileViewModelTest {
 
     @Before
     fun setUp() {
+        `when`(userRepository.getUserFromDb()).thenReturn(
+            flowOf(KResult.success(UserLocal(FAKE_INT, FAKE_STRING, FAKE_DATE, FAKE_STRING)))
+        )
         testContextProvider = TestContextProvider()
         viewModel =
             UserProfileViewModel(
-                userRepository,
-                userLocalToUserUiMapper,
-                testContextProvider
+                userRepository = userRepository,
+                userLocalToUserUiMapper = userLocalToUserUiMapper,
+                contextProvider = testContextProvider
             )
     }
 
     @Test
-    fun getUserFromDbWasCalled() = runBlockingTest {
-        verify(userRepository).getUserFromDb()
+    fun getUserFromDbWasCalled() {
+        testCoroutineRule.runBlockingTest {
+            verify(userRepository).getUserFromDb()
+        }
     }
 
-    //TODO Exception in thread "main @coroutine#1" java.lang.NullPointerException
     @Test
-    fun playersStateEmitsSuccess() = runBlockingTest {
-        val fakeInt = 1
-        val fakeString = "a"
-        val fakeUserUi = UserUi(fakeInt, fakeString, fakeString, uri)
-        val fakeUserLocal = UserLocal(fakeInt, fakeString, fakeString, fakeString)
-        whenever(userRepository.getUserFromDb()).thenReturn(flowOf(KResult.success(fakeUserLocal)))
-        whenever(userLocalToUserUiMapper.invoke(fakeUserLocal)).thenReturn(fakeUserUi)
-        viewModel.loadUser()
-        Truth.assertThat(viewModel.userState.value.status)
-            .isEqualTo(ResultState.success(fakeUserUi).status)
+    fun playersStateEmitsSuccess() {
+        testCoroutineRule.runBlockingTest {
+            val fakeUserUi = UserUi(FAKE_INT, FAKE_STRING, FAKE_DATE, uri)
+            whenever(userLocalToUserUiMapper.invoke(anyOrNull())).thenReturn(fakeUserUi)
+            viewModel.loadUser()
+            Truth.assertThat(viewModel.userState.value.status)
+                .isEqualTo(ResultState.success(fakeUserUi).status)
+        }
     }
 
-    //TODO Exception in thread "main @coroutine#1" java.lang.NullPointerException
     @Test
-    fun playersStateEmitsFailure() = runBlockingTest {
-        val error = NullPointerException()
-        whenever(userRepository.getUserFromDb()).thenReturn(flowOf(KResult.failure(error)))
-        viewModel.loadUser()
-        Truth.assertThat(viewModel.userState.value.status)
-            .isEqualTo(ResultState.error<UserUi>(error.message, error).status)
+    fun playersStateEmitsFailure() {
+        testCoroutineRule.runBlockingTest {
+            val error = NullPointerException()
+            whenever(userRepository.getUserFromDb()).thenReturn(flowOf(KResult.failure(error)))
+            viewModel.loadUser()
+            Truth.assertThat(viewModel.userState.value.status)
+                .isEqualTo(ResultState.error<UserUi>(error.message, error).status)
+        }
     }
 
     @Test
