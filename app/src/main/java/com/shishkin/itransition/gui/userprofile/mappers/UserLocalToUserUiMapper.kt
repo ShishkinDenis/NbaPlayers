@@ -13,7 +13,7 @@ class UserLocalToUserUiMapper @Inject constructor() : Mapper<UserLocal, UserUi> 
             id = input.id,
             name = input.name,
             birthDate = input.birthDate,
-            profileImageUri = Uri.parse(input.profileImageUri)
+            profileImageUri = null // TODO: Add wrapper to parse or event use URI string here?
         )
     }
 }

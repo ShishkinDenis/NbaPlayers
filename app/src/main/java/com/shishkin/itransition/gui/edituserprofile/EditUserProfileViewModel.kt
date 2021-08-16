@@ -79,12 +79,17 @@ class EditUserProfileViewModel @Inject constructor(
 
     private fun setErrorIfInvalid() {
         viewModelScope.launch(contextProvider.io) {
-            userStateData.collect { userUi ->
+            val userUi = userStateData.value
+            userNameErrorData.emit(
+              userNameValidator.validate(userUi.name)
+            )
                 userNameErrorData.value = userNameValidator.validate(userUi.name)
-                userBirthDateErrorData.value =
-                    birthDateValidator.validate(stringToDateMapper.invoke(userUi.birthDate))
-                userImageUriErrorData.value = imageUriValidator.validate(userUi.profileImageUri)
-            }
+                userBirthDateErrorData.emit(
+                  birthDateValidator.validate(stringToDateMapper.invoke(userUi.birthDate))
+                )
+                userImageUriErrorData.emit(
+                  imageUriValidator.validate(userUi.profileImageUri)
+                )
         }
     }
 
@@ -160,11 +165,13 @@ class EditUserProfileViewModel @Inject constructor(
             userRepository.insertUserToDb(userLocal).collect { result ->
                 result.fold(
                     onSuccess = {
-                        withContext(Dispatchers.Main) {
+                        withContext(contextProvider.main) {
+                            println("Finished insert: "+it)
                             navigationData.emit(FinishActivityNavigation)
                         }
                     },
                     onFailure = {
+                        println("ERROR result: "+it)
                         Timber.tag(EDIT_USER_PROFILE_VIEW_MODEL_TAG).e(USER_INSERTION_ERROR, it)
                     }
                 )
@@ -174,20 +181,19 @@ class EditUserProfileViewModel @Inject constructor(
 
     private fun loadUser() {
         viewModelScope.launch(contextProvider.io) {
-            progressData.value = true
-            delay(1000L)
+            progressData.emit(true)
             userRepository.getUserFromDb()
                 .collect { result ->
                     result.fold(
                         onSuccess = { userLocal ->
                             withContext(Dispatchers.Main) {
                                 val userUi = userLocalToUserUiMapper.invoke(userLocal)
-                                userStateData.value = userUi
-                                progressData.value = false
+                                userStateData.emit(userUi)
+                                progressData.emit(false)
                             }
                         },
                         onFailure = {
-                            progressData.value = false
+                            progressData.emit(false)
                         }
                     )
                 }

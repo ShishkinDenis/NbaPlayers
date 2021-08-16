@@ -1,37 +1,62 @@
 package com.shishkin.itransition
 
 import android.net.Uri
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import com.shishkin.itransition.base.BaseTest
 import com.shishkin.itransition.db.UserLocal
 import com.shishkin.itransition.gui.edituserprofile.DatePickerConfig
 import com.shishkin.itransition.gui.edituserprofile.EditUserProfileViewModel
+import com.shishkin.itransition.gui.edituserprofile.UserUi
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
 import com.shishkin.itransition.gui.edituserprofile.mappers.StringToDateMapper
 import com.shishkin.itransition.gui.userprofile.mappers.UserLocalToUserUiMapper
 import com.shishkin.itransition.gui.userprofile.mappers.UserUiToUserLocalMapper
+import com.shishkin.itransition.gui.utils.Mapper
 import com.shishkin.itransition.navigation.FinishActivityNavigation
 import com.shishkin.itransition.network.entities.KResult
 import com.shishkin.itransition.repository.UserRepository
 import com.shishkin.itransition.validators.Validator
-import com.shishkin.itransition.validators.rules.*
+import com.shishkin.itransition.validators.rules.ChosenDateBeforeCurrentDateRule
+import com.shishkin.itransition.validators.rules.DateIsNotNullRule
+import com.shishkin.itransition.validators.rules.TextMinLengthRule
+import com.shishkin.itransition.validators.rules.TextWithoutDigitsRule
+import com.shishkin.itransition.validators.rules.UriIsNotNullRule
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.any
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
 import java.util.*
 
 private const val NOT_VALID_DATE = "Not valid date"
 
+private typealias ValidationRule<T> = com.shishkin.itransition.validators.rules.Rule<T>
+
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class EditUserProfileViewModelTest {
+class EditUserProfileViewModelTest : BaseTest() {
+
 
     @Mock
     private lateinit var userRepository: UserRepository
@@ -42,37 +67,41 @@ class EditUserProfileViewModelTest {
     private lateinit var viewModel: EditUserProfileViewModel
     private lateinit var testContextProvider: TestContextProvider
 
+
     @Before
     fun setUp() {
+        `when`(userRepository.getUserFromDb()).thenReturn(flowOf(KResult.success(
+          UserLocal(1, "a", "09/10/1996", "a")
+        )))
         testContextProvider = TestContextProvider()
         viewModel =
             EditUserProfileViewModel(
-                userRepository,
-                DateToStringMapper(),
-                UserUiToUserLocalMapper(),
-                UserLocalToUserUiMapper(),
-                initUserNameValidator(),
-                initBirthDateValidator(),
-                initImageUriValidator(),
-                StringToDateMapper(),
-                testContextProvider
+              userRepository = userRepository,
+              dateToStringMapper = DateToStringMapper(),
+              userUiToUserLocalMapper = UserUiToUserLocalMapper(),
+              userLocalToUserUiMapper = UserLocalToUserUiMapper(),
+              userNameValidator = initUserNameValidator(),
+              birthDateValidator = initBirthDateValidator(),
+              imageUriValidator = initImageUriValidator(),
+              stringToDateMapper = StringToDateMapper(),
+              contextProvider = testContextProvider
             )
     }
 
     private fun initUserNameValidator(): Validator<String> {
-        val rules: Set<Rule<String>> =
+        val rules: Set<ValidationRule<String>> =
             setOf(TextMinLengthRule(4), TextWithoutDigitsRule())
         return Validator<String>().apply { addRules(rules) }
     }
 
     private fun initBirthDateValidator(): Validator<Date?> {
-        val rules: Set<Rule<Date?>> =
+        val rules: Set<ValidationRule<Date?>> =
             setOf(ChosenDateBeforeCurrentDateRule(), DateIsNotNullRule())
         return Validator<Date?>().apply { addRules(rules) }
     }
 
     private fun initImageUriValidator(): Validator<Uri?> {
-        val rules: Set<Rule<Uri?>> = setOf(UriIsNotNullRule())
+        val rules: Set<ValidationRule<Uri?>> = setOf(UriIsNotNullRule())
         return Validator<Uri?>().apply { addRules(rules) }
     }
 
@@ -214,33 +243,35 @@ class EditUserProfileViewModelTest {
 
     //    TODO Exception in thread "main @coroutine#5" java.lang.NullPointerException
     @Test
-    fun activityWasFinishedWhenInsertionWasSuccessful() = runBlockingTest {
-        launch {
-            val fakeInt = 1
-            val fakeString = "a"
+    fun activityWasFinishedWhenInsertionWasSuccessful() {
+        testCoroutineRule.runBlockingTest {
             val fakeInsertionResult: Long = 1
-            val fakeUserLocal = UserLocal(fakeInt, fakeString, fakeString, fakeString)
-            whenever(userRepository.insertUserToDb(fakeUserLocal)).thenReturn(
-                flowOf((KResult.success(fakeInsertionResult)))
+            whenever(userRepository.insertUserToDb(anyOrNull())).thenReturn(
+              flowOf((KResult.success(fakeInsertionResult)))
             )
+
+            val navValue = async {
+                viewModel.navigation.first()
+            }
+
             viewModel.insertUser()
-            assertThat(viewModel.navigation.first()).isEqualTo(FinishActivityNavigation)
-        }.cancel()
+
+
+            assertThat(navValue.await()).isEqualTo(FinishActivityNavigation)
+        }
     }
 
     //TODO    Exception in thread "main @coroutine#5" java.lang.NullPointerException
     @Test
     fun activityWasNotFinishedWhenInsertionWasNotSuccessful() = runBlockingTest {
-        launch {
-            val fakeInt = 1
-            val fakeString = "a"
-            val fakeUserLocal = UserLocal(fakeInt, fakeString, fakeString, fakeString)
-            val error = NullPointerException()
-            whenever(userRepository.insertUserToDb(fakeUserLocal)).thenReturn(
-                flowOf((KResult.failure(error)))
-            )
-            viewModel.insertUser()
-            assertThat(viewModel.navigation.first()).isNotEqualTo(FinishActivityNavigation)
-        }.cancel()
+                val fakeInt = 1
+                val fakeString = "a"
+                val fakeUserLocal = UserLocal(fakeInt, fakeString, fakeString, fakeString)
+                val error = NullPointerException()
+                whenever(userRepository.insertUserToDb(fakeUserLocal)).thenReturn(
+                  flowOf((KResult.failure(error)))
+                )
+                viewModel.insertUser()
+                assertThat(viewModel.navigation.first()).isNotEqualTo(FinishActivityNavigation)
     }
 }
