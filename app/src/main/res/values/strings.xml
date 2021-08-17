@@ -78,6 +78,10 @@
         Name should contain at least 4 characters (digits are forbidden)</string>
     <string name="edit_user_profile_please_input_birth_date_error">Please input birth date</string>
     <string name="edit_user_profile_insertion_failed_toast_message">Insertion failed</string>
+    <string name="edit_user_profile_close_dialog_title">Warning!</string>
+    <string name="edit_user_profile_close_dialog_message">If you close the dialog, you will lose your data</string>
+    <string name="edit_user_profile_close_dialog_positive">Cancel</string>
+    <string name="edit_user_profile_close_dialog_negative">Close</string>
 
     <!--    ImagePickerSheetDialogFragment-->
     <string name="image_picker_bottom_sheet_dialog_choose_image_path">CHOOSE IMAGE PATH</string>
