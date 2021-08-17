@@ -1,5 +1,6 @@
 package com.shishkin.itransition.gui.edituserprofile
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
@@ -15,10 +16,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.shishkin.itransition.R
 import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
+import com.shishkin.itransition.extensions.handleBackButton
 import com.shishkin.itransition.extensions.makeGone
 import com.shishkin.itransition.extensions.makeVisible
 import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.ImagePickerSheetDialogFragment
 import com.shishkin.itransition.navigation.BaseNavigationEmitter
+import com.shishkin.itransition.navigation.FinishActivityNavigation
 import com.shishkin.itransition.navigation.NavigationEmitter
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.flow.collect
@@ -58,6 +61,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         initEditTextListeners()
         collectData()
         enableApplyButtonIfValid()
+        handleBackButton { showAlertDialog() }
     }
 
     private fun collectData() {
@@ -218,4 +222,17 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
             }
         }
     }
+
+    private fun showAlertDialog() {
+        AlertDialog.Builder(context)
+            .setTitle(getString(R.string.edit_user_profile_warning_alert_dialog_title))
+            .setMessage(getString(R.string.edit_user_profile_if_you_close_the_dialog_you_will_lose_your_data_alert_dialog_message))
+            .setPositiveButton(getString(R.string.edit_user_profile_cancel_alert_dialog_positive_button)) { _, _ -> }
+            .setNegativeButton(getString(R.string.edit_user_profile_close_alert_dialog_negative_button)) { _, _ ->
+                navigationEmitter.navigateTo(FinishActivityNavigation)
+            }
+            .show()
+    }
 }
+
+
