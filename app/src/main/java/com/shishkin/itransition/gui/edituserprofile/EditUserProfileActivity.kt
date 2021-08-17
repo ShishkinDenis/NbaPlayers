@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.shishkin.itransition.databinding.ActivityEditUserProfileBinding
 import dagger.android.support.DaggerAppCompatActivity
 
-
 class EditUserProfileActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserProfileBinding
@@ -14,7 +13,5 @@ class EditUserProfileActivity : DaggerAppCompatActivity() {
         binding = ActivityEditUserProfileBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-
     }
 }
