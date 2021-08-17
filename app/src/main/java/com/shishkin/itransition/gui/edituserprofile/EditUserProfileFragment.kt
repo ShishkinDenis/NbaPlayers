@@ -61,7 +61,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         initEditTextListeners()
         collectData()
         enableApplyButtonIfValid()
-        handleBackButton { showAlertDialog() }
+        handleBackButton { showCloseDialog() }
     }
 
     private fun collectData() {
@@ -223,12 +223,12 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
         }
     }
 
-    private fun showAlertDialog() {
+    private fun showCloseDialog() {
         AlertDialog.Builder(context)
-            .setTitle(getString(R.string.edit_user_profile_warning_alert_dialog_title))
-            .setMessage(getString(R.string.edit_user_profile_if_you_close_the_dialog_you_will_lose_your_data_alert_dialog_message))
-            .setPositiveButton(getString(R.string.edit_user_profile_cancel_alert_dialog_positive_button)) { _, _ -> }
-            .setNegativeButton(getString(R.string.edit_user_profile_close_alert_dialog_negative_button)) { _, _ ->
+            .setTitle(getString(R.string.edit_user_profile_close_dialog_title))
+            .setMessage(getString(R.string.edit_user_profile_close_dialog_message))
+            .setPositiveButton(getString(R.string.edit_user_profile_close_dialog_positive)) { _, _ -> }
+            .setNegativeButton(getString(R.string.edit_user_profile_close_dialog_negative)) { _, _ ->
                 navigationEmitter.navigateTo(FinishActivityNavigation)
             }
             .show()
