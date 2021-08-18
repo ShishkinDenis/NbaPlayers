@@ -40,6 +40,14 @@ class LoginViewModel @Inject constructor(
     private val loginUserStateData: MutableStateFlow<LoginUserUi> =
         MutableStateFlow(getEmptyLoginUserUi())
 
+    val loginButton: Flow<Boolean> =
+        combine(
+            userNameErrorData,
+            userPasswordErrorData
+        ) { userName, userPassword ->
+            return@combine userName and userPassword
+        }
+
     init {
         subscribeOnLoginUserUiAndValidate()
     }
@@ -77,14 +85,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
-    val loginButton: Flow<Boolean> =
-        combine(
-            userNameErrorData,
-            userPasswordErrorData
-        ) { userName, userPassword ->
-            return@combine userName and userPassword
-        }
 
     fun login() {
         viewModelScope.launch(contextProvider.io) {
