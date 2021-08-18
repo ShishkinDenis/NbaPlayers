@@ -5,6 +5,8 @@ import com.shishkin.itransition.gui.edituserprofile.EditUserProfileActivity
 import com.shishkin.itransition.gui.edituserprofile.EditUserProfileFragmentModule
 import com.shishkin.itransition.gui.games.NbaGamesFragmentModule
 import com.shishkin.itransition.gui.gamesdetails.NbaGamesDetailsFragmentModule
+import com.shishkin.itransition.gui.login.LoginActivity
+import com.shishkin.itransition.gui.login.LoginFragmentModule
 import com.shishkin.itransition.gui.nba.NbaFragmentModule
 import com.shishkin.itransition.gui.nbadetails.NbaDetailsFragmentModule
 import com.shishkin.itransition.gui.userprofile.UserProfileFragmentModule
@@ -32,5 +34,12 @@ abstract class ActivitiesModule {
         ]
     )
     abstract fun provideEditUserProfileActivity(): EditUserProfileActivity
+
+    @ContributesAndroidInjector(
+        modules = [
+            LoginFragmentModule::class,
+        ]
+    )
+    abstract fun provideLoginActivity(): LoginActivity
 }
 

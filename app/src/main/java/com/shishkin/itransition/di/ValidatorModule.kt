@@ -11,7 +11,7 @@ import java.util.*
 class ValidatorModule {
 
     @Provides
-    @UserNameValidator
+    @ProfileUserNameValidator
     fun provideUserNameValidator(): Validator<String> {
         val rules: Set<Rule<String>> =
             setOf(TextMinLengthRule(4), TextWithoutDigitsRule())
@@ -19,7 +19,14 @@ class ValidatorModule {
     }
 
     @Provides
-    @BirthDateValidator
+    @LoginUserNameValidator
+    fun provideLoginUserNameValidator(): Validator<String> {
+        val rules: Set<Rule<String>> = setOf(TextMinLengthRule(1))
+        return Validator<String>().apply { addRules(rules) }
+    }
+
+    @Provides
+    @ProfileBirthDateValidator
     fun provideBirthDateValidator(): Validator<Date?> {
         val rules: Set<Rule<Date?>> =
             setOf(ChosenDateBeforeCurrentDateRule(), DateIsNotNullRule())
@@ -27,9 +34,16 @@ class ValidatorModule {
     }
 
     @Provides
-    @ImageUriValidator
+    @ProfileImageUriValidator
     fun provideImageUriValidator(): Validator<Uri?> {
         val rules: Set<Rule<Uri?>> = setOf(UriIsNotNullRule())
         return Validator<Uri?>().apply { addRules(rules) }
+    }
+
+    @Provides
+    @LoginUserPasswordValidator
+    fun provideUserPasswordValidator(): Validator<String> {
+        val rules: Set<Rule<String>> = setOf(TextMinLengthRule(6))
+        return Validator<String>().apply { addRules(rules) }
     }
 }
