@@ -5,10 +5,7 @@ import com.shishkin.itransition.db.UserDao
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToLocalMapper
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToNbaTeamLocalMapper
 import com.shishkin.itransition.network.NbaApi
-import com.shishkin.itransition.repository.DefaultNbaRepository
-import com.shishkin.itransition.repository.DefaultUserRepository
-import com.shishkin.itransition.repository.NbaRepository
-import com.shishkin.itransition.repository.UserRepository
+import com.shishkin.itransition.repository.*
 import dagger.Module
 import dagger.Provides
 
@@ -31,5 +28,10 @@ class RepositoryModule {
     @Provides
     fun provideUserRepository(userDao: UserDao): UserRepository {
         return DefaultUserRepository(userDao)
+    }
+
+    @Provides
+    fun provideLoginRepository(): LoginRepository {
+        return DefaultLoginRepository()
     }
 }

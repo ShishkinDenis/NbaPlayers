@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +18,7 @@ import com.shishkin.itransition.databinding.FragmentEditUserProfileBinding
 import com.shishkin.itransition.extensions.handleBackButton
 import com.shishkin.itransition.extensions.makeGone
 import com.shishkin.itransition.extensions.makeVisible
+import com.shishkin.itransition.extensions.showLongToast
 import com.shishkin.itransition.gui.edituserprofile.imagepickersheetdialog.ImagePickerSheetDialogFragment
 import com.shishkin.itransition.navigation.BaseNavigationEmitter
 import com.shishkin.itransition.navigation.FinishActivityNavigation
@@ -70,7 +70,7 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
 
                 launch {
                     viewModel.toast.collect { toastMessage ->
-                        showToast(toastMessage)
+                        context?.showLongToast(toastMessage)
                     }
                 }
 
@@ -171,14 +171,6 @@ class EditUserProfileFragment : DaggerFragment(), ImageRetriever {
                 config.day
             ).show()
         }
-    }
-
-    private fun showToast(toastMessage: Int) {
-        Toast.makeText(
-            context,
-            toastMessage,
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     override fun onRetrieveImage(imageUri: Uri?) {

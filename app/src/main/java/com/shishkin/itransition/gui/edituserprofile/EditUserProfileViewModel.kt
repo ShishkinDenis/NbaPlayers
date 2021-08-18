@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shishkin.itransition.R
 import com.shishkin.itransition.db.UserLocal
-import com.shishkin.itransition.di.BirthDateValidator
 import com.shishkin.itransition.di.CoroutineContextProvider
-import com.shishkin.itransition.di.ImageUriValidator
-import com.shishkin.itransition.di.UserNameValidator
+import com.shishkin.itransition.di.ProfileBirthDateValidator
+import com.shishkin.itransition.di.ProfileImageUriValidator
+import com.shishkin.itransition.di.ProfileUserNameValidator
 import com.shishkin.itransition.extensions.getDateAsConfig
 import com.shishkin.itransition.extensions.mapToTimestamp
 import com.shishkin.itransition.gui.edituserprofile.mappers.DateToStringMapper
@@ -31,9 +31,9 @@ class EditUserProfileViewModel @Inject constructor(
     private val dateToStringMapper: DateToStringMapper,
     private val userUiToUserLocalMapper: UserUiToUserLocalMapper,
     private val userLocalToUserUiMapper: Mapper<UserLocal, UserUi>,
-    @UserNameValidator private val userNameValidator: Validator<String>,
-    @BirthDateValidator private val birthDateValidator: Validator<Date?>,
-    @ImageUriValidator private val imageUriValidator: Validator<Uri?>,
+    @ProfileUserNameValidator private val userNameValidator: Validator<String>,
+    @ProfileBirthDateValidator private val birthDateValidator: Validator<Date?>,
+    @ProfileImageUriValidator private val imageUriValidator: Validator<Uri?>,
     private val stringToDateMapper: StringToDateMapper,
     private val contextProvider: CoroutineContextProvider
 ) : ViewModel() {
@@ -79,7 +79,6 @@ class EditUserProfileViewModel @Inject constructor(
                 userNameErrorData.emit(
                     userNameValidator.validate(userUi.name)
                 )
-                userNameErrorData.value = userNameValidator.validate(userUi.name)
                 userBirthDateErrorData.emit(
                     birthDateValidator.validate(stringToDateMapper.invoke(userUi.birthDate))
                 )
