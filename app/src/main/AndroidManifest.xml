@@ -16,14 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Itransition">
         <activity android:name=".gui.login.LoginActivity">
+        </activity>
+        <activity android:name=".gui.edituserprofile.EditUserProfileActivity" />
+        <activity android:name=".gui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gui.edituserprofile.EditUserProfileActivity" />
-        <activity android:name=".gui.activities.MainActivity"></activity>
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
