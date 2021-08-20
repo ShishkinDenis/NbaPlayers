@@ -16,8 +16,6 @@ import com.shishkin.itransition.databinding.FragmentNbaBinding
 import com.shishkin.itransition.gui.nba.mappers.NbaPlayerUiToListItemMapper
 import com.shishkin.itransition.gui.utils.CustomViewTypeItemDecoration
 import dagger.android.support.DaggerFragment
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -75,7 +73,6 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 }
             }
         }
-
         observeNbaPlayersList()
     }
 
@@ -100,14 +97,12 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     }
 
     private fun observeNbaPlayersList() {
-        viewModel.nbaPlayersStateRX
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        viewModel.subscribeOnPlayerState()
             .doOnError { }
             .subscribe { list ->
                 list.fold(
                     onSuccess = {
-                        Timber.tag("RX").d(it?.get(9)?.firstName)
+                        Timber.tag("RX").d(it?.get(14)?.firstName)
                     },
                     onFailure = {
                     }

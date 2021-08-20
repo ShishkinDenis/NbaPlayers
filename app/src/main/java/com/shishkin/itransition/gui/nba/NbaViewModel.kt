@@ -8,6 +8,8 @@ import com.shishkin.itransition.gui.nba.uientities.NbaPlayerUi
 import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.ResultState
 import com.shishkin.itransition.repository.NbaRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +33,6 @@ class NbaViewModel @Inject constructor(
     //TODO переделать на NbaPlayerUi
     private val nbaPlayersStateDataRX: BehaviorSubject<Result<List<NbaPlayerRemote>?>> =
         BehaviorSubject.create()
-    val nbaPlayersStateRX: BehaviorSubject<Result<List<NbaPlayerRemote>?>> = nbaPlayersStateDataRX
 
     init {
         loadPlayers()
@@ -58,13 +59,20 @@ class NbaViewModel @Inject constructor(
         }
     }
 
+    fun subscribeOnPlayerState(): Observable<Result<List<NbaPlayerRemote>?>> {
+        return nbaPlayersStateDataRX.observeOn(AndroidSchedulers.mainThread())
+    }
+
     private fun loadPlayersRX() {
         nbaRepository.getNbaPlayersListRX()
-            ?.subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            ?.doOnError {
+                nbaPlayersStateDataRX.onNext(Result.failure(it))
+            }
             ?.subscribe { it ->
                 it.fold(
                     onSuccess = {
-                        Timber.tag("RX").d(it?.get(0)?.firstName)
+                        Timber.tag("RX").d(it[0].firstName)
 //                        TODO промапить на NbaPlayerUi
                         nbaPlayersStateDataRX.onNext(Result.success(it))
                     },

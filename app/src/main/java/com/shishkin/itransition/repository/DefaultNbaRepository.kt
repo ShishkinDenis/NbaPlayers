@@ -12,8 +12,7 @@ import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.entities.KResult
 import com.shishkin.itransition.network.entities.NbaPlayerRemote
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +21,7 @@ import javax.inject.Inject
 
 class DefaultNbaRepository @Inject constructor(
     private val nbaPlayerDao: NbaPlayerDao,
-    private val nbaApi: NbaApi?,
+    private val nbaApi: NbaApi,
     private val nbaPlayerRemoteToNbaTeamLocalMapper: NbaPlayerRemoteToNbaTeamLocalMapper,
     private val nbaPlayerRemoteToLocalMapper: NbaPlayerRemoteToLocalMapper
 ) : NbaRepository {
@@ -73,12 +72,11 @@ class DefaultNbaRepository @Inject constructor(
 
     // TODO обработка failure случая
     //  TODO работа с БД
-    override fun getNbaPlayersListRX(): Observable<Result<List<NbaPlayerRemote>?>>? {
-        return nbaApi?.getAllNbaPlayersRX()
-            ?.map {
+    override fun getNbaPlayersListRX(): Single<Result<List<NbaPlayerRemote>>> {
+        return nbaApi.getAllNbaPlayersRX()
+            .map {
                 Result.success(it.data)
             }
-            ?.subscribeOn(Schedulers.io())
     }
 }
 
