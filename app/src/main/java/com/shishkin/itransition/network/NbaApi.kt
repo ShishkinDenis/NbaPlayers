@@ -3,6 +3,7 @@ package com.shishkin.itransition.network
 import com.shishkin.itransition.network.entities.NbaGame
 import com.shishkin.itransition.network.entities.NbaPlayerRemote
 import com.shishkin.itransition.network.entities.RestResponse
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,4 +14,7 @@ interface NbaApi {
 
     @GET("games")
     suspend fun getAllNbaGamesPagination(@Query("page") page: Int): RestResponse<List<NbaGame>>
+
+    @GET("players")
+    fun getAllNbaPlayersRX(): Single<RestResponse<List<NbaPlayerRemote>>>
 }

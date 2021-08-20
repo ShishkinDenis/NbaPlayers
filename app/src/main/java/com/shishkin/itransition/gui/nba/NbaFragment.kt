@@ -28,6 +28,8 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
     @Inject
     lateinit var viewModelFactory: NbaViewModelFactory
 
+    private val viewModel: NbaViewModel by viewModels { viewModelFactory }
+
     @Inject
     lateinit var nbaPlayerUiToListItemMapper: NbaPlayerUiToListItemMapper
     private lateinit var nbaPlayersListAdapter: NbaPlayersListAdapter
@@ -44,9 +46,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel: NbaViewModel by viewModels { viewModelFactory }
         initNbaPlayersRecyclerView()
-
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.playersState.collectLatest { uiState ->
@@ -73,6 +73,7 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
                 }
             }
         }
+        observeNbaPlayersList()
     }
 
     private fun initNbaPlayersRecyclerView() {
@@ -93,5 +94,19 @@ class NbaFragment : DaggerFragment(), NbaPlayerItemListener {
         val bundle = Bundle()
         bundle.putInt(getString(R.string.arg_nba_player_id), nbaPlayerId)
         findNavController().navigate(R.id.action_nbaFragment_to_nbaDetailsFragment, bundle)
+    }
+
+    private fun observeNbaPlayersList() {
+        viewModel.subscribeOnPlayerState()
+            .doOnError { }
+            .subscribe { list ->
+                list.fold(
+                    onSuccess = {
+                        Timber.tag("RX").d(it?.get(14)?.firstName)
+                    },
+                    onFailure = {
+                    }
+                )
+            }
     }
 }

@@ -11,6 +11,8 @@ import com.shishkin.itransition.gui.nba.mappers.NbaPlayerRemoteToNbaTeamLocalMap
 import com.shishkin.itransition.gui.utils.ListItem
 import com.shishkin.itransition.network.NbaApi
 import com.shishkin.itransition.network.entities.KResult
+import com.shishkin.itransition.network.entities.NbaPlayerRemote
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,11 +21,10 @@ import javax.inject.Inject
 
 class DefaultNbaRepository @Inject constructor(
     private val nbaPlayerDao: NbaPlayerDao,
-    private val nbaApi: NbaApi?,
+    private val nbaApi: NbaApi,
     private val nbaPlayerRemoteToNbaTeamLocalMapper: NbaPlayerRemoteToNbaTeamLocalMapper,
     private val nbaPlayerRemoteToLocalMapper: NbaPlayerRemoteToLocalMapper
 ) : NbaRepository {
-
 
     override fun getNbaPlayersList(): Flow<KResult<List<PlayerWithTeam>>> {
         return flow<KResult<List<PlayerWithTeam>>> {
@@ -67,6 +68,15 @@ class DefaultNbaRepository @Inject constructor(
                 NbaGamesPagingDataSource(nbaApi)
             }
         ).flow
+    }
+
+    // TODO обработка failure случая
+    //  TODO работа с БД
+    override fun getNbaPlayersListRX(): Single<Result<List<NbaPlayerRemote>>> {
+        return nbaApi.getAllNbaPlayersRX()
+            .map {
+                Result.success(it.data)
+            }
     }
 }
 
